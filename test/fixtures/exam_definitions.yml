@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  master_exam: 
+  master_question: 
+  questionNum: 1
+  weight: 1.5
+
+two:
+  master_exam: 
+  master_question: 
+  questionNum: 1
+  weight: 1.5

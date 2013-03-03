@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  fname: MyString
+  lname: MyString
+  type: 1
+  spassword: MyString
+  salt: MyString
+
+two:
+  fname: MyString
+  lname: MyString
+  type: 1
+  spassword: MyString
+  salt: MyString

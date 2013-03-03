@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  master_exam: 
+  user: 
+  state: MyString
+  date: 2013-03-03 14:37:46
+  score: 1.5
+
+two:
+  master_exam: 
+  user: 
+  state: MyString
+  date: 2013-03-03 14:37:46
+  score: 1.5
