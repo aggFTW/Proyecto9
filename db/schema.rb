@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130303205141) do
+ActiveRecord::Schema.define(:version => 20130309024801) do
 
   create_table "exam_definitions", :force => true do |t|
     t.integer  "master_exam_id"
@@ -98,7 +98,7 @@ ActiveRecord::Schema.define(:version => 20130303205141) do
     t.string   "username",   :null => false
     t.string   "fname",      :null => false
     t.string   "lname",      :null => false
-    t.integer  "type",       :null => false
+    t.integer  "utype",      :null => false
     t.string   "spassword",  :null => false
     t.string   "salt",       :null => false
     t.datetime "created_at", :null => false
