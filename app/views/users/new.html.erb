@@ -1,0 +1,26 @@
+<% @page_title = "Signup" %>
+
+<div class= "Sign_Form">
+	<h1>Sign Up</h1>
+
+	<%= form_for(@user) do |f| %>
+
+		<p> Matrícula:</br> <%= f.text_field :username%> </p>
+
+		<p> Nombre de pila:</br> <%= f.text_field :fname%> </p>
+
+		<p> Apellidos:</br> <%= f.text_field :lname%> </p>
+
+		<p> Password:</br> <%= f.password_field :spassword%></p>
+
+		<%= f.submit :Signup %>
+	<% end %>
+
+	<% if @user.errors.any? %>
+		<ul class="Signup_Errors">
+			<% for message_error in @user.errors.full_messages %>
+			<li>* <%= message_error %></li>
+			<% end %>
+		</ul>
+	<% end %>
+</div>
