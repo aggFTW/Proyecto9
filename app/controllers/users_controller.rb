@@ -1,4 +1,7 @@
-class UsersController < ApplicationController  
+class UsersController < ApplicationController
+
+	#before_filter :save_login_state, :only => [:new, :create]
+
 	def new
 		@user = User.new 
 	end
@@ -10,7 +13,7 @@ class UsersController < ApplicationController
 		if @user.save
 			flash[:notice] = "Usuario creado de manera exitosa. Haga Sign In."
 		else
-			flash[:error] = "Sus datos no son válidos."
+			flash[:error] = "Sus datos no son validos."
 		end
 
 		redirect_to(root_path)
