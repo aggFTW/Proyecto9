@@ -1,3 +1,4 @@
+#encoding: utf-8
 class ApplicationController < ActionController::Base
   protect_from_forgery
 
@@ -5,6 +6,7 @@ class ApplicationController < ActionController::Base
 	
 	def authenticate_user
 		unless session[:user_id]
+			flash[:error] = "Necesita una sesión de usuario válida para esta operación. Por favor inicie sesión."
 			redirect_to(root_path)
 			return false
 		else

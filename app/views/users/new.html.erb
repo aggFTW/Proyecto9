@@ -3,22 +3,7 @@
 <div class="hero-unit">
 	<h1>Registro de nuevo usuario</h1>
 
-	<%= simple_form_for(@user) do |f| %>
-		<fieldset>
-			<!-- <legend>Registro de usuario</legend> -->
-
-			<%= f.input :username, :label => 'Usuario' %>
-			<%= f.input :fname, :label => 'Nombre' %>
-			<%= f.input :lname, :label => 'Apellidos' %>
-			<%= f.input :spassword, :label => 'Password' %>
-
-			<div class="control-group">
-				<div class="controls">
-					<%= f.button :submit %>
-				</div>
-			</div>
-		</fieldset>
-	<% end %>
+	<%= render 'form' %>
 
 	<% if @user.errors.any? %>
 		<ul>

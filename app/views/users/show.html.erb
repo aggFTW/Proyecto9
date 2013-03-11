@@ -1,0 +1,23 @@
+<p>
+  <b>Usuario:</b>
+  <%= @user.username %>
+</p>
+
+<p>
+  <b>Nombre:</b>
+  <%= @user.fname %>
+</p>
+ 
+<p>
+  <b>Apellidos:</b>
+  <%= @user.lname %>
+</p>
+ 
+<p>
+  <b>Tipo:</b>
+  <%= @user.utype %>
+</p>
+ 
+ 
+<%= link_to 'Editar', edit_user_path(@user) %> |
+<%= link_to 'Atrás', users_path %>
