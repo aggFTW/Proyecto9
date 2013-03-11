@@ -1,17 +1,19 @@
 <div class="navbar navbar-fixed-top navbar-inverse">
   <div class="navbar-inner">
   	<div class="container">
-	    <a class="brand" href="#">GenRap</a>
+	    
+	    <%= link_to("GenRap", root_path, {:class => "brand"}) %>
 
-	    <ul class="nav">
-	      <li class="active"><%= link_to "Inicio", root_path %></li>
-	    </ul>
+	    <% if session[:user_id].nil? %>
+	    	<%= form_tag({:controller=>"sessions", :action => 'login'}, {:class => "navbar-form pull-right"}) do %>
+				<%= text_field_tag(:gusername, nil, {:placeholder => 'Usuario', :class => 'span2'})%>
+				<%= password_field_tag(:gspassword, nil, {:placeholder => 'Contraseña', :class => 'span2'})%>
+				<%= submit_tag("Sign In", :class => "btn") %>
+			<% end %>
+		<% else %>
+			<li><%= link_to "Log out", :controller => :sessions, :action => :logout %></li>
+		<% end %>
 
-	    <form class="navbar-form pull-right">
-		  <input type="text" class="span2" placeholder="Usuario">
-		  <input type="password" class="span2" placeholder="Contraseña">
-		  <button type="submit" class="btn">Sign In</button>
-		</form>
     </div>
   </div>
 </div>
