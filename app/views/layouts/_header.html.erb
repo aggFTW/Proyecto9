@@ -11,7 +11,9 @@
 				<%= submit_tag("Sign In", :class => "btn") %>
 			<% end %>
 		<% else %>
-			<li><%= link_to "Log out", :controller => :sessions, :action => :logout %></li>
+			<ul class="nav pull-right">
+				<li><%= link_to "Log out", :controller => :sessions, :action => :logout %></li>
+			</ul>
 		<% end %>
 
     </div>
