@@ -5,16 +5,14 @@ class UsersController < ApplicationController
 
 	def create
 		@user = User.new(params[:user])
-		@user.type = 0
+		@user.utype = 0
 		
 		if @user.save
-			#flash[:notice] = "You Signed up successfully"
-			#flash[:color]= "valid"
+			flash[:notice] = "Usuario creado de manera exitosa. Haga Sign In."
 		else
-			#flash[:notice] = "Form is invalid"
-			#flash[:color]= "invalid"
+			flash[:error] = "Sus datos no son válidos."
 		end
 
-		render "new"
+		redirect_to(root_path)
 	end
 end
