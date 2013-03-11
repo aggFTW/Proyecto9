@@ -1,25 +1,29 @@
-<% @page_title = "Signup" %>
+<% content_for = "Sign Up" %>
 
-<div class= "Sign_Form">
-	<h1>Sign Up</h1>
+<div class="hero-unit">
+	<h1>Registro de nuevo usuario</h1>
 
-	<%= form_for(@user) do |f| %>
+	<%= simple_form_for(@user) do |f| %>
+		<fieldset>
+			<!-- <legend>Registro de usuario</legend> -->
 
-		<p> Matrícula:</br> <%= f.text_field :username%> </p>
+			<%= f.input :username, :label => 'Usuario' %>
+			<%= f.input :fname, :label => 'Nombre' %>
+			<%= f.input :lname, :label => 'Apellidos' %>
+			<%= f.input :spassword, :label => 'Password' %>
 
-		<p> Nombre de pila:</br> <%= f.text_field :fname%> </p>
-
-		<p> Apellidos:</br> <%= f.text_field :lname%> </p>
-
-		<p> Password:</br> <%= f.password_field :spassword%></p>
-
-		<%= f.submit :Signup %>
+			<div class="control-group">
+				<div class="controls">
+					<%= f.button :submit %>
+				</div>
+			</div>
+		</fieldset>
 	<% end %>
 
 	<% if @user.errors.any? %>
-		<ul class="Signup_Errors">
+		<ul>
 			<% for message_error in @user.errors.full_messages %>
-			<li>* <%= message_error %></li>
+			<li>- <%= message_error %></li>
 			<% end %>
 		</ul>
 	<% end %>

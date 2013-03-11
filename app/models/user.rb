@@ -1,5 +1,5 @@
 class User < ActiveRecord::Base
-  attr_accessible :fname, :lname, :spassword, :type, :username
+  attr_accessible :fname, :lname, :spassword, :username
 
   has_and_belongs_to_many :groups #, :inverse_of => :users
   has_and_belongs_to_many :master_exams #, :inverse_of => :users
@@ -10,7 +10,7 @@ class User < ActiveRecord::Base
   						:length => { :is => 9 }
   validates :fname,	:presence => true
   validates :lname,	:presence => true
-  validates :type,	:presence => true,
+  validates :utype,	:presence => true,
           					:numericality => { 	:only_integer => true,
           										:less_than => 3,
           										:greater_than_or_equal_to => 0 }
@@ -30,6 +30,22 @@ class User < ActiveRecord::Base
 
   def clear_password
     self.spassword = nil
+  end
+
+
+
+  def self.authenticate(gusername="", gspassword="")
+    user = User.find_by_username(gusername)
+
+    if user && user.match_password(gspassword)
+      return user
+    else
+      return false
+    end
+  end   
+
+  def match_password(gspassword="")
+    self.spassword == BCrypt::Engine.hash_secret(gspassword, self.salt)
   end
 
 end

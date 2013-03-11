@@ -1,15 +1,17 @@
-<header class="navbar navbar-fixed-top navbar-inverse">
+<div class="navbar navbar-fixed-top navbar-inverse">
   <div class="navbar-inner">
-	<div class="container">
-	  <nav>
-		<ul class="nav pull-right">
-		  <li style="size:12px"><%= link_to "Home",    '#' %></li>
-		  <li><%= link_to "Help",    '#' %></li>
-		  <li><input type="text" placeholder="User" style="height:15px;width:150px;position:relative;top:7px;">&nbsp;&nbsp;&nbsp;</li>
-		  <li><input type="password" style="height:15px;width:150px;position:relative;top:7px;">&nbsp;&nbsp;&nbsp;</li>
-		  <li><button style="position:relative;top:7px;"><%= link_to "Sign in", '#' %></button></li>
-		</ul>
-	  </nav>
-	</div>
+  	<div class="container">
+	    <a class="brand" href="#">GenRap</a>
+
+	    <ul class="nav">
+	      <li class="active"><%= link_to "Inicio", root_path %></li>
+	    </ul>
+
+	    <form class="navbar-form pull-right">
+		  <input type="text" class="span2" placeholder="Usuario">
+		  <input type="password" class="span2" placeholder="Contraseña">
+		  <button type="submit" class="btn">Sign In</button>
+		</form>
+    </div>
   </div>
-</header>
+</div>
