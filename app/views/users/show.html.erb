@@ -19,5 +19,8 @@
 </p>
  
  
-<%= link_to 'Editar', edit_user_path(@user) %> |
-<%= link_to 'Atrás', users_path %>
+<%= link_to 'Editar', edit_user_path(@user) %>
+
+<% if check_admin %>
+	| <%= link_to 'Usuarios', users_path %>
+<% end %>

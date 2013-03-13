@@ -22,8 +22,7 @@
       <td><%= user.utype %></td>
       <td><%= link_to 'Mostrar', user %></td>
       <td><%= link_to 'Editar', edit_user_path(user) %></td>
-      <td><%= link_to 'Borrar', user, :confirm => '¿Está seguro que quiere borrar a este usuario?',
-                                       :method => :delete %></td>
+      <td><%= link_to 'Borrar', user, :confirm => '¿Está seguro que quiere borrar a este usuario?', :method => :delete %></td>
     </tr>
   <% end %>
   </tbody>

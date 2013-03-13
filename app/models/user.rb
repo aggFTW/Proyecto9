@@ -22,8 +22,10 @@ class User < ActiveRecord::Base
   after_save :clear_password
 
   def encrypt_password
-     if spassword.present?
-      self.salt = BCrypt::Engine.generate_salt
+    if spassword.present?
+      if new_record?
+        self.salt = BCrypt::Engine.generate_salt
+      end
       self.spassword= BCrypt::Engine.hash_secret(spassword, salt)
     end
   end

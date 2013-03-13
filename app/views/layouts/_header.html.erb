@@ -2,7 +2,7 @@
   <div class="navbar-inner">
   	<div class="container">
 	    
-	    <%= link_to("GenRap", root_path, {:class => "brand"}) %>
+	    <%= link_to("GenRap <i class='icon-home icon-white'></i>".html_safe, root_path, {:class => "brand"}) %>
 
 	    <% if session[:user_id].nil? %>
 	    	<%= form_tag({:controller=>"sessions", :action => 'login'}, {:class => "navbar-form pull-right"}) do %>
@@ -11,8 +11,23 @@
 				<%= submit_tag("Sign In", :class => "btn") %>
 			<% end %>
 		<% else %>
+		<!-- If logged in: -->
 			<ul class="nav pull-right">
-				<li><%= link_to "Log out", :controller => :sessions, :action => :logout %></li>
+				<!-- Admin dropdown -->
+				<% if check_admin %>
+					<div class="btn-group" style="display:inline-block;">
+						<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+					    	Admin
+					 		<span class="caret"></span>
+						</a>
+						<ul class="dropdown-menu">
+							<li><%= link_to "Usuarios", :controller => :users, :action => :index %></li>
+						</ul>
+					</div>
+					<li class="divider-vertical"></li>
+				<% end %>
+				<!-- Log out -->
+				<%= link_to("Log out", {:controller => :sessions, :action => :logout}, {:class => "btn btn-danger", :style => ""}) %>
 			</ul>
 		<% end %>
 
