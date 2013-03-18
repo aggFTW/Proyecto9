@@ -1,5 +1,5 @@
 class User < ActiveRecord::Base
-  attr_accessible :fname, :lname, :spassword, :username
+  attr_accessible :fname, :lname, :spassword, :username, :spassword_confirmation
 
   has_and_belongs_to_many :groups #, :inverse_of => :users
   has_and_belongs_to_many :master_exams #, :inverse_of => :users
@@ -16,6 +16,7 @@ class User < ActiveRecord::Base
           										:greater_than_or_equal_to => 0 }
   #validates :salt,	:presence => true
   validates :spassword,	:presence => true
+  validates_confirmation_of :spassword, message: "should match password", presence: true
 
 
   before_save :encrypt_password

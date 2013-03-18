@@ -5,7 +5,10 @@
 		<%= f.input :username, :label => 'Usuario' %>
 		<%= f.input :fname, :label => 'Nombre' %>
 		<%= f.input :lname, :label => 'Apellidos' %>
-		<%= f.input :spassword, :label => 'Password' %>
+		<%= f.label :spassword, 'Password' %>
+  		<%= f.password_field :spassword %>
+  		<%= f.label :spassword_confirmation, 'Confirm Password' %>
+  		<%= f.password_field :spassword_confirmation %>
 
 		<div class="control-group">
 			<div class="controls">
