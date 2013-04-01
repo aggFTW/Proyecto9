@@ -15,6 +15,7 @@ class User < ActiveRecord::Base
           										:less_than => 3,
           										:greater_than_or_equal_to => 0 }
   #validates :salt,	:presence => true
+  VALID_PASSWORD_REGEX = /^(?=.*[a-zA-Z])(?=.*[0-9]).{6,}$/
   validates :spassword,	:presence => true
   validates_confirmation_of :spassword, message: "should match password", presence: true
 
