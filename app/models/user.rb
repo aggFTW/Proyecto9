@@ -1,9 +1,5 @@
 class User < ActiveRecord::Base
-<<<<<<< HEAD
-  attr_accessible :fname, :lname, :spassword, :username, :spassword_confirmation
-=======
-  attr_accessible :fname, :lname, :spassword, :username, :group_ids
->>>>>>> groups fixed?
+  attr_accessible :fname, :lname, :spassword, :username, :spassword_confirmation, :group_ids
 
   has_and_belongs_to_many :groups #, :inverse_of => :users
   has_and_belongs_to_many :master_exams #, :inverse_of => :users
