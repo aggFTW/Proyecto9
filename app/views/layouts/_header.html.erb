@@ -13,6 +13,21 @@
 		<% else %>
 		<!-- If logged in: -->
 			<ul class="nav pull-right">
+				<!-- Professor dropdown -->
+				<% if check_prof %>
+					<div class="btn-group" style="display:inline-block;">
+						<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+					    	Professor
+					 		<span class="caret"></span>
+						</a>
+						<ul class="dropdown-menu">
+							<li><%= link_to "Mis Exámenes", "#" %></li>
+							<li><%= link_to "Definir examen", "#" %></li>
+							<li><%= link_to "Grupos", :controller => :groups, :action => :index %></li>
+						</ul>
+					</div>
+					<li class="divider-vertical"></li>
+				<% end %>
 				<!-- Admin dropdown -->
 				<% if check_admin %>
 					<div class="btn-group" style="display:inline-block;">

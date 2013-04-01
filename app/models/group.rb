@@ -2,7 +2,7 @@ class Group < ActiveRecord::Base
   belongs_to :user#, :inverse_of => :group
   has_and_belongs_to_many :users#, :inverse_of => :groups
 
-  attr_accessible :name
+  attr_accessible :name, :user, :user_ids
 
   validates :name,	:presence => true
   validates :user,	:presence => true

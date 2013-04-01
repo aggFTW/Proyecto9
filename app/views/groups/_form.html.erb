@@ -1,0 +1,14 @@
+<%= simple_form_for(@group) do |f| %>
+	<fieldset>
+		<!-- <legend>Registro de usuario</legend> -->
+
+		<%= f.input :name, :label => 'Nombre del grupo' %>
+		<%= f.association :users, as: :check_boxes, :label => 'Integrantes', label_method: :username %>
+
+		<div class="control-group">
+			<div class="controls">
+				<%= f.button :submit %>
+			</div>
+		</div>
+	</fieldset>
+<% end %>

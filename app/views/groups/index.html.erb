@@ -1,0 +1,29 @@
+<h1>Grupos</h1>
+ 
+<table class="table table-bordered table-striped">
+  <thead>
+    <tr>
+      <th>Nombre</th>
+      <th>Dueño</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+ 
+  <tbody>
+  <% @groups.each do |group| %>
+    <tr>
+      <td><%= group.name %></td>
+      <td><%= group.user.username %></td>
+      <td><%= link_to 'Mostrar', group %></td>
+      <td><%= link_to 'Editar', edit_group_path(group) %></td>
+      <td><%= link_to 'Borrar', group, :confirm => '¿Está seguro que quiere borrar este grupo?', :method => :delete %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+ 
+<br />
+ 
+<%= link_to 'Nuevo Grupo', new_group_path %>

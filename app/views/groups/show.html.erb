@@ -1,0 +1,23 @@
+<p>
+  <b>Nombre:</b>
+  <%= @group.name %>
+</p>
+
+<p>
+  <b>Dueño:</b>
+  <%= @group.user.username %>
+</p>
+
+<p>
+	<b>Miembros:</b>
+	<% for user in @group.users %>
+		<%= user.username %>
+	<% end %>
+</p>
+ 
+ 
+<%= link_to 'Editar', edit_group_path(@group) %>
+
+<% if check_admin %>
+	| <%= link_to 'Grupos', groups_path %>
+<% end %>
