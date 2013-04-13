@@ -1,0 +1,36 @@
+<h3>MasterQuestions</h3>
+ 
+<table class="table table-bordered table-striped">
+  <thead>
+    <tr>
+      <th>Lenguaje</th>
+      <th>Concepto</th>
+      <th>Subconcepto</th>
+      <th>Pregunta</th>
+      <th>Randomizer</th>
+      <th>Solver</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+ 
+  <tbody>
+  <% @masterQuestions.each do |mq| %>
+    <tr>
+      <td><%= mq.language %></td>
+      <td><%= mq.concept %></td>
+      <td><%= mq.subconcept %></td>
+      <td><%= mq.inquiry %></td>
+      <td><%= mq.randomizer %></td>
+      <td><%= mq.solver %></td>
+      <td><%= link_to 'Mostrar', mq %></td>
+      <td></td>
+      <td><%= link_to 'Borrar', mq, :confirm => '¿Está seguro que quiere borrar a este usuario?', :method => :delete %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+ 
+<br />
+ 
