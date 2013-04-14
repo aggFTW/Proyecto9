@@ -1,0 +1,28 @@
+<div class="table">
+  <% if @exams == nil %>
+    <%=
+    collection_table(@exams, {}, id: 'exams', class: 'summary table table-striped table-bordered table-condensed') do |t|
+    #header :name, 'Examen'
+    t.header :attempts, 'Intentos'
+    t.header :startDate, 'Fecha de Inicio'
+    t.header :finishDate, 'Fecha de Termino'
+
+    t.rows.alternate = true
+    t.rows.each do |row, exam, index|
+      #row.name       exam.name
+      row.attempts       exam.attempts
+      row.startDate      exam.startDate
+      row.finishDate     exam.finishDate
+    end
+    end
+    %>
+  <% else %>
+  <table class="table table-striped table-bordered table-condensed">
+    <tbody>
+      <tr>
+        <td style='text-align: center; height: 60px; vertical-align: middle;'><span style='font-size: 30px; font-color: black; font-weight: bold;'>No hay exámenes disponibles</span></td>
+      </tr>
+    </tbody>
+  </table>
+  <% end %>
+</div>

@@ -9,6 +9,9 @@ gem 'sqlite3'
 
 gem 'json'
 
+gem 'table_helper'
+gem 'blankslate'
+
 gem 'bootstrap-sass', '>=2.1'
 gem 'simple_form'
 
