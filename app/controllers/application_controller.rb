@@ -33,7 +33,7 @@ class ApplicationController < ActionController::Base
 		if session[:user_id]
 			# set current user object to @current_user object variable
 			@current_user = User.find session[:user_id]
-			if @current_user && @current_user.utype == 2
+			if @current_user && @current_user.utype == 2 #Admin
 				return true
 			end
 		end
@@ -45,7 +45,7 @@ class ApplicationController < ActionController::Base
 		if session[:user_id]
 			# set current user object to @current_user object variable
 			@current_user = User.find session[:user_id]
-			if @current_user && @current_user.utype >= 1
+			if @current_user && @current_user.utype >= 1 #Prof
 				return true
 			end
 		end
