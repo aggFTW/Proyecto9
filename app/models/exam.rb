@@ -13,8 +13,8 @@ class Exam < ActiveRecord::Base
 
 
   def self.createInstance(master_exam_id)
-  		session = Hash.new
-  		session[:user_id] = 9
+  		# session = Hash.new
+  		# session[:user_id] = 9
 
   		ActiveRecord::Base.transaction do
 			exam = Exam.new
