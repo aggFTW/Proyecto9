@@ -12,11 +12,15 @@ GenRap::Application.routes.draw do
 
   root :to => 'users#signup'
 
-  resources :users, :groups
+  resources :users, :groups, :exams
   
   match "signup", :to => "users#new"
   match "login", :to => "sessions#login"
   match "logout", :to => "sessions#logout"
+
+  match "exams", to: "exams#index"
+  match "exams/pending", to: "exams#pending"
+  
   # match "home", :to => "sessions#home"
   # match "profile", :to => "sessions#profile"
   # match "setting", :to => "sessions#setting"

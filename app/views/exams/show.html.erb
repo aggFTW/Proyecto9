@@ -1,0 +1,13 @@
+<div class="hero-unit">
+	<h1>Exámen: <%= #@masterExam.name %></h1>
+
+	<%= render 'form' %>
+
+	<% if @exam.errors.any? %>
+		<ul>
+			<% for message_error in @exam.errors.full_messages %>
+			<li>- <%= message_error %></li>
+			<% end %>
+		</ul>
+	<% end %>
+</div>

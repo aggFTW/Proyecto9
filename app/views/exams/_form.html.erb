@@ -1,0 +1,14 @@
+<%= form_for @exam, url: {action: 'update'} do |exam_field| %>
+	<fieldset>
+		<!-- <legend>Examen</legend> -->
+		<% exam_field.fields_for :questions do |questions_fields| %>
+			
+		<% end %>
+
+		<div class="control-group">
+			<div class="controls">
+				<%= f.button :submit %>
+			</div>
+		</div>
+	</fieldset>
+<% end %>
