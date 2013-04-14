@@ -4,6 +4,7 @@ class MasterExam < ActiveRecord::Base
   has_many :master_questions, :through => :exam_definition
   has_many :exams
 
+  validates :name, presence: true
   validates :dateCreation,	:presence => true
   validates :attemps,	:presence => true,
   						:numericality => { 	:only_integer => true,
@@ -12,5 +13,5 @@ class MasterExam < ActiveRecord::Base
   validates :finishDate,	:presence => true
   validates :user, :presence => true
 
-  attr_accessible :attempts, :dateCreation, :finishDate, :startDate
+  attr_accessible :attempts, :dateCreation, :finishDate, :startDate, :name
 end
