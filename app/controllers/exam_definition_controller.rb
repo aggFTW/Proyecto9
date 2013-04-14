@@ -1,7 +1,9 @@
 class ExamDefinitionController < ApplicationController
 	def new
 		@examDefinition = ExamDefinition.new
-
+		@languages = MasterQuestion.select("DISTINCT language")
+		@concepts = MasterQuestion.where(language: MasterQuestion.where(id: params[:language]).select("language")).select("DISTINCT concept")
+		@subconcepts = MasterQuestion.where(language: MasterQuestion.where(id: params[:language]).select("language")).select("DISTINCT subconcept")
 	end
 
 	def create
