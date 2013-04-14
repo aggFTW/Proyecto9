@@ -10,7 +10,6 @@ class Question < ActiveRecord::Base
   validates :values,			:presence => true
   validates :answers,			:presence => true
   validates :correctAns, 		:presence => true
-  validates :givenAns,	 		:presence => true
 
   attr_accessible :questionNum
 end

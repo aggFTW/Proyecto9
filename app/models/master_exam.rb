@@ -6,7 +6,7 @@ class MasterExam < ActiveRecord::Base
 
   validates :name, presence: true
   validates :dateCreation,	:presence => true
-  validates :attemps,	:presence => true,
+  validates :attempts,	:presence => true,
   						:numericality => { 	:only_integer => true,
   										:greater_than_or_equal_to => 1 }
   validates :startDate,	:presence => true
