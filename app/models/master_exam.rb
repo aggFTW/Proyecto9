@@ -1,6 +1,7 @@
 class MasterExam < ActiveRecord::Base
   belongs_to :user
-  has_and_belongs_to_many :users
+  has_many :cantakes
+  has_many :users, :through => :cantakes
   has_many :master_questions, :through => :exam_definition
   has_many :exams
 

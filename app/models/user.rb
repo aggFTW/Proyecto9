@@ -2,7 +2,8 @@ class User < ActiveRecord::Base
   attr_accessible :fname, :lname, :spassword, :username, :spassword_confirmation, :group_ids
 
   has_and_belongs_to_many :groups #, :inverse_of => :users
-  has_and_belongs_to_many :master_exams #, :inverse_of => :users
+  has_many :cantakes
+  has_many :master_exams, :through => :cantakes #, :inverse_of => :users
   has_many :exams #, :inverse_of => :user
 
   validates :username,	:presence => true,

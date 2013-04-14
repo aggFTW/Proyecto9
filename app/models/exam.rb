@@ -13,22 +13,27 @@ class Exam < ActiveRecord::Base
 
 
   def self.createInstance(master_exam_id)
+  		session = Hash.new
+  		session[:user_id] = 9
+
   		ActiveRecord::Base.transaction do
 			exam = Exam.new
 
 			# Create exam
 			exam.master_exam = MasterExam.find(master_exam_id)
 			exam.user = User.find session[:user_id]
-			# exam.user = User.find(9)
 			exam.state = "0"
 			exam.date = Time.now
 			exam.score = 0
 			
 			user = User.find(session[:user_id])
-			# user = User.find(9)
+			
 			if exam.master_exam.users.include? user
-				if Exam.where("master_exam_id = ? and user_id = ?", master_exam_id, session[:user_id]).empty?
-				# if Exam.where("master_exam_id = ? and user_id = ?", master_exam_id, 9).empty?
+				attemptN = Exam.where("master_exam_id = ? and user_id = ?", master_exam_id, session[:user_id]).size
+
+				if attemptN < exam.master_exam.attempts
+					exam.attemptnumber = attemptN + 1
+
 					if exam.save
 						# flash[:notice] = "Examen creado de manera exitosa."
 						puts "Examen creado de manera exitosa."
@@ -36,19 +41,16 @@ class Exam < ActiveRecord::Base
 						# flash[:error] = "No se pudo crear el examen."
 						puts "No se pudo crear el examen."
 						raise ActiveRecord::Rollback
-						# return
 					end
 				else
-					# flash[:error] = "Examen ya habia sido creado."
-					puts "Examen ya habia sido creado."
-					exam = Exam.where("master_exam_id = ? and user_id = ?", master_exam_id, session[:user_id]).first
-					# exam = Exam.where("master_exam_id = ? and user_id = ?", master_exam_id, 9).first
+					# flash[:error] = "Se han agotado los attempts."
+					puts "Se han agotado los attempts."
+					raise ActiveRecord::Rollback
 				end
 			else
 				# flash[:error] = "Usuario no puede tomar este examen."
 				puts "Usuario no puede tomar este examen."
 				raise ActiveRecord::Rollback
-				# return
 			end
 
 			# Create questions
@@ -85,14 +87,6 @@ class Exam < ActiveRecord::Base
 				question.correctAns = correctAns
 				question.givenAns = ""
 
-				# puts question.exam
-				# puts question.master_question
-				# puts question.questionNum
-				# puts question.values
-				# puts question.answers
-				# puts question.correctAns
-				# puts question.givenAns
-
 				if question.save
 					# flash[:notice] = "Pregunta creada de manera exitosa."
 					puts "Pregunta creada de manera exitosa."
@@ -100,7 +94,6 @@ class Exam < ActiveRecord::Base
 					# flash[:error] = "No se pudo crear la pregunta."
 					puts "No se pudo crear la pregunta."
 					raise ActiveRecord::Rollback
-					# return
 				end
 			end #end for
 
