@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130309024801) do
+ActiveRecord::Schema.define(:version => 20130414190141) do
 
   create_table "exam_definitions", :force => true do |t|
     t.integer  "master_exam_id"
@@ -60,6 +60,7 @@ ActiveRecord::Schema.define(:version => 20130309024801) do
     t.datetime "dateCreation"
     t.datetime "created_at",   :null => false
     t.datetime "updated_at",   :null => false
+    t.string   "name"
   end
 
   add_index "master_exams", ["user_id"], :name => "index_master_exams_on_user_id"
