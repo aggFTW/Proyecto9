@@ -1,0 +1,25 @@
+<%= simple_form_for(@master_question) do |f| %>
+	<fieldset>
+		<div class = "inline-div">
+    	<%= label_tag(:language, "Lenguaje:") %>
+    	<%= f.select(:language, ['Python', 'SciLab']) %>
+  	</div>
+  	<div class = "inline-div">
+  		<%= label_tag(:concept, "Concepto:") %>
+    	<%= f.select(:concept, ['Ciclos', 'Expresiones']) %>
+  	</div>
+  	<div class ="inline-div">
+  		<%= label_tag(:concept, "Subconcepto:") %>
+    	<%= f.select(:subconcept, ['Numero iteraciones', 'Evaluacion']) %>
+  	</div>
+    <%= label_tag(:inquiry, "Pregunta:") %>
+    <%= f.text_area :inquiry, :size => "150x2" %>
+    <%= label_tag(:randomizer, "Código Randomizer:") %>
+    <%= f.text_area :randomizer, :size => "150x10" %>
+    <%= label_tag(:solver, "Código Solver:") %>
+    <%= f.text_area :solver, :size => "150x10" %>
+    <div class="controls">
+      <%= f.submit "Guardar" %>
+    </div>
+  </fieldset>
+<% end %>
