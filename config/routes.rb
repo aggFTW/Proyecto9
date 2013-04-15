@@ -20,7 +20,7 @@ GenRap::Application.routes.draw do
   match "mq", :to => "master_question#new"
   match "def", to: "exam_definition#new"
   match "exams", to: "exams#index"
-  match "exams/pending", to: "exams#pending"
+  match "pending", to: "exams#pending"
   
   # match "home", :to => "sessions#home"
   # match "profile", :to => "sessions#profile"

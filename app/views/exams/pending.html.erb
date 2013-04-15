@@ -2,14 +2,14 @@
   <% if @exams == nil %>
     <%=
     collection_table(@exams, {}, id: 'exams', class: 'summary table table-striped table-bordered table-condensed') do |t|
-    #header :name, 'Examen'
+    t.header :name, 'Examen'
     t.header :attempts, 'Intentos'
     t.header :startDate, 'Fecha de Inicio'
     t.header :finishDate, 'Fecha de Termino'
 
     t.rows.alternate = true
     t.rows.each do |row, exam, index|
-      #row.name       link_to exam.name, exam_path(exam.id)
+      row.name           link_to exam.name, exam_path(exam.id)
       row.attempts       exam.attempts
       row.startDate      exam.startDate
       row.finishDate     exam.finishDate

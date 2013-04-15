@@ -9,8 +9,7 @@ gem 'sqlite3'
 
 gem 'json'
 
-gem 'table_helper'
-gem 'blankslate'
+gem 'table_for_collection'
 
 gem 'bootstrap-sass', '>=2.1'
 gem 'simple_form'

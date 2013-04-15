@@ -3,16 +3,20 @@ class ExamsController < ApplicationController
 
 	before_filter :authenticate_user
 
+	def new
+		@exam = Exam.new
+	end
+
 	def index
-		if check_admin
+		# if check_admin
 			@exams = MasterExam.all
-			if @exams == nil
-				flash[:notice] = 'No hay exámenes que mostrar'
-			end
-		else
-			flash[:error] = "Usted necesita ser un administrador para accesar esta página."
-			redirect_to(root_path)
-		 end
+		# 	if @exams == nil
+		# 		flash[:notice] = 'No hay exámenes que mostrar'
+		# 	end
+		# else
+		# 	flash[:error] = "Usted necesita ser un administrador para accesar esta página."
+		# 	redirect_to(root_path)
+		#  end
 	end
 
 	def pending
@@ -24,9 +28,11 @@ class ExamsController < ApplicationController
 
 	def show
 		if check_admin
-			@exam = Exam.createInstance(params[:id])
-		else
-			@exam = Exam.createInstance(params[:id])
+			@exam = Exam.createInstance(params[:id],session[:user_id])
+			@masterExam = MasterExam.find(params[:id])
+		elsif session[:user_id] == MasterExam.find(params[:id]).user_id
+			@exam = Exam.createInstance(params[:id],session[:user_id])
+			@masterExam = MasterExam.find(params[:id])
 
 			@questions = Question.where("exam_id = ?", params[:id])
 			
@@ -34,6 +40,9 @@ class ExamsController < ApplicationController
 			# @masterExam = MasterExam.find(params[:id])
 			#Disminuir un intento cuando se entra al examen
 			# @masterExam.attempts = @masterExam.attempts - 1;
+		else
+			@exam = Exam.new
+			flash[:error] = "Usted sólo puede actualizar datos propios."
 		end
 	end
 

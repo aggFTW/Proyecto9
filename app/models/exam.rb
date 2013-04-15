@@ -12,7 +12,7 @@ class Exam < ActiveRecord::Base
 
 
 
-  def self.createInstance(master_exam_id)
+  def self.createInstance(master_exam_id, user_id)
   		# session = Hash.new
   		# session[:user_id] = 9
 
@@ -21,15 +21,15 @@ class Exam < ActiveRecord::Base
 
 			# Create exam
 			exam.master_exam = MasterExam.find(master_exam_id)
-			exam.user = User.find session[:user_id]
+			exam.user = User.find user_id
 			exam.state = "0"
 			exam.date = Time.now
 			exam.score = 0
 			
-			user = User.find(session[:user_id])
+			user = User.find(user_id)
 			
 			if exam.master_exam.users.include? user
-				attemptN = Exam.where("master_exam_id = ? and user_id = ?", master_exam_id, session[:user_id]).size
+				attemptN = Exam.where("master_exam_id = ? and user_id = ?", master_exam_id, user_id).size
 
 				if attemptN < exam.master_exam.attempts
 					exam.attemptnumber = attemptN + 1
@@ -61,7 +61,7 @@ class Exam < ActiveRecord::Base
 
 				# We generate random question
 				randomizer_path = master_question.randomizer
-				full_randomizer_path = File.dirname(__FILE__) + "/../helpers/r/" + randomizer_path + ".rb"
+				full_randomizer_path = File.dirname(__FILE__) + "/.." + randomizer_path
 				load full_randomizer_path
 				puts "loaded " + full_randomizer_path
 				values = randomize(inquiry)
@@ -69,7 +69,7 @@ class Exam < ActiveRecord::Base
 
 				# We generate values, correctAns
 				solver_path = master_question.solver
-				full_solver_path = File.dirname(__FILE__) + "/../helpers/s/" + solver_path + ".rb"
+				full_solver_path = File.dirname(__FILE__) + "/.." + solver_path
 				load full_solver_path
 				puts "loaded " + full_solver_path
 				answers, correctAns = solve(inquiry, values)
@@ -96,6 +96,9 @@ class Exam < ActiveRecord::Base
 					raise ActiveRecord::Rollback
 				end
 			end #end for
+
+			#Return exam
+			exam
 
 		end  #end transaction
 	end #end method

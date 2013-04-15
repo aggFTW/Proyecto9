@@ -1,13 +1,19 @@
-<%= form_for @exam, url: {action: 'update'} do |exam_field| %>
+<%= form_for @exam do |exam_field| %>
 	<fieldset>
-		<!-- <legend>Examen</legend> -->
-		<% exam_field.fields_for :questions do |questions_fields| %>
-			
+		<% @exam.questions.each do |question| %>
+			<% inquiry = question.master_question.inquiry %>
+			<!-- gsub 1 no se debe de necesitar, hay algo mal en question.values -> randomizer -->
+			<% parsed = JSON.parse(format_values(question.values)) %>
+			<% parsed = parsed.stringify_keys() %>
+			<% parsed.each do |key, value| %>
+				<p><% inquiry = inquiry.gsub(key,value.to_s) %></p>
+			<% end %>
+			<p><%= inquiry %></p>
 		<% end %>
 
 		<div class="control-group">
 			<div class="controls">
-				<%= f.button :submit %>
+				<%= exam_field.button :submit %>
 			</div>
 		</div>
 	</fieldset>
