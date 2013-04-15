@@ -20,12 +20,12 @@
 
 <p>
   <span>Randomizer:</span>
-  <%= @master_question.randomizer %>
+  <textarea disabled><%= @master_question.randomizer %></textarea>
 </p> 
 
 <p>
   <span>Solver:</span>
-  <%= @master_question.solver %>
+  <textarea disabled><%= @master_question.solver %></textarea>
 </p>
 
 <%= link_to 'Editar', edit_master_question_path(@master_question) %>

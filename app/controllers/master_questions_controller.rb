@@ -1,3 +1,4 @@
+#encoding: utf-8
 class MasterQuestionsController < ApplicationController
   $randomizer = ''
   $solver = ''
@@ -7,8 +8,10 @@ class MasterQuestionsController < ApplicationController
   def new
     if check_admin || check_prof
       @master_question = MasterQuestion.new
+      @master_question.randomizer = initialize_file('randomizer')
+      @master_question.solver = initialize_file('solver')
     else
-      #flash[:error] = "Los datos proporcionados no son válidos."
+      flash[:error] = "Los datos proporcionados no son válidos."
       redirect_to(root_path)
     end
   end
@@ -32,7 +35,7 @@ class MasterQuestionsController < ApplicationController
     if @master_question.save
       flash[:notice] = "MasterQuestion creada exitosamente."
     else
-      #flash[:error] = "Los datos proporcionados no son válidos."
+      flash[:error] = "Los datos proporcionados no son válidos."
     end
     redirect_to(master_questions_path)
   end
@@ -42,7 +45,7 @@ class MasterQuestionsController < ApplicationController
     if check_prof || check_admin
       @masterQuestions = MasterQuestion.all
     else
-      #flash[:error] = "Usted necesita ser un administrador para accesar esta página."
+      flash[:error] = "Usted necesita ser un administrador para accesar esta página."
       redirect_to(root_path)
     end
   end
@@ -59,7 +62,7 @@ class MasterQuestionsController < ApplicationController
       @master_question.randomizer = read_file($randomizer)
       @master_question.solver = read_file($solver)
     else
-      #flash[:error] = "Usted necesita ser un administrador para accesar esta página."
+      flash[:error] = "Usted necesita ser un administrador para accesar esta página."
       redirect_to(root_path)
     end
   end
@@ -76,7 +79,7 @@ class MasterQuestionsController < ApplicationController
       @master_question.randomizer = read_file($randomizer)
       @master_question.solver = read_file($solver)
     else
-      #flash[:error] = "Usted necesita ser un administrador para accesar esta página."
+      flash[:error] = "Usted necesita ser un administrador para accesar esta página."
       redirect_to(root_path)
     end
   end
@@ -100,12 +103,12 @@ class MasterQuestionsController < ApplicationController
                                          :inquiry => master_temporal.inquiry, :randomizer => master_temporal.randomizer, :solver => master_temporal.solver)
         flash[:notice] = 'La pregunta maestra fue actualizada de manera correcta.'
       else
-        #flash[:error] = 'No se pudieron actualizar los datos de la pregunta maestra.'
+        flash[:error] = 'No se pudieron actualizar los datos de la pregunta maestra.'
       end
 
       redirect_to(@master_question)
     else
-     #flash[:error] = "Usted necesita ser un administrador para accesar esta página."
+     flash[:error] = "Usted necesita ser un administrador para accesar esta página."
      redirect_to(root_path)
     end
   end
@@ -120,6 +123,25 @@ class MasterQuestionsController < ApplicationController
       end
     end
     @code
+  end
+
+  # Write initialize file
+  def initialize_file filename
+    text = ''
+    case filename
+    when 'randomizer'
+      text << "def randomizer(inquiry)\n  values = Hash.new('')\n" +
+              "  #Inserte su codigo para llenar values aqui\n" +
+              "  #values['^1'] = 2\n  #values['^2'] = 2\n" + 
+              "  values\nend"
+    when 'solver'
+      text << "def solve(inquiry, values)\n  answers = Hash.new('')\n" +
+              "  #Inserte su codigo para llenar generar answers aqui\n" +
+              "  #answers[1] = 2\n  #answers[2] = 3\n" +
+              "  #Inserte su codigo para indicar la respuesta correcta\n" +
+              "  #correct = 1\n  [answers, correct]\nend"
+    end
+    text
   end
 
   # Delete actions
@@ -140,7 +162,7 @@ class MasterQuestionsController < ApplicationController
 
       redirect_to :action => 'index'
     else
-      #flash[:error] = "Debe ser administrador para borrar master questions."
+      flash[:error] = "Debe ser administrador para borrar master questions."
       redirect_to(master_questions_path)
     end
   end
