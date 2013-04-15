@@ -1,6 +1,6 @@
 class MasterQuestionsController < ApplicationController
-  $randomizer = "/../helpers/r/"
-  $solver = "/../helpers/s/"
+  $randomizer = ''
+  $solver = ''
 
   before_filter :authenticate_user, :only => [:index, :create,:show, :edit, :update, :destroy]
   # Create actions
@@ -13,8 +13,8 @@ class MasterQuestionsController < ApplicationController
     
     # Generate random name for solver and randomizer
     uuid = SecureRandom.uuid
-    $randomizer << "#{uuid}_randomizer"
-    $solver << "#{uuid}_solver"
+    $randomizer = "/../helpers/r/#{uuid}_randomizer"
+    $solver = "/../helpers/s/#{uuid}_solver"
     
     # Create solver and randomizer files in /helpers/s and /helpers/r 
     randomizer_file = File.open(File.dirname(__FILE__) + "#{$randomizer}","w") {|f| f.write("#{@master_question.randomizer}") }
