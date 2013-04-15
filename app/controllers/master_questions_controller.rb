@@ -1,7 +1,9 @@
 class MasterQuestionsController < ApplicationController
-  @randomizer_path = "/../helpers/r/"
-  @solver_path = "/../helpers/s/"
+  $randomizer = "/../helpers/r/"
+  $solver = "/../helpers/s/"
 
+  before_filter :authenticate_user, :only => [:index, :create,:show, :edit, :update, :destroy]
+  # Create actions
   def new
     @master_question = MasterQuestion.new
   end
@@ -9,42 +11,132 @@ class MasterQuestionsController < ApplicationController
   def create
     @master_question = MasterQuestion.new(params[:master_question])
     
-    time = Time.new
-    randomizer_filename = "#{time.year}#{time.month}#{time.day}_#{time.hour}:#{time.min}:#{time.sec}_randomizer"
-    solver_filename = "#{time.year}#{time.month}#{time.day}_#{time.hour}:#{time.min}:#{time.sec}_solver"
+    # Generate random name for solver and randomizer
+    uuid = SecureRandom.uuid
+    $randomizer << "#{uuid}_randomizer"
+    $solver << "#{uuid}_solver"
     
-    randomizer_file = File.open(File.dirname(__FILE__) + "/../helpers/r/#{randomizer_filename}","w") {|f| f.write("#{@master_question.randomizer}") }
-    solver_file = File.open(File.dirname(__FILE__) + "/../helpers/s/#{solver_filename}","w") {|f| f.write("#{@master_question.solver}")}
+    # Create solver and randomizer files in /helpers/s and /helpers/r 
+    randomizer_file = File.open(File.dirname(__FILE__) + "#{$randomizer}","w") {|f| f.write("#{@master_question.randomizer}") }
+    solver_file = File.open(File.dirname(__FILE__) + "#{$solver}","w") {|f| f.write("#{@master_question.solver}")}
 
-    @master_question.randomizer = File.dirname(__FILE__) + "/../helpers/r/#{randomizer_filename}"
-    @master_question.solver = File.dirname(__FILE__) + "/../helpers/s/#{solver_filename}"
+    # Save masterquestion solver and randomizer file path
+    @master_question.randomizer = File.dirname(__FILE__) + "#{$randomizer}"
+    @master_question.solver = File.dirname(__FILE__) + "#{$solver}"
 
     if @master_question.save
       flash[:notice] = "MasterQuestion creada exitosamente."
     else
       #flash[:error] = "Los datos proporcionados no son válidos."
     end
-    redirect_to(root_path)
+    redirect_to(master_questions_path)
   end
 
+  # Read actions
   def index
-   # if check_prof
+    if check_prof || check_admin
       @masterQuestions = MasterQuestion.all
-    #else
-     # flash[:error] = "Usted necesita ser un administrador para accesar esta página."
-     # redirect_to(root_path)
-    #end
+    else
+      #flash[:error] = "Usted necesita ser un administrador para accesar esta página."
+      redirect_to(root_path)
+    end
   end
 
-  def destroy
-    #if check_prof
+  def show
+    if check_prof || check_admin
       @master_question = MasterQuestion.find(params[:id])
+
+      # Get files path
+      $randomizer = @master_question.randomizer
+      $solver = @master_question.solver 
+
+      # Retrieve code from files
+      @master_question.randomizer = read_file($randomizer)
+      @master_question.solver = read_file($solver)
+    else
+      #flash[:error] = "Usted necesita ser un administrador para accesar esta página."
+      redirect_to(root_path)
+    end
+  end
+
+  #Update actions
+  def edit
+    if check_prof || check_admin
+      @master_question = MasterQuestion.find(params[:id])
+      
+      $randomizer = @master_question.randomizer
+      $solver = @master_question.solver 
+
+      # Retrieve code from files
+      @master_question.randomizer = read_file($randomizer)
+      @master_question.solver = read_file($solver)
+    else
+      #flash[:error] = "Usted necesita ser un administrador para accesar esta página."
+      redirect_to(root_path)
+    end
+  end
+
+  def update
+    if check_prof || check_admin
+      @master_question = MasterQuestion.find(params[:id])
+
+      # Create master temporal
+      master_temporal =  MasterQuestion.new(params[:master_question])
+
+      # Saves code to randomizer and solver files
+      File.open("#{$randomizer}","w") {|f| f.write("#{master_temporal.randomizer}")}
+      File.open("#{$solver}","w") {|f| f.write("#{master_temporal.solver}")}
+
+      # Updates randomizer and solver fields
+      master_temporal.randomizer = $randomizer
+      master_temporal.solver = $solver
+
+      if @master_question.update_attributes(:language => master_temporal.language, :concept => master_temporal.concept, :subconcept => master_temporal.subconcept,
+                                         :inquiry => master_temporal.inquiry, :randomizer => master_temporal.randomizer, :solver => master_temporal.solver)
+        flash[:notice] = 'La pregunta maestra fue actualizada de manera correcta.'
+      else
+        #flash[:error] = 'No se pudieron actualizar los datos de la pregunta maestra.'
+      end
+
+      redirect_to(@master_question)
+    else
+     #flash[:error] = "Usted necesita ser un administrador para accesar esta página."
+     redirect_to(root_path)
+    end
+  end
+
+  # Read file from file_path
+
+  def read_file (file_path)
+    @code = ''
+    File.open(file_path,'r') do |file|
+      while line = file.gets
+        @code << line
+      end
+    end
+    @code
+  end
+
+  # Delete actions
+  def destroy
+    if check_prof || check_admin
+      @master_question = MasterQuestion.find(params[:id])
+      
+      # Delete randomizer and solver files
+      if File.exists?(@master_question.randomizer)
+        File.delete(@master_question.randomizer)
+      end
+
+      if File.exists?(@master_question.solver)
+        File.delete(@master_question.solver)
+      end
+
       @master_question.destroy
 
       redirect_to :action => 'index'
-    #else
+    else
       #flash[:error] = "Debe ser administrador para borrar master questions."
-     # redirect_to(root_path)
-    #end
+      redirect_to(master_questions_path)
+    end
   end
 end

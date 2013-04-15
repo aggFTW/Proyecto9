@@ -5,3 +5,19 @@ textarea {
 	width: 900px;
 	display: block;
 }
+.inline-div {
+	display: inline-block;
+	width: 300px;
+	label {
+		width: 100%;
+	}
+}
+span {
+	font-weight: bold;
+}
+table {
+	width: 1000px;
+}
+th, td {
+	width: 150px;
+}

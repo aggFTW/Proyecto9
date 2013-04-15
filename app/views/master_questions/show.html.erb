@@ -1,0 +1,35 @@
+<p>
+  <span>Lenguaje:</span>
+  <%= @master_question.language %>
+</p>
+
+<p>
+  <span>Concepto a evaluar:</span>
+  <%= @master_question.concept %>
+</p>
+ 
+<p>
+  <span>Subconcepto a evaluar:</span>
+  <%= @master_question.subconcept %>
+</p>
+ 
+<p>
+  <span>Pregunta:</span>
+  <%= @master_question.inquiry %>
+</p>
+
+<p>
+  <span>Randomizer:</span>
+  <%= @master_question.randomizer %>
+</p> 
+
+<p>
+  <span>Solver:</span>
+  <%= @master_question.solver %>
+</p>
+
+<%= link_to 'Editar', edit_master_question_path(@master_question) %>
+
+<% if check_prof %>
+	| <%= link_to 'Preguntas maestras', master_questions_path %>
+<% end %>
