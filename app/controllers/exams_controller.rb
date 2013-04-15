@@ -20,7 +20,7 @@ class ExamsController < ApplicationController
 	end
 
 	def pending
-		@exams = MasterExam.where("user_id = ? AND startDate < ? AND finishDate > ? AND attempts > ?", @current_user.id.to_s, Date.today, Date.today, 0)
+		@exams = MasterExam.where("user_id = ? AND startDate < ? AND finishDate > ? AND state = ?", @current_user.id.to_s, Date.today, Date.today, "0")
 		if @exams == nil
 			flash[:error] = 'No hay exámenes que mostrar'
 		end

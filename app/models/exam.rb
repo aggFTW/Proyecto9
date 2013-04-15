@@ -61,7 +61,8 @@ class Exam < ActiveRecord::Base
 
 				# We generate random question
 				randomizer_path = master_question.randomizer
-				full_randomizer_path = File.dirname(__FILE__) + "/.." + randomizer_path
+				# full_randomizer_path = File.dirname(__FILE__) + "/.." + randomizer_path
+				full_randomizer_path = File.dirname(__FILE__) + "/../helpers/r/" + randomizer_path + '.rb'
 				load full_randomizer_path
 				puts "loaded " + full_randomizer_path
 				values = randomize(inquiry)
@@ -69,7 +70,8 @@ class Exam < ActiveRecord::Base
 
 				# We generate values, correctAns
 				solver_path = master_question.solver
-				full_solver_path = File.dirname(__FILE__) + "/.." + solver_path
+				# full_solver_path = File.dirname(__FILE__) + "/.." + solver_path
+				full_solver_path = File.dirname(__FILE__) + "/../helpers/s/" + solver_path + '.rb'
 				load full_solver_path
 				puts "loaded " + full_solver_path
 				answers, correctAns = solve(inquiry, values)
