@@ -2,10 +2,15 @@ class MasterQuestionsController < ApplicationController
   $randomizer = ''
   $solver = ''
 
-  before_filter :authenticate_user, :only => [:index, :create,:show, :edit, :update, :destroy]
+  before_filter :authenticate_user, :only => [:new, :index, :create,:show, :edit, :update, :destroy]
   # Create actions
   def new
-    @master_question = MasterQuestion.new
+    if check_admin || check_prof
+      @master_question = MasterQuestion.new
+    else
+      #flash[:error] = "Los datos proporcionados no son válidos."
+      redirect_to(root_path)
+    end
   end
   
   def create
