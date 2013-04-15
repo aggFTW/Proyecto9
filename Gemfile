@@ -1,4 +1,4 @@
-source 'https://rubygems.org'
+source 'http://rubygems.org'
 
 gem 'rails', '3.2.12'
 
@@ -8,9 +8,6 @@ gem 'rails', '3.2.12'
 gem 'sqlite3'
 
 gem 'json'
-
-gem 'table_helper'
-gem 'blankslate'
 
 gem 'bootstrap-sass', '>=2.1'
 gem 'simple_form'
