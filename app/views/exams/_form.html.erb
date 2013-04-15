@@ -1,4 +1,4 @@
-<%= form_for @exam do |exam_field| %>
+<%= simple_form_for @exam do |exam_field| %>
 	<fieldset>
 		<% @exam.questions.each do |question| %>
 			<% inquiry = question.master_question.inquiry %>
