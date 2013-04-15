@@ -1,0 +1,24 @@
+// Place all the styles related to the master_question controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+textarea {
+	width: 900px;
+	min-height: 300px;
+	display: block;
+}
+.inline-div {
+	display: inline-block;
+	width: 300px;
+	label {
+		width: 100%;
+	}
+}
+span {
+	font-weight: bold;
+}
+table {
+	width: 1000px;
+}
+th, td {
+	width: 150px;
+}

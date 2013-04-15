@@ -10,9 +10,9 @@ GenRap::Application.routes.draw do
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
-  root :to => 'users#signup'
+ root :to => 'users#signup'
 
-  resources :users, :groups, :master_question, :exam_definitions, :exams
+  resources :users, :groups, :master_questions, :exam_definitions, :exams
   
   match "signup", :to => "users#new"
   match "login", :to => "sessions#login"
@@ -21,11 +21,14 @@ GenRap::Application.routes.draw do
   match "def", to: "exam_definition#new"
   match "exams", to: "exams#index"
   match "pending", to: "exams#pending"
+<<<<<<< HEAD
   
   # match "home", :to => "sessions#home"
   # match "profile", :to => "sessions#profile"
   # match "setting", :to => "sessions#setting"
 
+=======
+>>>>>>> maquestion
   # Sample of regular route:
   #   match 'products/:id' => 'catalog#view'
   # Keep in mind you can assign values other than :controller and :action
