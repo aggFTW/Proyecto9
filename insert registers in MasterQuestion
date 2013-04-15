@@ -20,3 +20,7 @@ ruby		k	l 	m 	n 	o
 python		a	b	c 	d	e
 python		f	g	h	i 	j
 ruby		p 	q 	r 	s 	t
+
+
+
+	<%= f.association  :master_question, label_method: lambda {|mq| "#{mq.language}"}, include_blank: true%>

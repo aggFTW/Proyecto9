@@ -1,15 +1,14 @@
-<select name="language">
-    <% @languages.each do |l| %>
-        <option value="<%= l.id %>"><%= l.language %></option>
-    <% end %>
-</select>
-<select name="concept">
-    <% @concepts.each do |c| %>
-        <option value="<%= c.id %>"><%= c.concept %></option>
-    <% end %>
-</select>
-<select name="subconcept">
-    <% @subconcepts.each do |sc| %>
-        <option value="<%= sc.id %>"><%= sc.subconcept %></option>
-    <% end %>
-</select>
+
+<%= simple_form_for @examDefinition, url: new_exam_definition_path do |f| %>
+	<%= f.input :master_question, 
+				collection: @master_questions, 
+				label_method: :language, 
+				value_method: :language,
+				prompt: "Selecciona un Lenguaje", 
+				label: "Lenguaje:" %>
+
+	<select id="concept">
+    
+	</select>
+
+<% end %>

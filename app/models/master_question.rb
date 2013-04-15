@@ -10,4 +10,8 @@ class MasterQuestion < ActiveRecord::Base
   validates :subconcept, :presence => true
 
   attr_accessible :concept, :inquiry, :language, :randomizer, :solver, :subconcept
+
+  def self.all_languages
+    select("DISTINCT language")
+  end
 end

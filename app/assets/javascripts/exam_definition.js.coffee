@@ -1,3 +1,15 @@
 # Place all the behaviors and hooks related to the matching controller here.
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://jashkenas.github.com/coffee-script/
+
+$(document).ready -> 
+	# watch for change in language selection
+	$("#exam_definition_master_question").change ->
+		$.getJSON "/master_questions/languages_for_question", (data) ->
+  			if data is null
+    			window.console and console.log("fuck")
+    			return
+  			options = $("#concept option")
+  			$.each data, (item) ->
+    			window.console and console.log(item.id)
+    			options.append $("<option />").val(item.id).text(item.concept)
