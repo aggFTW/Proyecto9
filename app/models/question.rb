@@ -11,5 +11,5 @@ class Question < ActiveRecord::Base
   validates :answers,			:presence => true
   validates :correctAns, 		:presence => true
 
-  attr_accessible :questionNum
+  attr_accessible :questionNum, :givenAns
 end

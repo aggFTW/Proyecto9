@@ -1,14 +1,20 @@
 <%= simple_form_for @exam do |exam_field| %>
 	<fieldset>
+		<% answers = Array.new %>
 		<% @exam.questions.each do |question| %>
 			<% inquiry = question.master_question.inquiry %>
 			<!-- gsub 1 no se debe de necesitar, hay algo mal en question.values -> randomizer -->
-			<% parsed = JSON.parse(format_values(question.values)) %>
+			<% parsed = format_values(question.values) %>
 			<% parsed = parsed.stringify_keys() %>
 			<% parsed.each do |key, value| %>
 				<p><% inquiry = inquiry.gsub(key,value.to_s) %></p>
 			<% end %>
-			<p><%= inquiry %></p>
+			<p><%= question.questionNum.to_s+".  "+inquiry %></p>
+
+			<%= simple_fields_for ":questions[]", question do |question_field| %>
+				<% answers = format_answers(question.answers) %>
+				<%= question_field.select :givenAns, answers.map{ |ansNum| [ansNum.last, ansNum.first] } %>
+			<% end %>
 		<% end %>
 
 		<div class="control-group">
