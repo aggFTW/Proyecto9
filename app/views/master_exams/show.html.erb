@@ -1,0 +1,31 @@
+<p>
+  <b>Nombre:</b>
+  <%= @med.name %>
+</p>
+
+<p>
+  <b>No. Intentos:</b>
+  <%= @med.attempts %>
+</p>
+
+<p>
+  <b>Fecha de inicio:</b>
+  <%= @med.startDate %>
+</p>
+
+<p>
+  <b>Fecha de fin:</b>
+  <%= @med.finishDate %>
+</p>
+
+<p>
+  <b>Profesor:</b>
+  <%= @med.user_id %>
+</p>
+ 
+ 
+<%= link_to 'Editar', edit_master_exam_path(@med) %>
+
+<% if check_admin %>
+	| <%= link_to 'Exámenes maestros', master_exams_path %>
+<% end %>

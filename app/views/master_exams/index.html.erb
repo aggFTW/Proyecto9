@@ -1,0 +1,35 @@
+<h1>Exámenes Maestros</h1>
+ 
+<table class="table table-bordered table-striped">
+  <thead>
+    <tr>
+      <th>Nombre</th>
+      <th>No. Intentos</th>
+      <th>Fecha de Inicio</th>
+      <th>Fecha de Fin</th>
+      <th>Profesor</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+ 
+  <tbody>
+  <% @meds.each do |med| %>
+    <tr>
+      <td><%= med.name %></td>
+      <td><%= med.attempts %></td>
+      <td><%= med.startDate %></td>
+      <td><%= med.finishDate %></td>
+      <td><%= med.user_id %></td>
+      <td><%= link_to 'Mostrar', med %></td>
+      <td><%= link_to 'Editar', edit_master_exam_path(med) %></td>
+      <td><%= link_to 'Borrar', med, :confirm => '¿Está seguro que quiere borrar este exámen maestro?', :method => :delete %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+ 
+<br />
+ 
+<%= link_to 'Nuevo Examen Maestro', new_master_exam_path %>

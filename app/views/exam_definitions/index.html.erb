@@ -1,0 +1,33 @@
+<h1>Exámenes Definidos</h1>
+ 
+<table class="table table-bordered table-striped">
+  <thead>
+    <tr>
+      <th>Exámen Maestro</th>
+      <th>Pregunta</th>
+      <th>No. Pregunta</th>
+      <th>Peso</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+ 
+  <tbody>
+  <% @eds.each do |ed| %>
+    <tr>
+      <td><%= ed.master_exam_id %></td>
+      <td><%= ed.master_question_id %></td>
+      <td><%= ed.questionNum %></td>
+      <td><%= ed.weight %></td>
+      <td><%= link_to 'Mostrar', ed %></td>
+      <td><%= link_to 'Editar', edit_exam_definition_path(ed) %></td>
+      <td><%= link_to 'Borrar', ed, :confirm => '¿Está seguro que quiere borrar esta pregunta de la definición del exámen?', :method => :delete %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+ 
+<br />
+ 
+<%= link_to 'Nueva Pregunta en Exámen Maestro', new_exam_definition_path %>

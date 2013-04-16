@@ -1,0 +1,2 @@
+module MasterExamsHelper
+end

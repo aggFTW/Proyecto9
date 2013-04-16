@@ -1,0 +1,16 @@
+<%= simple_form_for(@ed) do |f| %>
+	<fieldset>
+		<!-- <legend>Registro de nueva pregunta maestra en examen maestro</legend> -->
+
+		<%= f.input :master_exam_id, :label => 'ID Examen Maestro' %>
+		<%= f.input :master_question_id, :label => 'ID Pregunta Maestra' %>
+		<%= f.input :questionNum, :label => 'Número pregunta' %>
+		<%= f.input :weight, :label => 'Peso' %>
+
+		<div class="control-group">
+			<div class="controls">
+				<%= f.button :submit %>
+			</div>
+		</div>
+	</fieldset>
+<% end %>

@@ -1,0 +1,26 @@
+<p>
+  <b>Exámen Maestro:</b>
+  <%= @ed.master_exam.name %>
+</p>
+
+<p>
+  <b>Pregunta Maestra:</b>
+  <%= @ed.master_question_id %>
+</p>
+
+<p>
+  <b>Número de pregunta:</b>
+  <%= @ed.questionNum %>
+</p>
+
+<p>
+  <b>Peso:</b>
+  <%= @ed.weight %>
+</p>
+ 
+ 
+<%= link_to 'Editar', edit_exam_definition_path(@ed) %>
+
+<% if check_admin %>
+	| <%= link_to 'Definición de Exámenes', exam_definitions_path %>
+<% end %>

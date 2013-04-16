@@ -1,0 +1,15 @@
+<% content_for = "Creación de pregunta de éxamen maestro" %>
+
+<div class="hero-unit">
+	<h1>Registro de nueva pregunta para exámen maestro</h1>
+
+	<%= render 'form' %>
+
+	<% if @ed.errors.any? %>
+		<ul>
+			<% for message_error in @ed.errors.full_messages %>
+			<li>- <%= message_error %></li>
+			<% end %>
+		</ul>
+	<% end %>
+</div>

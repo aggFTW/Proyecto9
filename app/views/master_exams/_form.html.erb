@@ -1,0 +1,17 @@
+<%= simple_form_for(@med) do |f| %>
+	<fieldset>
+		<!-- <legend>Registro de nuevo examen maestro</legend> -->
+
+		<%= f.input :name, :label => 'Nombre' %>
+		<%= f.input :attempts, :label => 'No. Intentos' %>
+		<%= f.input :startDate, :label => 'Fecha de inicio' %>
+		<%= f.input :finishDate, :label => 'Fecha de final' %>
+		<%= f.association :master_questions%>
+
+		<div class="control-group">
+			<div class="controls">
+				<%= f.button :submit %>
+			</div>
+		</div>
+	</fieldset>
+<% end %>

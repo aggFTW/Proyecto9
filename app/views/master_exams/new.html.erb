@@ -1,0 +1,15 @@
+<% content_for = "Creación de éxamen maestro" %>
+
+<div class="hero-unit">
+	<h1>Registro de nuevo exámen maestro</h1>
+
+	<%= render 'form' %>
+
+	<% if @med.errors.any? %>
+		<ul>
+			<% for message_error in @med.errors.full_messages %>
+			<li>- <%= message_error %></li>
+			<% end %>
+		</ul>
+	<% end %>
+</div>
