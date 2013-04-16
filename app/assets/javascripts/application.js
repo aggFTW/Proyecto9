@@ -103,7 +103,6 @@ function ajaxLinks(){
 }
 
 $(document).ready(function() {
-
 // All non-GET requests will add the authenticity token
   // if not already present in the data packet
  $(document).ajaxSend(function(event, request, settings) {
