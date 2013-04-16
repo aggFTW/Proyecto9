@@ -5,13 +5,11 @@
 $(document).ready -> 
 	# watch for change in language selection
 	$("#exam_definition_master_question").change ->
+		$("#concept option").remove()
 		$.getJSON "/master_question/languages_for_question", {language: $("#exam_definition_master_question").val()}, (data) ->
   			if data is null
-    			window.console and console.log("fuck")
+    			window.console and console.log("null :(")
     			return
   			options = $("#concept")
   			$.each data, (item) ->
-    			options.append $("<option />").val(item).text(item)
-
-
-
+    			options.append $("<option />").val(data[item].id).text(data[item].concept)
