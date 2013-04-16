@@ -24,7 +24,8 @@ GenRap::Application.routes.draw do
   match "pending", to: "exams#pending"
 
   #json stuff for exam definition
-  match "master_question/languages_for_question" => "master_questions#languages_for_question"
+  match "master_question/concepts_for_question" => "master_questions#concepts_for_question"
+  match "master_question/subconcepts_for_question" => "master_questions#subconcepts_for_question"
 
   #resources :master_questions, :only => [:show], :defaults => { :format => 'json' }
 

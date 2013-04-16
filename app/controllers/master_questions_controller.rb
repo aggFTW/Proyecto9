@@ -167,10 +167,17 @@ class MasterQuestionsController < ApplicationController
     end
   end
 
-  def languages_for_question
-    master_questions = MasterQuestion.select("DISTINCT(concept), id").group("concept").find_all_by_language(params[:language])
+  def concepts_for_question
+    concepts = MasterQuestion.select("DISTINCT(concept), id").group("concept").where(language: params[:language])
     respond_to do |format|
-      format.json { render json: master_questions }
+      format.json { render json: concepts.to_json }
+    end
+  end
+
+  def subconcepts_for_question
+    subconcepts = MasterQuestion.select("DISTINCT(subconcept), id").group("subconcept").where(language: params[:language], concept: params[:concept])
+    respond_to do |format|
+      format.json { render json: subconcepts.to_json }
     end
   end
 
