@@ -9,7 +9,7 @@ one:
   subconcept: MyString
 
 two:
-  language: MyString
+  language: Python
   solver: MyString
   randomizer: MyString
   inquiry: MyString

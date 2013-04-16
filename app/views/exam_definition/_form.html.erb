@@ -1,0 +1,14 @@
+
+<%= simple_form_for @examDefinition, url: new_exam_definition_path do |f| %>
+	<%= f.input :master_question, 
+				collection: @master_questions, 
+				label_method: :language, 
+				value_method: :language,
+				prompt: "Selecciona un Lenguaje", 
+				label: "Lenguaje:" %>
+
+	<select id="concept">
+    	
+	</select>
+
+<% end %>
