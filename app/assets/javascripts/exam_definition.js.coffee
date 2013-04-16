@@ -5,9 +5,9 @@
 $(document).ready -> 
 	# watch for change in language selection
 	$("#exam_definition_master_question").change ->
-		$.getJSON "/master_questions/languages_for_question", {language: $("#exam_definition_master_question").val()}, (data) ->
+		$.getJSON "/master_question/languages_for_question", {language: $("#exam_definition_master_question").val()}, (data) ->
   			if data is null
-    			window.console and console.log($("#exam_definition_master_question").val())
+    			window.console and console.log("fuck")
     			return
   			options = $("#concept")
   			$.each data, (item) ->
