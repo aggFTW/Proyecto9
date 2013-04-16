@@ -12,13 +12,14 @@ GenRap::Application.routes.draw do
 
   root :to => 'users#signup'
 
-  resources :users, :groups, :exam_definitions
+  resources :users, :groups, :exam_definitions#, :master_questions
   
   match "signup", :to => "users#new"
   match "login", :to => "sessions#login"
   match "logout", :to => "sessions#logout"
   match "def", to: "exam_definition#new"
-  match "master_questions/languages_for_question" => "master_question#languages_for_question"  
+  match "master_questions/languages_for_question" => "master_question#languages_for_question"
+
   #resources :master_questions, :only => [:show], :defaults => { :format => 'json' }
 
   # match "profile", :to => "sessions#profile"

@@ -1,11 +1,16 @@
 class MasterQuestionController < ApplicationController
 
 	def languages_for_question
-		master_questions = MasterQuestion.find_by_language(params[:language])
+		master_questions = MasterQuestion.find_all_by_language(params[:language])
 		respond_to do |format|
-			format.json { render :json => master_questions.to_json }
+			format.json { render json: master_questions }
 		end
 	end
+
+	#def print_and_flush(str)
+	#  	print str
+	#  	$stdout.flush
+	#end
 
 
 end
