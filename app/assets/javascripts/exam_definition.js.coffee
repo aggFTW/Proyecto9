@@ -59,3 +59,4 @@ $(document).ready ->
           click: ->
             alert data[item].id
         ))
+        rows = $("#filteredMQ tbody")
