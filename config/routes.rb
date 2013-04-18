@@ -26,6 +26,7 @@ GenRap::Application.routes.draw do
   #json stuff for exam definition
   match "master_question/concepts_for_question" => "master_questions#concepts_for_question"
   match "master_question/subconcepts_for_question" => "master_questions#subconcepts_for_question"
+  match "master_question/filtered_master_questions" => "master_questions#filtered_master_questions"
 
   #resources :master_questions, :only => [:show], :defaults => { :format => 'json' }
 

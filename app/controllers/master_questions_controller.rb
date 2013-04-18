@@ -181,5 +181,12 @@ class MasterQuestionsController < ApplicationController
     end
   end
 
+  def filtered_master_questions
+    filteredMQs = MasterQuestion.select("inquiry, id").where(language: params[:language], concept: params[:concept], subconcept: params[:subconcept])
+    respond_to do |format|
+      format.json { render json: filteredMQs.to_json }
+    end
+  end
+
 
 end

@@ -7,6 +7,7 @@ $(document).ready ->
 	$("#exam_definition_master_question").change ->
 		$("#concept option").remove()
 		$("#subconcept option").remove()
+		$("#filteredMQ tr").remove()
 		$.getJSON "/master_question/concepts_for_question", language: $("#exam_definition_master_question").val(), (data) ->
   			if data is null
     			window.console and console.log("null :(")
@@ -20,6 +21,7 @@ $(document).ready ->
 	# watch for change in concept selection
 	$("#concept").change ->
 		$("#subconcept option").remove()
+		$("#filteredMQ tr").remove()
 		$.getJSON "/master_question/subconcepts_for_question", {language: $("#exam_definition_master_question").val(), concept: $("#concept option:selected").text()}, (data) ->
   			if data is null
     			window.console and console.log("null :(")
@@ -31,5 +33,29 @@ $(document).ready ->
 
 
  # SELECT DISTINCT(subconcept), id FROM "master_questions" WHERE "master_questions"."language" = 'python' AND "master_questions"."concept" = '5' GROUP BY subconcept
+ # <%= button_tag "Cancel",:type => 'button',:class => "subBtn", :onclick => "" %>
 
-	
+$(document).ready ->
+  $("#subconcept").change ->
+    $("#filteredMQ tr").remove()
+    $.getJSON "/master_question/filtered_master_questions",
+      language: $("#exam_definition_master_question").val()
+      concept: $("#concept option:selected").text()
+      subconcept: $("#subconcept option:selected").text()
+    , (data) ->
+      rows = undefined
+      rows = undefined
+      if data is null
+        window.console and console.log("null :(")
+        return
+      rows = $("#filteredMQ")
+      $.each data, (item) ->
+        rows.append $("<tr />")
+        rows = $("#filteredMQ tr:last")
+        rows.append $("<td />").append(data[item].inquiry)
+        rows.append $("<td />").append($("<button/>",
+          text: "Agregar Reactivo"
+          type: "button"
+          click: ->
+            alert data[item].id
+        ))
