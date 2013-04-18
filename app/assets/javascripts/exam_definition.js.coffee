@@ -45,6 +45,7 @@ $(document).ready ->
     , (data) ->
       rows = undefined
       rows = undefined
+      rows = undefined
       if data is null
         window.console and console.log("null :(")
         return
@@ -57,6 +58,9 @@ $(document).ready ->
           text: "Agregar Reactivo"
           type: "button"
           click: ->
-            alert data[item].id
+            $.getJSON "/master_question/transmiting_JSON",
+              masterQuestionID: data[item].id
+            , (data) ->
+
         ))
         rows = $("#filteredMQ tbody")

@@ -2,6 +2,7 @@
 class MasterQuestionsController < ApplicationController
   $randomizer = ''
   $solver = ''
+  @inquiriesMasterQuestionsIDs = {}
 
   before_filter :authenticate_user, :only => [:new, :index, :create,:show, :edit, :update, :destroy]
   # Create actions
@@ -185,6 +186,13 @@ class MasterQuestionsController < ApplicationController
     filteredMQs = MasterQuestion.select("inquiry, id").where(language: params[:language], concept: params[:concept], subconcept: params[:subconcept])
     respond_to do |format|
       format.json { render json: filteredMQs.to_json }
+    end
+  end
+
+  def transmiting_JSON
+    @inquiriesMasterQuestionsIDs = {masterQuestionID: params[:masterQuestionID]}
+    respond_to do |format|
+      format.json { render json: @inquiriesMasterQuestionsIDs.to_json }
     end
   end
 

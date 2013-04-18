@@ -27,6 +27,7 @@ GenRap::Application.routes.draw do
   match "master_question/concepts_for_question" => "master_questions#concepts_for_question"
   match "master_question/subconcepts_for_question" => "master_questions#subconcepts_for_question"
   match "master_question/filtered_master_questions" => "master_questions#filtered_master_questions"
+  match "master_question/transmiting_JSON" => "master_questions#transmiting_JSON"
 
   #resources :master_questions, :only => [:show], :defaults => { :format => 'json' }
 
