@@ -59,18 +59,16 @@ $(document).ready ->
             inquiry.append $("<tr />")
             inquiry = $("#examInquiries tr:last")
             inquiry.append $("<td />").append(data[item].inquiry)
+            inquiry.append $("<td />").append("<input type=\"text\" id=\"value\" size=\"5\" placeholder=\"Valor del Reactivo\" />")
+
             inquiry.append $("<td />").append($("<button/>",
               text: "Eliminar Reactivo"
               type: "button"
               click: ->
-                inquiry = $("#examInquiries")
-                inquiry.append $("<tr />")
-                inquiry = $("#examInquiries tr:last")
-                inquiry.append $("<td />").append(data[item].inquiry)
+                $(this).parent().parent().remove()
             ))
-            inquiry = $("#filteredMQ tbody")
+            inquiry = $("#examInquiries tbody")
         ))
         rows = $("#filteredMQ tbody")
 
 
-        

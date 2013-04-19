@@ -46,3 +46,9 @@ inquiry = $("#examInquiries");
             $.getJSON "/master_question/transmiting_JSON",
               masterQuestionID: data[item].id
             , (data) ->
+
+
+            inquiry = $("#examInquiries");
+                inquiry.append($("<tr />"));
+                inquiry = $("#examInquiries tr:last");
+                inquiry.append($("<td />").append(data[item].inquiry));
