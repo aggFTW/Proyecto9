@@ -24,3 +24,25 @@ ruby		p 	q 	r 	s 	t
 
 
 	<%= f.association  :master_question, label_method: lambda {|mq| "#{mq.language}"}, include_blank: true%>
+
+
+
+
+inquiry = $("#examInquiries");
+            inquiry.append($("<tr />"));
+            inquiry = $("#examInquiries tr:last");
+            inquiry.append($("<td />").append(data[item].inquiry));
+            inquiry.append($("<td />").append($("<button/>", {
+              text: "Eliminar Reactivo",
+              type: "button",
+              click: function() {
+                inquiry = $("#examInquiries");
+                inquiry.append($("<tr />"));
+                inquiry = $("#examInquiries tr:last");
+                inquiry.append($("<td />").append(data[item].inquiry));
+              }
+            }
+
+            $.getJSON "/master_question/transmiting_JSON",
+              masterQuestionID: data[item].id
+            , (data) ->

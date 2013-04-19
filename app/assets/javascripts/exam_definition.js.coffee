@@ -43,9 +43,6 @@ $(document).ready ->
       concept: $("#concept option:selected").text()
       subconcept: $("#subconcept option:selected").text()
     , (data) ->
-      rows = undefined
-      rows = undefined
-      rows = undefined
       if data is null
         window.console and console.log("null :(")
         return
@@ -58,9 +55,22 @@ $(document).ready ->
           text: "Agregar Reactivo"
           type: "button"
           click: ->
-            $.getJSON "/master_question/transmiting_JSON",
-              masterQuestionID: data[item].id
-            , (data) ->
-
+            inquiry = $("#examInquiries")
+            inquiry.append $("<tr />")
+            inquiry = $("#examInquiries tr:last")
+            inquiry.append $("<td />").append(data[item].inquiry)
+            inquiry.append $("<td />").append($("<button/>",
+              text: "Eliminar Reactivo"
+              type: "button"
+              click: ->
+                inquiry = $("#examInquiries")
+                inquiry.append $("<tr />")
+                inquiry = $("#examInquiries tr:last")
+                inquiry.append $("<td />").append(data[item].inquiry)
+            ))
+            inquiry = $("#filteredMQ tbody")
         ))
         rows = $("#filteredMQ tbody")
+
+
+        

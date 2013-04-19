@@ -190,7 +190,9 @@ class MasterQuestionsController < ApplicationController
   end
 
   def transmiting_JSON
-    @inquiriesMasterQuestionsIDs = {masterQuestionID: params[:masterQuestionID]}
+    @inquiriesMasterQuestionsIDs = Array.new
+    @inquiriesMasterQuestionsIDs.push params[:masterQuestionID]
+    puts @inquiriesMasterQuestionsIDs.fetch(0)
     respond_to do |format|
       format.json { render json: @inquiriesMasterQuestionsIDs.to_json }
     end
