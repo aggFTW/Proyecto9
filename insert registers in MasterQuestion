@@ -52,3 +52,20 @@ inquiry = $("#examInquiries");
                 inquiry.append($("<tr />"));
                 inquiry = $("#examInquiries tr:last");
                 inquiry.append($("<td />").append(data[item].inquiry));
+
+
+
+
+
+
+Me falto ciclar a traves de la tabla para ver cuantos registros hay y si no hay ni uno no dar submit
+
+pimpear el CSS
+
+hacer un javascript/jquery/coffeescript en el cual se diga que el evento onclick del boton de submit realiza un onsumbit el cual valida los datos
+
+Terminar el boton de borrar todo 
+
+crear un masterExam y un examDefinition.
+
+Terminar el boton de agregar alumnos
