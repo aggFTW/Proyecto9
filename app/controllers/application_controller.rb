@@ -3,6 +3,7 @@ class ApplicationController < ActionController::Base
 
   helper_method :check_admin
   helper_method :check_prof
+  helper_method :check_student
 
   protect_from_forgery
 
@@ -46,6 +47,18 @@ class ApplicationController < ActionController::Base
 			# set current user object to @current_user object variable
 			@current_user = User.find session[:user_id]
 			if @current_user && @current_user.utype >= 1 #Prof
+				return true
+			end
+		end
+
+		return false
+	end
+
+	def check_student
+		if session[:user_id]
+			# set current user object to @current_user object variable
+			@current_user = User.find session[:user_id]
+			if @current_user && @current_user.utype == 0 #Student
 				return true
 			end
 		end
