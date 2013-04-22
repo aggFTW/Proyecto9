@@ -14,10 +14,12 @@
   	</div>
     <%= label_tag(:inquiry, "Pregunta:") %>
     <%= f.text_area :inquiry, :size => "150x2" %>
-    <%= label_tag(:randomizer, "Código Randomizer:") %>
-    <%= f.text_area :randomizer, :size => "150x10" %>
-    <%= label_tag(:solver, "Código Solver:") %>
-    <%= f.text_area :solver, :size => "150x10" %>
+    <div class = "code-area">
+      <%= label_tag(:randomizer, "Código Randomizer:") %>
+      <%= f.text_area :randomizer, :size => "150x10" %>
+      <%= label_tag(:solver, "Código Solver:") %>
+      <%= f.text_area :solver, :size => "150x10" %>
+    </div>
     <div class="controls">
       <%= f.submit "Guardar" %>
     </div>

@@ -3,8 +3,12 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 textarea {
 	width: 900px;
-	min-height: 300px;
 	display: block;
+}
+.code-area {
+	textarea {
+	  min-height: 300px;
+	}
 }
 .inline-div {
 	display: inline-block;
