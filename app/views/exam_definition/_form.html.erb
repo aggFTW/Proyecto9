@@ -6,8 +6,6 @@
 				value_method: :language,
 				prompt: "Selecciona un Lenguaje", 
 				label: "Lenguaje:" %>
-
-
 	<select id="concept"></select>
 	<select id="subconcept"></select>
 	<table id="filteredMQ"></table>
@@ -41,7 +39,7 @@
 		%>
 
 	<button type="button" id="addStudentsButton">Agregar Alumnos</button>
-	<%= f.submit "Crear Examen" %>
+	<%= f.submit "Crear Examen", {type:"button", id:"submit"} %>
 	<button type="button" id="ereaseEverything">Borrar Todo</button>
 
 <% end %>

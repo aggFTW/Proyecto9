@@ -69,3 +69,7 @@ Terminar el boton de borrar todo
 crear un masterExam y un examDefinition.
 
 Terminar el boton de agregar alumnos
+
+
+
+Habia pensado en hacer un submit que no fuera submit, que fuera un boton con un simple redirect_to cuando se diera clic y guardar yo la informacion que necesito

@@ -71,3 +71,5 @@ $(document).ready ->
         rows = $("#filteredMQ tbody")
 
 
+$(document).ready ->
+  $("#submit").click -> 
