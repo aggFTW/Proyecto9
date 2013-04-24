@@ -14,13 +14,9 @@ class GroupsController < ApplicationController
 		end
 	end
 
-
-
 	def new
 		@group = Group.new
 	end
-
-
 
 	def create
 		@group = Group.new(params[:group])
@@ -38,16 +34,13 @@ class GroupsController < ApplicationController
 		end
 	end
 
-
 	def show
 		@group = Group.find(params[:id])
 	end
 
-
 	def edit
 		@group = Group.find(params[:id])
 	end
-
 
 	def update
 		@group = Group.find(params[:id])
@@ -61,11 +54,11 @@ class GroupsController < ApplicationController
 	    redirect_to(@group)
 	end
 
-
 	def destroy
 		@group = Group.find(params[:id])
 		@group.destroy
 
 		redirect_to :action => 'index'
 	end
+  end
 end

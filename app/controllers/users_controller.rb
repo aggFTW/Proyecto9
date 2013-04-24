@@ -13,12 +13,9 @@ class UsersController < ApplicationController
 		end
 	end
 
-
-
 	def new
 		@user = User.new
 	end
-
 
 	def signup
 		if session[:user_id].nil?
@@ -28,7 +25,6 @@ class UsersController < ApplicationController
 			redirect_to(user)
 		end
 	end
-
 
 	def create
 		@user = User.new(params[:user])
@@ -44,7 +40,6 @@ class UsersController < ApplicationController
 	end
 
 
-
 	def show
 		if check_admin || @current_user.id.to_s == params[:id]
 			@user = User.find(params[:id])
@@ -54,8 +49,6 @@ class UsersController < ApplicationController
 		end
 	end
 
-
-
 	def edit
 		if check_admin || @current_user.id.to_s == params[:id]
 			@user = User.find(params[:id])
@@ -64,8 +57,6 @@ class UsersController < ApplicationController
 			redirect_to(root_path)
 		end
 	end
-
-
 
 	def update
 		if check_admin || @current_user.id.to_s == params[:id]
@@ -84,7 +75,6 @@ class UsersController < ApplicationController
 		end
 	end
 
-
 	def destroy
 		if check_admin
 			@user = User.find(params[:id])
@@ -96,4 +86,14 @@ class UsersController < ApplicationController
 			redirect_to(root_path)
 		end
 	end
+
+	def get_users
+		#pendiente de terminar PABLO TODO
+		if check_admin || @current_user.id.to_s == params[:id]
+	    	users = MasterQuestion.select("DISTINCT(concept), id").group("concept").where(language: params[:language])
+		    respond_to do |format|
+		      format.json { render json: concepts.to_json }
+		    end
+		end
+  	end
 end
