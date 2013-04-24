@@ -3,13 +3,15 @@
 one:
   fname: MyString
   lname: MyString
-  type: 1
+  utype: 1
   spassword: MyString
   salt: MyString
+  username: usuario
 
 two:
   fname: MyString
   lname: MyString
-  type: 1
+  utype: 1
   spassword: MyString
   salt: MyString
+  username: usuario2

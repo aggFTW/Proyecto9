@@ -1,0 +1,75 @@
+m = MasterQuestion.new(language: "python", solver: "a", randomizer: "b", inquiry: "c", concept: "d", subconcept: "e")
+m.save
+m = MasterQuestion.new(language: "scilab", solver: "f", randomizer: "g", inquiry: "h", concept: "i", subconcept: "j")
+m.save
+m = MasterQuestion.new(language: "ruby", solver: "k", randomizer: "l", inquiry: "m", concept: "n", subconcept: "o")
+m.save
+m = MasterQuestion.new(language: "python", solver: "a", randomizer: "b", inquiry: "c", concept: "d", subconcept: "e")
+m.save
+m = MasterQuestion.new(language: "python", solver: "f", randomizer: "g", inquiry: "h", concept: "i", subconcept: "j")
+m.save
+m = MasterQuestion.new(language: "ruby", solver: "p", randomizer: "q", inquiry: "r", concept: "s", subconcept: "t")
+m.save
+
+
+
+
+python		a	b	c 	d	e
+scilab		f	g	h	i 	j
+ruby		k	l 	m 	n 	o
+python		a	b	c 	d	e
+python		f	g	h	i 	j
+ruby		p 	q 	r 	s 	t
+
+
+
+	<%= f.association  :master_question, label_method: lambda {|mq| "#{mq.language}"}, include_blank: true%>
+
+
+
+
+inquiry = $("#examInquiries");
+            inquiry.append($("<tr />"));
+            inquiry = $("#examInquiries tr:last");
+            inquiry.append($("<td />").append(data[item].inquiry));
+            inquiry.append($("<td />").append($("<button/>", {
+              text: "Eliminar Reactivo",
+              type: "button",
+              click: function() {
+                inquiry = $("#examInquiries");
+                inquiry.append($("<tr />"));
+                inquiry = $("#examInquiries tr:last");
+                inquiry.append($("<td />").append(data[item].inquiry));
+              }
+            }
+
+            $.getJSON "/master_question/transmiting_JSON",
+              masterQuestionID: data[item].id
+            , (data) ->
+
+
+            inquiry = $("#examInquiries");
+                inquiry.append($("<tr />"));
+                inquiry = $("#examInquiries tr:last");
+                inquiry.append($("<td />").append(data[item].inquiry));
+
+
+
+
+
+
+Me falto ciclar a traves de la tabla para ver cuantos registros hay y si no hay ni uno no dar submit
+
+pimpear el CSS
+
+hacer un javascript/jquery/coffeescript en el cual se diga que el evento onclick del boton de submit realiza un onsumbit el cual valida los datos
+
+Terminar el boton de borrar todo 
+
+crear un masterExam y un examDefinition.
+
+Terminar el boton de agregar alumnos
+
+
+
+Habia pensado en hacer un submit que no fuera submit, que fuera un boton con un simple redirect_to cuando se diera clic y guardar yo la informacion que necesito

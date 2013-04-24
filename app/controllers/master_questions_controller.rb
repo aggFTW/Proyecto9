@@ -2,6 +2,7 @@
 class MasterQuestionsController < ApplicationController
   $randomizer = ''
   $solver = ''
+  @inquiriesMasterQuestionsIDs = {}
 
   before_filter :authenticate_user, :only => [:new, :index, :create,:show, :edit, :update, :destroy]
   # Create actions
@@ -166,4 +167,36 @@ class MasterQuestionsController < ApplicationController
       redirect_to(master_questions_path)
     end
   end
+
+  def concepts_for_question
+    concepts = MasterQuestion.select("DISTINCT(concept), id").group("concept").where(language: params[:language])
+    respond_to do |format|
+      format.json { render json: concepts.to_json }
+    end
+  end
+
+  def subconcepts_for_question
+    subconcepts = MasterQuestion.select("DISTINCT(subconcept), id").group("subconcept").where(language: params[:language], concept: params[:concept])
+    respond_to do |format|
+      format.json { render json: subconcepts.to_json }
+    end
+  end
+
+  def filtered_master_questions
+    filteredMQs = MasterQuestion.select("inquiry, id").where(language: params[:language], concept: params[:concept], subconcept: params[:subconcept])
+    respond_to do |format|
+      format.json { render json: filteredMQs.to_json }
+    end
+  end
+
+  def transmiting_JSON
+    @inquiriesMasterQuestionsIDs = Array.new
+    @inquiriesMasterQuestionsIDs.push params[:masterQuestionID]
+    puts @inquiriesMasterQuestionsIDs.fetch(0)
+    respond_to do |format|
+      format.json { render json: @inquiriesMasterQuestionsIDs.to_json }
+    end
+  end
+
+
 end
