@@ -6,6 +6,9 @@ calculated = false
 i = 1
 
 $(document).ready ->
+  $("#examInquiriesHeaders").hide()
+
+$(document).ready ->
   $("#exam_definition_master_question").change ->
     $("#concept option").remove()
     $("#subconcept option").remove()
@@ -40,9 +43,6 @@ $(document).ready ->
         options.append $("<option />").val(data[item].id).text(data[item].subconcept)
         $("#subconcept").prop "selectedIndex", -1
 
-
- # SELECT DISTINCT(subconcept), id FROM "master_questions" WHERE "master_questions"."language" = 'python' AND "master_questions"."concept" = '5' GROUP BY subconcept
- # <%= button_tag "Cancel",:type => 'button',:class => "subBtn", :onclick => "" %>
 $(document).ready ->
   $("#subconcept").change ->
     $("#filteredMQ tr").remove()
@@ -51,6 +51,7 @@ $(document).ready ->
       concept: $("#concept option:selected").text()
       subconcept: $("#subconcept option:selected").text()
     , (data) ->
+      rows = undefined
       rows = undefined
       rows = undefined
       if data is null
@@ -66,6 +67,11 @@ $(document).ready ->
           text: "Agregar Reactivo"
           type: "button"
           click: ->
+            calculated = undefined
+            input1 = undefined
+            inquiry = undefined
+            calculated = false
+            $("#examInquiriesHeaders").show()
             inquiry = undefined
             inquiry = undefined
             inquiry = $("#examInquiries")
@@ -83,6 +89,9 @@ $(document).ready ->
               type: "button"
               click: ->
                 $(this).parent().parent().remove()
+                calculated = false;
+                if $("#examInquiries").prop("rows").length < 1
+                  $("#examInquiriesHeaders").hide()
             ))
             inquiry = $("#examInquiries tbody")
         ))
@@ -90,13 +99,22 @@ $(document).ready ->
 
 $(document).ready ->
   $("#submit").click ->
+    addition = undefined
+    calculated = undefined
+    numInquiries = undefined
+    rows = undefined
     numInquiries = $("#examInquiries").prop("rows").length
     if numInquiries > 0
+      if $.isNumeric($("#attempts_number").val()) is true
+        $("#attempts_number").val "1"  if parseInt($("#attempts_number").val()) < 1
+      else
+        $("#attempts_number").val "1"
       addition = 0
       rows = $("#examInquiries tr")
       unless calculated
         calculated = true
         rows.each (index, value) ->
+          temp = undefined
           temp = $(this).find("td:nth-child(4) input:first").val()
           if $.isNumeric(temp) is true
             if parseInt(temp) > 0
@@ -109,27 +127,66 @@ $(document).ready ->
             $(this).find("td:nth-child(4) input:first").val 1
 
         rows.each (index, value) ->
+          temp = undefined
           temp = $(this).find("td:nth-child(4) input:first").val()
-          if $.isNumeric(temp) is true
-            $(this).find("td:nth-child(4) input:first").val (parseInt(temp) / parseInt(addition)) * 100
-          else
-            return
+          $(this).find("td:nth-child(4) input:first").val (parseInt(temp) / parseInt(addition)) * 100  if $.isNumeric(temp) is true
 
-      else
-        alert "Ya fue calculado. Modifique el valor de algún reactivo para poder volver a calcular."
+      $("#exam_definition_master_question").prop "selectedIndex", 0
       $("#filteredMQ tr").remove()
       $("#concept option").remove()
       $("#subconcept option").remove()
-      $("#exam_definition_master_question").prop "selectedIndex", 0
       $("#attempts_number").val ""
+      $("#examInquiries tr").remove()
+      $("#examInquiriesHeaders").hide()
     else
       window.console and console.log("No hay reactivos seleccionados")
       alert "No hay reactivos seleccionados"
 
 
 $(document).ready ->
+  $("#calculateValues").click ->
+    addition = undefined
+    calculated = undefined
+    numInquiries = undefined
+    rows = undefined
+    numInquiries = $("#examInquiries").prop("rows").length
+    if numInquiries > 0
+      if $.isNumeric($("#attempts_number").val()) is true
+        $("#attempts_number").val "1"  if parseInt($("#attempts_number").val()) < 1
+      else
+        $("#attempts_number").val "1"
+      addition = 0
+      rows = $("#examInquiries tr")
+      unless calculated
+        calculated = true
+        rows.each (index, value) ->
+          temp = undefined
+          temp = $(this).find("td:nth-child(4) input:first").val()
+          if $.isNumeric(temp) is true
+            if parseInt(temp) > 0
+              addition += parseInt(temp)
+            else
+              addition += 1
+              $(this).find("td:nth-child(4) input:first").val 1
+          else
+            addition += 1
+            $(this).find("td:nth-child(4) input:first").val 1
+
+        rows.each (index, value) ->
+          temp = undefined
+          temp = $(this).find("td:nth-child(4) input:first").val()
+          $(this).find("td:nth-child(4) input:first").val (parseInt(temp) / parseInt(addition)) * 100  if $.isNumeric(temp) is true
+
+      else
+        alert "Ya fue calculado. Modifique el valor de algún reactivo para poder volver a calcular."
+    else
+      window.console and console.log("No hay reactivos seleccionados")
+      alert "No hay reactivos seleccionados"
+
+$(document).ready ->
   $("#ereaseEverything").click ->
     $("#filteredMQ tr").remove()
+    $("#examInquiries tr").remove()
     $("#concept option").remove()
     $("#subconcept option").remove()
     $("#exam_definition_master_question").prop "selectedIndex", -1
@@ -144,6 +201,7 @@ $(document).ready ->
     $("#end_Date_1i").prop "selectedIndex", -1
     $("#end_Time_5i").prop "selectedIndex", -1
     $("#end_Time_4i").prop "selectedIndex", -1
+    $("#examInquiriesHeaders").hide()
 
 $(document).ready ->
   $("#setDefaults").click ->
@@ -163,3 +221,4 @@ $(document).ready ->
     $("#end_Date_1i").prop "selectedIndex", 0
     $("#end_Time_5i").prop "selectedIndex", 0
     $("#end_Time_4i").prop "selectedIndex", 0 
+    $("#examInquiriesHeaders").hide()
