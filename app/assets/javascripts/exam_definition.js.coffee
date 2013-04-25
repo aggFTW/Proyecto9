@@ -1,6 +1,9 @@
 # Place all the behaviors and hooks related to the matching controller here.
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://jashkenas.github.com/coffee-script/
+addition = 0
+calculated = false
+i = 1
 
 $(document).ready ->
   $("#exam_definition_master_question").change ->
@@ -40,8 +43,6 @@ $(document).ready ->
 
  # SELECT DISTINCT(subconcept), id FROM "master_questions" WHERE "master_questions"."language" = 'python' AND "master_questions"."concept" = '5' GROUP BY subconcept
  # <%= button_tag "Cancel",:type => 'button',:class => "subBtn", :onclick => "" %>
-
-i = 1
 $(document).ready ->
   $("#subconcept").change ->
     $("#filteredMQ tr").remove()
@@ -51,7 +52,9 @@ $(document).ready ->
       subconcept: $("#subconcept option:selected").text()
     , (data) ->
       rows = undefined
+      rows = undefined
       if data is null
+        alert "No se encontró nada en la base de datos con las características anteriores."
         window.console and console.log("null :(")
         return
       rows = $("#filteredMQ")
@@ -64,13 +67,17 @@ $(document).ready ->
           type: "button"
           click: ->
             inquiry = undefined
+            inquiry = undefined
             inquiry = $("#examInquiries")
             inquiry.append $("<tr />")
             inquiry = $("#examInquiries tr:last")
             inquiry.append $("<td />").append(i++)
             inquiry.append $("<td />").append(data[item].id)
             inquiry.append $("<td />").append(data[item].inquiry)
-            inquiry.append $("<td />").append("<input type=\"text\" id=\"value\" size=\"5\" placeholder=\"Valor del Reactivo\" />")
+            input1 = $("<input type=\"text\" id=\"value\" size=\"5\" placeholder=\"Valor del Reactivo\" />").change(->
+              calculated = false
+            )
+            inquiry.append $("<td />").append(input1)
             inquiry.append $("<td />").append($("<button/>",
               text: "Eliminar Reactivo"
               type: "button"
@@ -81,30 +88,35 @@ $(document).ready ->
         ))
         rows = $("#filteredMQ tbody")
 
-
-addition = 0
 $(document).ready ->
   $("#submit").click ->
     numInquiries = $("#examInquiries").prop("rows").length
     if numInquiries > 0
+      addition = 0
       rows = $("#examInquiries tr")
-      rows.each (index, value) ->
-        temp = $(this).find("td:nth-child(4) input:first").val()
-        if $.isNumeric(temp) is true
-          addition += parseInt(temp)
-        else
-          addition = 0
-          alert "Un valor de un reactivo no es numérico: " + temp
-          window.console and console.log("Un valor de un reactivo no es numérico: " + temp)
-          return
+      unless calculated
+        calculated = true
+        rows.each (index, value) ->
+          temp = $(this).find("td:nth-child(4) input:first").val()
+          if $.isNumeric(temp) is true
+            if parseInt(temp) > 0
+              addition += parseInt(temp)
+            else
+              addition += 1
+              $(this).find("td:nth-child(4) input:first").val 1
+          else
+            addition += 1
+            $(this).find("td:nth-child(4) input:first").val 1
 
-      rows.each (index, value) ->
-        temp = $(this).find("td:nth-child(4) input:first").val()
-        if $.isNumeric(temp) is true
-          $(this).find("td:nth-child(4) input:first").val (parseInt(temp) / parseInt(addition)) * 100
-        else
-          return
+        rows.each (index, value) ->
+          temp = $(this).find("td:nth-child(4) input:first").val()
+          if $.isNumeric(temp) is true
+            $(this).find("td:nth-child(4) input:first").val (parseInt(temp) / parseInt(addition)) * 100
+          else
+            return
 
+      else
+        alert "Ya fue calculado. Modifique el valor de algún reactivo para poder volver a calcular."
       $("#filteredMQ tr").remove()
       $("#concept option").remove()
       $("#subconcept option").remove()

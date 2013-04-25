@@ -73,3 +73,149 @@ Terminar el boton de agregar alumnos
 
 
 Habia pensado en hacer un submit que no fuera submit, que fuera un boton con un simple redirect_to cuando se diera clic y guardar yo la informacion que necesito
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var addition = 0;
+$(document).ready(function() {
+  $("#submit").click(function() {
+    var numInquiries = $("#examInquiries").prop("rows").length;
+    if( numInquiries > 0){
+        var rows = $("#examInquiries tr");
+        rows.each(function(index,value) {
+            var temp = $(this).find("td:nth-child(4) input:first").val();
+            if ($.isNumeric(temp) == true){
+                addition += parseInt(temp);
+            }else {
+                addition = 0;
+                alert("Un valor de un reactivo no es numérico: "+temp);
+                window.console && console.log("Un valor de un reactivo no es numérico: "+temp);
+                return;
+            }
+        });
+        rows.each(function(index,value) {
+            var temp = $(this).find("td:nth-child(4) input:first").val();
+            if ($.isNumeric(temp) == true){
+                $(this).find("td:nth-child(4) input:first").val((parseInt(temp)/parseInt(addition))*100);
+            }else return;
+        });
+        $("#filteredMQ tr").remove();
+        $("#concept option").remove();
+      $("#subconcept option").remove();
+        $("#exam_definition_master_question").prop("selectedIndex", 0);
+        $("#attempts_number").val("")
+    }else {
+        window.console && console.log("No hay reactivos seleccionados");
+        alert("No hay reactivos seleccionados");
+    }
+  });
+});
+
+var i = 1;
+$(document).ready(function() {
+  $("#subconcept").change(function() {
+    $("#filteredMQ tr").remove();
+    $.getJSON("/master_question/filtered_master_questions", {
+      language: $("#exam_definition_master_question").val(),
+      concept: $("#concept option:selected").text(),
+      subconcept: $("#subconcept option:selected").text()
+    }, function(data) {
+      var rows;
+      if (data === null) {
+        window.console && console.log("null :(");
+        return;
+      }
+      rows = $("#filteredMQ");
+      return $.each(data, function(item) {
+        rows.append($("<tr />"));
+        rows = $("#filteredMQ tr:last");
+        rows.append($("<td />").append(data[item].inquiry));
+        rows.append($("<td />").append($("<button/>", {
+          text: "Agregar Reactivo",
+          type: "button",
+          click: function() {
+            var inquiry;
+            inquiry = $("#examInquiries");
+            inquiry.append($("<tr />"));
+            inquiry = $("#examInquiries tr:last");
+            inquiry.append($("<td />").append(i++));
+            inquiry.append($("<td />").append(data[item].id));
+            inquiry.append($("<td />").append(data[item].inquiry));
+            inquiry.append($("<td />").append("<input type=\"text\" id=\"value\" size=\"5\" placeholder=\"Valor del Reactivo\" />"));
+            inquiry.append($("<td />").append($("<button/>", {
+              text: "Eliminar Reactivo",
+              type: "button",
+              click: function() {
+                return $(this).parent().parent().remove();
+              }
+            })));
+            return inquiry = $("#examInquiries tbody");
+          }
+        })));
+        return rows = $("#filteredMQ tbody");
+      });
+    });
+  });
+});
+
+
+$(document).ready(function() {
+    $("#exam_definition_master_question").change(function() {
+    $("#concept option").remove();
+    $("#subconcept option").remove();
+    $("#filteredMQ tr").remove();
+    $.getJSON("/master_question/concepts_for_question", {
+      language: $("#exam_definition_master_question").val()
+    }, function(data) {
+      var options;
+      if (data === null) {
+        window.console && console.log("null :(");
+        return;
+      }
+      options = $("#concept");
+      $.each(data, function(item) {
+        options.append($("<option />").val(data[item].id).text(data[item].concept));
+        $("#concept").prop("selectedIndex", -1);
+      });
+    });
+  });
+});
+
+$(document).ready(function() {
+  return $("#exam_definition_master_question").change(function() {
+    $("#concept option").remove();
+    $("#subconcept option").remove();
+    $("#filteredMQ tr").remove();
+    $("#examInquiries").remove();
+    return $.getJSON("/master_question/concepts_for_question", {
+      language: $("#exam_definition_master_question").val()
+    }, function(data) {
+      var options;
+      if (data === null) {
+        window.console && console.log("null :(");
+        return;
+      }
+      options = $("#concept");
+      return $.each(data, function(item) {
+        options.append($("<option />").val(data[item].id).text(data[item].concept));
+        return $("#concept").prop("selectedIndex", -1);
+      });
+    });
+  });
+});
