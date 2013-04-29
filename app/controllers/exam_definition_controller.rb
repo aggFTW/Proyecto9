@@ -1,3 +1,4 @@
+#encoding: utf-8
 class ExamDefinitionController < ApplicationController
 	def new
 		@examDefinition = ExamDefinition.new

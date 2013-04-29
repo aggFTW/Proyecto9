@@ -22,16 +22,16 @@ class MasterQuestionsController < ApplicationController
     
     # Generate random name for solver and randomizer
     uuid = SecureRandom.uuid
-    $randomizer = "/../helpers/r/#{uuid}_randomizer"
-    $solver = "/../helpers/s/#{uuid}_solver"
+    $randomizer = "#{uuid}_randomizer"
+    $solver = "#{uuid}_solver"
     
     # Create solver and randomizer files in /helpers/s and /helpers/r 
-    randomizer_file = File.open(File.dirname(__FILE__) + "#{$randomizer}","w") {|f| f.write("#{@master_question.randomizer}") }
-    solver_file = File.open(File.dirname(__FILE__) + "#{$solver}","w") {|f| f.write("#{@master_question.solver}")}
+    randomizer_file = File.open(File.dirname(__FILE__) + "/../helpers/r/#{$randomizer}.rb","w") {|f| f.write("#{@master_question.randomizer}") }
+    solver_file = File.open(File.dirname(__FILE__) + "/../helpers/s/#{$solver}.rb","w") {|f| f.write("#{@master_question.solver}")}
 
     # Save masterquestion solver and randomizer file path
-    @master_question.randomizer = File.dirname(__FILE__) + "#{$randomizer}"
-    @master_question.solver = File.dirname(__FILE__) + "#{$solver}"
+    @master_question.randomizer = "#{$randomizer}"
+    @master_question.solver = "#{$solver}"
 
     if @master_question.save
       flash[:notice] = "MasterQuestion creada exitosamente."
@@ -60,8 +60,8 @@ class MasterQuestionsController < ApplicationController
       $solver = @master_question.solver 
 
       # Retrieve code from files
-      @master_question.randomizer = read_file($randomizer)
-      @master_question.solver = read_file($solver)
+      @master_question.randomizer = read_file(File.dirname(__FILE__) + "/../helpers/r/#{$randomizer}.rb")
+      @master_question.solver = read_file(File.dirname(__FILE__) + "/../helpers/s/#{$solver}.rb")
     else
       flash[:error] = "Usted necesita ser un administrador para accesar esta página."
       redirect_to(root_path)
@@ -77,8 +77,8 @@ class MasterQuestionsController < ApplicationController
       $solver = @master_question.solver 
 
       # Retrieve code from files
-      @master_question.randomizer = read_file($randomizer)
-      @master_question.solver = read_file($solver)
+      @master_question.randomizer = read_file(File.dirname(__FILE__) + "/../helpers/r/#{$randomizer}.rb")
+      @master_question.solver = read_file(File.dirname(__FILE__) + "/../helpers/s/#{$solver}.rb")
     else
       flash[:error] = "Usted necesita ser un administrador para accesar esta página."
       redirect_to(root_path)
@@ -93,8 +93,8 @@ class MasterQuestionsController < ApplicationController
       master_temporal =  MasterQuestion.new(params[:master_question])
 
       # Saves code to randomizer and solver files
-      File.open("#{$randomizer}","w") {|f| f.write("#{master_temporal.randomizer}")}
-      File.open("#{$solver}","w") {|f| f.write("#{master_temporal.solver}")}
+      File.open(File.dirname(__FILE__) + "/../helpers/r/#{$randomizer}.rb","w") {|f| f.write("#{master_temporal.randomizer}")}
+      File.open(File.dirname(__FILE__) + "/../helpers/s/#{$solver}.rb","w") {|f| f.write("#{master_temporal.solver}")}
 
       # Updates randomizer and solver fields
       master_temporal.randomizer = $randomizer
@@ -131,7 +131,7 @@ class MasterQuestionsController < ApplicationController
     text = ''
     case filename
     when 'randomizer'
-      text << "def randomizer(inquiry)\n  values = Hash.new('')\n" +
+      text << "def randomize(inquiry)\n  values = Hash.new('')\n" +
               "  #Inserte su codigo para llenar values aqui\n" +
               "  #values['^1'] = 2\n  #values['^2'] = 2\n" + 
               "  values\nend"

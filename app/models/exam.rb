@@ -61,16 +61,16 @@ class Exam < ActiveRecord::Base
 				inquiry = master_question.inquiry
 
 				# We generate random question
-				randomizer_path = master_question.randomizer
-				full_randomizer_path = File.dirname(__FILE__) + "/../helpers/r/" + randomizer_path + '.rb'
+				randomizer = master_question.randomizer
+				full_randomizer_path = File.dirname(__FILE__) + "/../helpers/r/" + randomizer + '.rb'
 				load full_randomizer_path
 				puts "loaded " + full_randomizer_path
 				values = randomize(inquiry)
 				# puts "values " + values.to_s
 
 				# We generate values, correctAns
-				solver_path = master_question.solver
-				full_solver_path = File.dirname(__FILE__) + "/../helpers/s/" + solver_path + '.rb'
+				solver = master_question.solver
+				full_solver_path = File.dirname(__FILE__) + "/../helpers/s/" + solver + '.rb'
 				load full_solver_path
 				puts "loaded " + full_solver_path
 				answers, correctAns = solve(inquiry, values)

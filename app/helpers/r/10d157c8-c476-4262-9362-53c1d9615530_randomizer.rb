@@ -1,4 +1,4 @@
-def randomizer(inquiry)
+def randomize(inquiry)
 
 values = Hash.new('')
 
