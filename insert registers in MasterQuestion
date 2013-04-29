@@ -219,3 +219,157 @@ $(document).ready(function() {
     });
   });
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+$(document).ready(function() {
+    $.getJSON("/master_question/concepts_for_question", {
+      language: $("#exam_definition_master_question").val()
+    }, function(data) {
+      var options;
+      options = void 0;
+      if (data === null) {
+        window.console && console.log("null :(");
+        return;
+      }
+      options = $("#concept");
+      return $.each(data, function(item) {
+        options.append($("<option />").val(data[item].id).text(data[item].concept));
+        return $("#concept").prop("selectedIndex", -1);
+      });
+    });
+
+});
+
+
+
+
+$(document).ready(function() {
+  return $("#submit").click(function() {
+    var addition, calculated, numInquiries, rows;
+    numInquiries = $("#examInquiries").prop("rows").length;
+    if (numInquiries > 0) {
+        if($.isNumeric($("#attempts_number").val())==true){
+            if(parseInt($("#attempts_number").val()) < 1){
+                $("#attempts_number").val("1");
+            }
+        } else {
+            $("#attempts_number").val("1");
+        }
+      addition = 0;
+      rows = $("#examInquiries tr");
+      if (!calculated) {
+        calculated = true;
+        rows.each(function(index, value) {
+          var temp;
+          temp = $(this).find("td:nth-child(4) input:first").val();
+          if ($.isNumeric(temp) === true) {
+            if (parseInt(temp) > 0) {
+              return addition += parseInt(temp);
+            } else {
+              addition += 1;
+              return $(this).find("td:nth-child(4) input:first").val(1);
+            }
+          } else {
+            addition += 1;
+            return $(this).find("td:nth-child(4) input:first").val(1);
+          }
+        });
+        rows.each(function(index, value) {
+          var temp;
+          temp = $(this).find("td:nth-child(4) input:first").val();
+          if ($.isNumeric(temp) === true) {
+            return $(this).find("td:nth-child(4) input:first").val((parseInt(temp) / parseInt(addition)) * 100);
+          }
+        });
+      }
+      
+     if($("#studentsTable")){
+        
+     } 
+      
+      $("#exam_definition_master_question").prop("selectedIndex", 0);
+      $("#filteredMQ tr").remove();
+      $("#concept option").remove();
+      $("#subconcept option").remove();
+      $("#attempts_number").val("");
+      $("#examInquiries tr").remove();
+      return $("#examInquiriesHeaders").hide();
+    } else {
+      window.console && console.log("No hay reactivos seleccionados");
+      return alert("No hay reactivos seleccionados");
+    }
+  });
+});
+
+
+
+
+
+$(document).ready(function() {
+  return $("#calculateValues").click(function() {
+    var addition, calculated, numInquiries, rows;
+    numInquiries = $("#examInquiries").prop("rows").length;
+    if (numInquiries > 0) {
+        if($.isNumeric($("#attempts_number").val())==true){
+            if(parseInt($("#attempts_number").val()) < 1){
+                $("#attempts_number").val("1");
+            }
+        } else {
+            $("#attempts_number").val("1");
+        }
+      addition = 0;
+      rows = $("#examInquiries tr");
+      if (!calculated) {
+        calculated = true;
+        rows.each(function(index, value) {
+          var temp;
+          temp = $(this).find("td:nth-child(4) input:first").val();
+          if ($.isNumeric(temp) === true) {
+            if (parseInt(temp) > 0) {
+              return addition += parseInt(temp);
+            } else {
+              addition += 1;
+              return $(this).find("td:nth-child(4) input:first").val(1);
+            }
+          } else {
+            addition += 1;
+            return $(this).find("td:nth-child(4) input:first").val(1);
+          }
+        });
+        return rows.each(function(index, value) {
+          var temp;
+          temp = $(this).find("td:nth-child(4) input:first").val();
+          if ($.isNumeric(temp) === true) {
+            return $(this).find("td:nth-child(4) input:first").val((parseInt(temp) / parseInt(addition)) * 100);
+          }
+        });
+      } else {
+        return alert("Ya fue calculado. Modifique el valor de algún reactivo para poder volver a calcular.");
+      }
+    } else {
+      window.console && console.log("No hay reactivos seleccionados");
+      return alert("No hay reactivos seleccionados");
+    }
+  });
+});

@@ -10,6 +10,7 @@ $(document).ready ->
 
 $(document).ready ->
   $("#exam_definition_master_question").change ->
+    i = 1
     $("#concept option").remove()
     $("#subconcept option").remove()
     $("#filteredMQ tr").remove()
@@ -17,7 +18,6 @@ $(document).ready ->
     $.getJSON "/master_question/concepts_for_question",
       language: $("#exam_definition_master_question").val()
     , (data) ->
-      options = undefined
       if data is null
         window.console and console.log("null :(")
         return
@@ -34,7 +34,6 @@ $(document).ready ->
       language: $("#exam_definition_master_question").val()
       concept: $("#concept option:selected").text()
     , (data) ->
-      options = undefined
       if data is null
         window.console and console.log("null :(")
         return
@@ -51,9 +50,6 @@ $(document).ready ->
       concept: $("#concept option:selected").text()
       subconcept: $("#subconcept option:selected").text()
     , (data) ->
-      rows = undefined
-      rows = undefined
-      rows = undefined
       if data is null
         alert "No se encontró nada en la base de datos con las características anteriores."
         window.console and console.log("null :(")
@@ -67,13 +63,8 @@ $(document).ready ->
           text: "Agregar Reactivo"
           type: "button"
           click: ->
-            calculated = undefined
-            input1 = undefined
-            inquiry = undefined
             calculated = false
             $("#examInquiriesHeaders").show()
-            inquiry = undefined
-            inquiry = undefined
             inquiry = $("#examInquiries")
             inquiry.append $("<tr />")
             inquiry = $("#examInquiries tr:last")
@@ -99,56 +90,99 @@ $(document).ready ->
 
 $(document).ready ->
   $("#submit").click ->
-    addition = undefined
-    calculated = undefined
-    numInquiries = undefined
-    rows = undefined
     numInquiries = $("#examInquiries").prop("rows").length
+    $("#name_exam").val "Pruebas"
+    examNameLength = $("#name_exam").val().length
+    #examNameLength = 6 #para pruebas
     if numInquiries > 0
-      if $.isNumeric($("#attempts_number").val()) is true
-        $("#attempts_number").val "1"  if parseInt($("#attempts_number").val()) < 1
-      else
-        $("#attempts_number").val "1"
-      addition = 0
-      rows = $("#examInquiries tr")
-      unless calculated
-        calculated = true
-        rows.each (index, value) ->
-          temp = undefined
-          temp = $(this).find("td:nth-child(4) input:first").val()
-          if $.isNumeric(temp) is true
-            if parseInt(temp) > 0
-              addition += parseInt(temp)
+      if examNameLength > 5
+        if $.isNumeric($("#attempts_number").val()) is true
+          $("#attempts_number").val "1"  if parseInt($("#attempts_number").val()) < 1
+        else
+          $("#attempts_number").val "1"
+        addition = 0
+        rows = $("#examInquiries tr")
+        unless calculated
+          calculated = true
+          rows.each (index, value) ->
+            temp = $(this).find("td:nth-child(4) input:first").val()
+            if $.isNumeric(temp) is true
+              if parseInt(temp) > 0
+                addition += parseInt(temp)
+              else
+                addition += 1
+                $(this).find("td:nth-child(4) input:first").val 1
             else
               addition += 1
               $(this).find("td:nth-child(4) input:first").val 1
-          else
-            addition += 1
-            $(this).find("td:nth-child(4) input:first").val 1
 
-        rows.each (index, value) ->
-          temp = undefined
-          temp = $(this).find("td:nth-child(4) input:first").val()
-          $(this).find("td:nth-child(4) input:first").val (parseInt(temp) / parseInt(addition)) * 100  if $.isNumeric(temp) is true
+          rows.each (index, value) ->
+            temp = $(this).find("td:nth-child(4) input:first").val()
+            $(this).find("td:nth-child(4) input:first").val (parseInt(temp) / parseInt(addition)) * 100  if $.isNumeric(temp) is true
 
-      $("#exam_definition_master_question").prop "selectedIndex", 0
-      $("#filteredMQ tr").remove()
-      $("#concept option").remove()
-      $("#subconcept option").remove()
-      $("#attempts_number").val ""
-      $("#examInquiries tr").remove()
-      $("#examInquiriesHeaders").hide()
+        dataToSend = []
+        dataIndex = 0
+        cdt = new Date()
+        $("#examInquiries tr").each ->
+          dataToSend.push
+            numQuestion: parseInt(dataIndex + 1)
+            numInquiry: parseInt($(this).find("td:nth-child(2)").text())
+            value: parseFloat($(this).find("td:nth-child(4) input:first").val())
+            
+          dataIndex++
+
+        $.getJSON "/master_question/exam_def",
+          hash: dataToSend
+          exam_name: $("#name_exam").val()
+          number_of_attempts: $("#attempts_number").val()
+          creationYear: cdt.getFullYear()
+          creationMonth: cdt.getMonth() + 1
+          creationDay: cdt.getDate()
+          creationHour: cdt.getHours()
+          creationMinute: cdt.getMinutes()
+          startYear: $("#start_Date_1i").val()
+          startMonth: $("#start_Date_2i").val()
+          startDay: $("#start_Date_3i").val()
+          startHour: $("#start_Time_4i").val()
+          startMinute: $("#start_Time_5i").val()
+          endYear: $("#end_Date_1i").val()
+          endMonth: $("#end_Date_2i").val()
+          endDay: $("#end_Date_3i").val()
+          endHour: $("#end_Time_4i").val()
+          endMinute: $("#end_Time_5i").val()
+
+        , (data) ->
+          alert data
+        #$.ajax
+          #type: "POST"
+          #url: "/examDef/1"
+          #data: JSON.stringify(dataToSend, null, 2)
+          #dataType: "json"
+          #success: ->
+            #alert "WTF!! FINALLY"
+
+          #error: (XMLHttpRequest, textStatus, errorThrown) ->
+            #console.log "An Ajax error was thrown."
+            #console.log XMLHttpRequest
+            #console.log textStatus
+            #console.log errorThrown                            
+        $("#exam_definition_master_question").prop "selectedIndex", 0
+        $("#filteredMQ tr").remove()
+        $("#concept option").remove()
+        $("#subconcept option").remove()
+        $("#attempts_number").val ""
+        $("#examInquiries tr").remove()
+        $("#examInquiriesHeaders").hide()
+        i = 1
+      else
+        window.console and console.log("Nombre de examen debe ser mayor a 5")
+        alert "Nombre de examen debe ser mayor a 5"
     else
       window.console and console.log("No hay reactivos seleccionados")
       alert "No hay reactivos seleccionados"
 
-
 $(document).ready ->
   $("#calculateValues").click ->
-    addition = undefined
-    calculated = undefined
-    numInquiries = undefined
-    rows = undefined
     numInquiries = $("#examInquiries").prop("rows").length
     if numInquiries > 0
       if $.isNumeric($("#attempts_number").val()) is true
@@ -160,7 +194,6 @@ $(document).ready ->
       unless calculated
         calculated = true
         rows.each (index, value) ->
-          temp = undefined
           temp = $(this).find("td:nth-child(4) input:first").val()
           if $.isNumeric(temp) is true
             if parseInt(temp) > 0
@@ -173,7 +206,6 @@ $(document).ready ->
             $(this).find("td:nth-child(4) input:first").val 1
 
         rows.each (index, value) ->
-          temp = undefined
           temp = $(this).find("td:nth-child(4) input:first").val()
           $(this).find("td:nth-child(4) input:first").val (parseInt(temp) / parseInt(addition)) * 100  if $.isNumeric(temp) is true
 
@@ -191,6 +223,7 @@ $(document).ready ->
     $("#subconcept option").remove()
     $("#exam_definition_master_question").prop "selectedIndex", -1
     $("#attempts_number").val ""
+    $("#name_exam").val ""
     $("#start_Date_3i").prop "selectedIndex", -1
     $("#start_Date_2i").prop "selectedIndex", -1
     $("#start_Date_1i").prop "selectedIndex", -1
@@ -211,6 +244,7 @@ $(document).ready ->
     $("#subconcept option").remove()
     $("#exam_definition_master_question").prop "selectedIndex", 0
     $("#attempts_number").val ""
+    $("#name_exam").val ""
     $("#start_Date_3i").prop "selectedIndex", 0
     $("#start_Date_2i").prop "selectedIndex", 0
     $("#start_Date_1i").prop "selectedIndex", 0

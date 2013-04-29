@@ -192,11 +192,60 @@ class MasterQuestionsController < ApplicationController
   def transmiting_JSON
     @inquiriesMasterQuestionsIDs = Array.new
     @inquiriesMasterQuestionsIDs.push params[:masterQuestionID]
-    puts @inquiriesMasterQuestionsIDs.fetch(0)
     respond_to do |format|
       format.json { render json: @inquiriesMasterQuestionsIDs.to_json }
     end
   end
 
+  def exam_def
+    #este no debería de ir aquí pero marca error al intentarlo hacer en otro controlador
+    #parece que una vez que hago un get en este controlador, ya no puedo cambiarlo.
+    #por lo tanto los queries los voy a hacer aquí
+    hash = params[:hash]
+    exam_name = params[:exam_name]
+    number_of_attempts = params[:number_of_attempts]
+    creationYear = params[:creationYear]
+    creationMonth = params[:creationMonth]
+    creationDay = params[:creationDay]
+    creationHour = params[:creationHour]
+    creationMinute = params[:creationMinute]
+    startYear = params[:startYear]
+    startMonth = params[:startMonth]
+    startDay = params[:startDay]
+    startHour = params[:startHour]
+    startMinute = params[:startMinute]
+    endYear = params[:endYear]
+    endMonth = params[:endMonth]
+    endDay = params[:endDay]
+    endHour = params[:endHour]
+    endMinute = params[:endMinute]
+
+    # time_string = "#{startYear}-#{startMonth}-#{startDay} #{startHour}:#{startMinute}"
+    # testing = Time.strptime(time_string, '%Y-%m-%d %H:%M').in_time_zone(Time.zone)
+    # testing = Time.zone.parse("#{creationYear}-#{creationMonth}-#{creationDay} #{creationHour}:#{creationMinute}").utc
+    # master_exam.dateCreation = Time.zone.parse("#{creationYear}-#{creationMonth}-#{creationDay} #{creationHour}:#{creationMinute}").utc
+    #create master exam
+    user = User.find session[:user_id]
+    MasterExam.create(
+      attempts: number_of_attempts,
+      name: exam_name,
+      dateCreation: Time.strptime("#{creationYear}-#{creationMonth}-#{creationDay} #{creationHour}:#{creationMinute}", '%Y-%m-%d %H:%M').in_time_zone(Time.zone),
+      startDate: Time.strptime("#{startYear}-#{startMonth}-#{startDay} #{startHour}:#{startMinute}", '%Y-%m-%d %H:%M').in_time_zone(Time.zone),
+      finishDate: Time.strptime("#{endYear}-#{endMonth}-#{endDay} #{endHour}:#{endMinute}", '%Y-%m-%d %H:%M').in_time_zone(Time.zone),
+      user: user
+    )
+    # if master_exam.save
+    #   flash[:notice] = "MasterExam creado exitosamente."
+    # else
+    #   flash[:error] = "Los datos proporcionados no son válidos."
+    # end
+    #create exam definition
+    #exam_definition = ExamDefition.new
+
+
+    respond_to do |format|
+      format.json { render json: hash.to_json }
+    end
+  end
 
 end

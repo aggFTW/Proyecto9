@@ -1,18 +1,7 @@
 
-<%= simple_form_for @examDefinition, url: new_exam_definition_path do |f| %>
+<%= simple_form_for @examUsers, url: edit_exam_definition_path do |f| %>
 
-	<%= f.input :master_question, 
-				collection: @master_questions, 
-				label_method: :language, 
-				value_method: :language,
-				prompt: "Selecciona un Lenguaje", 
-				label: "Lenguaje:" %>
-	<%= label_tag "tag0", "Concepto:" %>
-	<select id="concept"></select>
-	<%= label_tag "tag00", "Subconcepto:" %>
-	<select id="subconcept"></select>
 	<table id="filteredMQ"></table>
-	<%= text_field "name", "exam", "size" => 5, placeholder:"Nombre del Examen" %>
 	<table id="examInquiriesHeaders" class="examInq">
 		<tbody>
 			<tr>
@@ -32,30 +21,44 @@
 
 	<%= label_tag "tag1", "Fecha Inicio:" %>
 	<%= date_select "start", "Date", :order => [:day,:month,:year],
-										default: Time.zone.now,
-										#:prompt => { :day => Time.zone.now.day, :month => Time.zone.now.month, :year => Time.zone.now.year},
-										:start_year => Time.zone.now.year, use_month_numbers: true
+										:prompt => { :day => Date.current.day, :month => Date.current.month, :year => Date.current.year},
+										:start_year => Date.current.year, use_month_numbers: true
 		%>
 	<%= label_tag "tag2", "Hora Inicio:" %>
 	<%= time_select "start", "Time", :order => [:hour, :minute],
-										default: Time.now
-										#:prompt => { hour: Time.now.hour, minute: Time.now.min }
+										:prompt => { hour: Time.now.hour, minute: Time.now.min }
 		%>
 
 	<%= label_tag "tag3", "Fecha de Entrega:" %>
 	<%= date_select "end", "Date", :order => [:day,:month,:year],
-										default: Time.zone.now.tomorrow,
-										#:prompt => { :day => Time.zone.now.tomorrow.day, :month => Time.zone.now.tomorrow.month, :year => Time.zone.now.tomorrow.year},
-										:start_year => Time.zone.now.year, use_month_numbers: true
+										:prompt => { :day => DateTime.tomorrow.day, :month => DateTime.tomorrow.month, :year => DateTime.tomorrow.year},
+										:start_year => Date.current.year, use_month_numbers: true
 		%>
 	<%= label_tag "tag4", "Hora de Entrega:" %>
 	<%= time_select "end", "Time", :order => [:hour, :minute],
-										default: { hour: 23, minute: 59 }
+										:prompt => { hour: 23, minute: 59 }
 		%>
+
+	<table id="selectedGroups" class="examInq"></table>
+	<table id="selectedStudents" class="examInq"></table>
+	<%= label_tag "tag5", "Grupos:" %>
+	<select id="groups"></select>
+	<div class="control-group">
+		<div class="controls">	
+			<button type="button" id="addGroup">Agregar Grupo</button>
+		</div>
+	</div>
+	<%= label_tag "tag6", "Alumnos:" %>
+	<select id="students"></select>
+	<div class="control-group">
+		<div class="controls">	
+			<button type="button" id="addStudent">Agregar Alumno</button>
+		</div>
+	</div>
 
 	<div class="control-group">
 		<div class="controls">	
-			<button type="button" id="translateGroupsToStudents">Agregar Usuarios</button>
+			<button type="button" id="translateGroupsToStudents">Pasar grupos a usuarios</button>
 			<button type="button" id="calculateValues">Calcular Valores</button>
 			<button type="button" id="setDefaults">Valores por Defecto</button>
 			<button type="button" id="ereaseEverything">Borrar Todo</button>
