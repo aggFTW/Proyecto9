@@ -18,20 +18,26 @@ GenRap::Application.routes.draw do
   match "signup", :to => "users#new"
   match "login", :to => "sessions#login"
   match "logout", :to => "sessions#logout"
-  match "mq", :to => "master_question#new"
+  # match "mq", :to => "master_question#new"
   match "def", to: "exam_definition#new"
   match "exams", to: "exams#index"
   match "create/exam/:id", to: "exams#create", as: "create_exam"
   match "pending", to: "exams#pending"
-  match "edit", to: "exam_definition#edit"
+  match "edit/:id", to: "exam_definition#edit"
 
   #json stuff for exam definition
-  match "exam_definition/exam_def" => "exam_definitions#exam_def"
+  # match "exam_definition/exam_def" => "exam_definitions#exam_def"
   match "master_question/concepts_for_question" => "master_questions#concepts_for_question"
   match "master_question/subconcepts_for_question" => "master_questions#subconcepts_for_question"
   match "master_question/filtered_master_questions" => "master_questions#filtered_master_questions"
   match "master_question/transmiting_JSON" => "master_questions#transmiting_JSON"
   match "master_question/exam_def" => "master_questions#exam_def"
+  match "master_question/transmit_UserId" => "master_questions#transmit_UserId"
+
+  match "exam_definition/get_exams" => "exam_definition#get_exams"
+  match "exam_definition/get_groups" => "exam_definition#get_groups"
+  match "exam_definition/get_users" => "exam_definition#get_users"
+  match "exam_definition/get_current_user" => "exam_definition#get_current_user"
 
   #resources :master_questions, :only => [:show], :defaults => { :format => 'json' }
 

@@ -4,9 +4,12 @@
 addition = 0
 calculated = false
 i = 1
+user_id = -1
 
 $(document).ready ->
   $("#examInquiriesHeaders").hide()
+  $("#name_exam").hide()
+
 
 $(document).ready ->
   $("#exam_definition_master_question").change ->
@@ -65,6 +68,8 @@ $(document).ready ->
           click: ->
             calculated = false
             $("#examInquiriesHeaders").show()
+            $("#name_exam").show()
+
             inquiry = $("#examInquiries")
             inquiry.append $("<tr />")
             inquiry = $("#examInquiries tr:last")
@@ -83,6 +88,8 @@ $(document).ready ->
                 calculated = false;
                 if $("#examInquiries").prop("rows").length < 1
                   $("#examInquiriesHeaders").hide()
+                  $("#name_exam").hide()
+
             ))
             inquiry = $("#examInquiries tbody")
         ))
@@ -91,9 +98,7 @@ $(document).ready ->
 $(document).ready ->
   $("#submit").click ->
     numInquiries = $("#examInquiries").prop("rows").length
-    $("#name_exam").val "Pruebas"
     examNameLength = $("#name_exam").val().length
-    #examNameLength = 6 #para pruebas
     if numInquiries > 0
       if examNameLength > 5
         if $.isNumeric($("#attempts_number").val()) is true
@@ -127,7 +132,8 @@ $(document).ready ->
           dataToSend.push
             numQuestion: parseInt(dataIndex + 1)
             numInquiry: parseInt($(this).find("td:nth-child(2)").text())
-            value: parseFloat($(this).find("td:nth-child(4) input:first").val())
+            value: parseFloat($(this).find("td:nth-child(4) input:first").val()) / 100
+            master_question_id: parseInt($("#examInquiries").find("td:nth-child(2)").text())
             
           dataIndex++
 
@@ -152,7 +158,7 @@ $(document).ready ->
           endMinute: $("#end_Time_5i").val()
 
         , (data) ->
-          alert data
+          # alert data
         #$.ajax
           #type: "POST"
           #url: "/examDef/1"
@@ -173,6 +179,8 @@ $(document).ready ->
         $("#attempts_number").val ""
         $("#examInquiries tr").remove()
         $("#examInquiriesHeaders").hide()
+        $("#name_exam").hide()
+
         i = 1
       else
         window.console and console.log("Nombre de examen debe ser mayor a 5")
@@ -180,6 +188,10 @@ $(document).ready ->
     else
       window.console and console.log("No hay reactivos seleccionados")
       alert "No hay reactivos seleccionados"
+
+$(document).ready -> 
+  $("#addUsers").click ->
+    window.location = "/edit/"+user_id
 
 $(document).ready ->
   $("#calculateValues").click ->
@@ -235,6 +247,8 @@ $(document).ready ->
     $("#end_Time_5i").prop "selectedIndex", -1
     $("#end_Time_4i").prop "selectedIndex", -1
     $("#examInquiriesHeaders").hide()
+    $("#name_exam").hide()
+
 
 $(document).ready ->
   $("#setDefaults").click ->
@@ -256,3 +270,38 @@ $(document).ready ->
     $("#end_Time_5i").prop "selectedIndex", 0
     $("#end_Time_4i").prop "selectedIndex", 0 
     $("#examInquiriesHeaders").hide()
+    $("#name_exam").hide()
+
+
+
+# edit view
+$(window).load ->
+  $(document).ready ->
+    $("#examname").ready ->  
+      $.getJSON "/master_question/transmit_UserId"
+        , (data) ->
+          if data is null
+            alert "No se encontro User Id."
+            return
+          user_id = data
+          $.getJSON "/exam_definition/get_exams"
+            , (data) ->
+              if data is null
+                alert "No se encontraron exámenes para mostrar."
+                window.console and console.log("No se encontraron exámenes para mostrar.")
+                return
+              examDropDown = $("#examName")
+              $.each data, (item) ->
+                alert data[item].name
+                examDropDown.append $("<option />").val(data[item].id).text(data[item].name)
+          # $.getJSON "/exam_definition/get_groups"
+          #   , (data) ->
+          #     if data is null
+          #       alert "No se encontraron grupos para mostrar."
+          #       window.console and console.log("No se encontraron grupos para mostrar.")
+          #       return
+          #     groupsCheckBox = $("#groups")
+          #     $.each data, (item) ->
+          #       alert data[item].name
+          #       groupsCheckBox.append $("<option />").val(data[item].id).text(data[item].name)
+
