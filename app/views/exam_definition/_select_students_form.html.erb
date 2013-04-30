@@ -1,74 +1,21 @@
 
-<%= simple_form_for @examUsers, url: edit_exam_definition_path do |f| %>
 
-	<table id="filteredMQ"></table>
-	<table id="examInquiriesHeaders" class="examInq">
-		<tbody>
-			<tr>
-				<td>Número Pregunta</td>
-				<td>Número Reactivo</td>
-				<td>Reactivo</td>
-				<td>Valor</td>
-				<td></td>
-			</tr>
-		</tbody>
-	</table>
-	<table id="examInquiries" class="examInq"></table>
-
-
-	<%= text_field "attempts", "number", "size" => 5, placeholder:"Número de Intentos" %>
-
-
-	<%= label_tag "tag1", "Fecha Inicio:" %>
-	<%= date_select "start", "Date", :order => [:day,:month,:year],
-										:prompt => { :day => Date.current.day, :month => Date.current.month, :year => Date.current.year},
-										:start_year => Date.current.year, use_month_numbers: true
-		%>
-	<%= label_tag "tag2", "Hora Inicio:" %>
-	<%= time_select "start", "Time", :order => [:hour, :minute],
-										:prompt => { hour: Time.now.hour, minute: Time.now.min }
-		%>
-
-	<%= label_tag "tag3", "Fecha de Entrega:" %>
-	<%= date_select "end", "Date", :order => [:day,:month,:year],
-										:prompt => { :day => DateTime.tomorrow.day, :month => DateTime.tomorrow.month, :year => DateTime.tomorrow.year},
-										:start_year => Date.current.year, use_month_numbers: true
-		%>
-	<%= label_tag "tag4", "Hora de Entrega:" %>
-	<%= time_select "end", "Time", :order => [:hour, :minute],
-										:prompt => { hour: 23, minute: 59 }
-		%>
-
-	<table id="selectedGroups" class="examInq"></table>
-	<table id="selectedStudents" class="examInq"></table>
-	<%= label_tag "tag5", "Grupos:" %>
-	<select id="groups"></select>
-	<div class="control-group">
-		<div class="controls">	
-			<button type="button" id="addGroup">Agregar Grupo</button>
-		</div>
+<select id="examName"></select>
+<div id= "groups">
+<!-- <input type="checkbox" name="groups" value="Bike">hola</input> -->
+</div>
+<table id="selectedGroups"></table>
+<div id= "users">
+<!-- <input type="checkbox" name="vehicle" value="Bike"></input> -->
+</div>
+<table id="selectedUsers"></table>
+<div class="control-group">
+	<div class="controls">	
+		<button id="addGroup">Agregar Grupos</button>
+		<button id="addUser">Agregar Usuarios</button>
+		<button id="groupsToUsers">Convertir grupos a usuarios</button>
 	</div>
-	<%= label_tag "tag6", "Alumnos:" %>
-	<select id="students"></select>
-	<div class="control-group">
-		<div class="controls">	
-			<button type="button" id="addStudent">Agregar Alumno</button>
-		</div>
-	</div>
+</div>
 
-	<div class="control-group">
-		<div class="controls">	
-			<button type="button" id="translateGroupsToStudents">Pasar grupos a usuarios</button>
-			<button type="button" id="calculateValues">Calcular Valores</button>
-			<button type="button" id="setDefaults">Valores por Defecto</button>
-			<button type="button" id="ereaseEverything">Borrar Todo</button>
-		</div>
-	</div>
-	<div class="control-group">
-		<div class="controls">	
-			<%= f.submit "Crear Examen", {type:"button", id:"submit"} %>
-		</div>
-	</div>
-	
-
-<% end %>
+<!-- <select name:"mytextarea" id:"groups" size=3 multiple></select> -->
+<!-- <select name:"mytextarea" id:"users" size=3 multiple></select> -->

@@ -197,6 +197,13 @@ class MasterQuestionsController < ApplicationController
     end
   end
 
+  def transmit_UserId
+    user_id = session[:user_id]
+    respond_to do |format|
+      format.json { render json: user_id.to_json }
+    end
+  end
+
   def exam_def
     #este no debería de ir aquí pero marca error al intentarlo hacer en otro controlador
     #parece que una vez que hago un get en este controlador, ya no puedo cambiarlo.

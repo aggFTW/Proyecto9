@@ -19,15 +19,9 @@ class ExamDefinitionController < ApplicationController
 	end
 
 	def edit
-		user = User.all
-		render :text => proc { |response, output|
-		    10_000_000.times do |i|
-		      output.write("This is line #{i}\n")
-		    end
-	  	}
-		# respond_to do |format|
-	 #      format.json { render json: user.to_json }
-	 #    end
+		@exams = MasterExam.where(user_id: session[:user_id]).select("name, dateCreation")
+		@groups = Group.where(user_id: session[:user_id]).select("name")
+		@users = User.all
 	end
 
 	def update
@@ -39,18 +33,31 @@ class ExamDefinitionController < ApplicationController
 	def index
 	end
 
-	#require 'json'
-	#require 'open-uri'
-
 	def exam_def 
-		# @dummy = Array.new
-		# @dummy.push params[:hash]
-	 #    respond_to do |format|
-	 #      format.json { render json: @dummy.to_json }
-	 #  	end
-		# #json = open("/examDef/1").read
-		# #puts json
-		# #decoded_json = ActiveSupport::JSON.decode json
-		# #redirect_to '/def'
 	end
+
+
+	def get_exams
+		@exams = MasterExam.where(user_id: session[:user_id]).select("name, dateCreation")
+	    respond_to do |format|
+	      format.json { render json: @exams.to_json }
+	    end
+  	end
+  	def get_groups
+		@groups = Group.where(user_id: session[:user_id]).select("name")
+	    respond_to do |format|
+	      format.json { render json: @groups.to_json }
+	    end
+  	end
+  	def get_users
+		@users = User.all
+	    respond_to do |format|
+	      format.json { render json: @users.to_json }
+	    end
+  	end
+  	def get_current_user
+  		respond_to do |format|
+  			format.json { render json: session[:user_id].to_json }
+  		end
+  	end
 end
