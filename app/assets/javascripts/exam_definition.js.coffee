@@ -294,6 +294,7 @@ $(window).load ->
               $.each data, (item) ->
                 alert data[item].name
                 examDropDown.append $("<option />").val(data[item].id).text(data[item].name)
+
           # $.getJSON "/exam_definition/get_groups"
           #   , (data) ->
           #     if data is null
