@@ -127,7 +127,8 @@ $(document).ready ->
           dataToSend.push
             numQuestion: parseInt(dataIndex + 1)
             numInquiry: parseInt($(this).find("td:nth-child(2)").text())
-            value: parseFloat($(this).find("td:nth-child(4) input:first").val())
+            value: parseFloat($(this).find("td:nth-child(4) input:first").val()) / 100
+            master_question_id: parseInt($("#examInquiries").find("td:nth-child(2)").text())
             
           dataIndex++
 
@@ -180,6 +181,10 @@ $(document).ready ->
     else
       window.console and console.log("No hay reactivos seleccionados")
       alert "No hay reactivos seleccionados"
+
+$(document).ready -> 
+  $("#addUsers").click ->
+    window.location = "/edit"
 
 $(document).ready ->
   $("#calculateValues").click ->

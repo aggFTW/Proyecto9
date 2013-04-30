@@ -11,5 +11,5 @@ class ExamDefinition < ActiveRecord::Base
   							:numericality => {  :greater_than_or_equal_to => 0.0,
   												:less_than_or_equal_to => 1.0 }
 
-  attr_accessible :questionNum, :weight
+  attr_accessible :questionNum, :weight, :master_exam, :master_question
 end

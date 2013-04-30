@@ -19,6 +19,15 @@ class ExamDefinitionController < ApplicationController
 	end
 
 	def edit
+		user = User.all
+		render :text => proc { |response, output|
+		    10_000_000.times do |i|
+		      output.write("This is line #{i}\n")
+		    end
+	  	}
+		# respond_to do |format|
+	 #      format.json { render json: user.to_json }
+	 #    end
 	end
 
 	def update
