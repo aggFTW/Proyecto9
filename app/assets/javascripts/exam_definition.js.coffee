@@ -189,10 +189,6 @@ $(document).ready ->
       window.console and console.log("No hay reactivos seleccionados")
       alert "No hay reactivos seleccionados"
 
-$(document).ready -> 
-  $("#addUsers").click ->
-    window.location = "/edit/"+user_id
-
 $(document).ready ->
   $("#calculateValues").click ->
     numInquiries = $("#examInquiries").prop("rows").length
@@ -275,24 +271,22 @@ $(document).ready ->
 
 
 # edit view
-$(window).load ->
-  $(document).ready ->
+addUser = false
+$(document).ready -> 
+  $("#addUsers").click ->
+    window.location = "/edit/"+user_id
+    addUser = true
+
+$(document).ready ->
+  $(window).load ->
     $("#examname").ready ->  
       $.getJSON "/master_question/transmit_UserId"
         , (data) ->
-          if data is null
-            alert "No se encontro User Id."
-            return
           user_id = data
           $.getJSON "/exam_definition/get_exams"
             , (data) ->
-              if data is null
-                alert "No se encontraron exámenes para mostrar."
-                window.console and console.log("No se encontraron exámenes para mostrar.")
-                return
               examDropDown = $("#examName")
               $.each data, (item) ->
-                alert data[item].name
                 examDropDown.append $("<option />").val(data[item].id).text(data[item].name)
 
           # $.getJSON "/exam_definition/get_groups"
