@@ -25,20 +25,24 @@ GenRap::Application.routes.draw do
   match "pending", to: "exams#pending"
   match "edit/:id", to: "exam_definition#edit"
 
-  #json stuff for exam definition
-  # match "exam_definition/exam_def" => "exam_definitions#exam_def"
+  #json routes in MasterQuestion controller
   match "master_question/concepts_for_question" => "master_questions#concepts_for_question"
   match "master_question/subconcepts_for_question" => "master_questions#subconcepts_for_question"
   match "master_question/filtered_master_questions" => "master_questions#filtered_master_questions"
   match "master_question/transmiting_JSON" => "master_questions#transmiting_JSON"
-  match "master_question/exam_def" => "master_questions#exam_def"
-  match "master_question/transmit_UserId" => "master_questions#transmit_UserId"
 
-  match "exam_definition/get_exams" => "exam_definition#get_exams"
-  match "exam_definition/get_groups" => "exam_definition#get_groups"
-  match "exam_definition/get_users" => "exam_definition#get_users"
-  match "exam_definition/get_current_user" => "exam_definition#get_current_user"
+  #json routes in ExamDefinition controller
+  match "exam_definition/exam_def" => "exam_definition#exam_def"
 
-  #resources :master_questions, :only => [:show], :defaults => { :format => 'json' }
+  #json routes in Exams controller
+  match "exam/get_exams" => "exams#get_exams"
+
+  #json routes in Groups controller 
+  match "group/get_groups" => "groups#get_groups"
+
+  #json routes in Users controller
+  match "user/get_users" => "users#get_users"
+  match "user/get_current_user" => "users#get_current_user"
+  match "user/transmit_UserId" => "users#transmit_UserId"
 
 end

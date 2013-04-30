@@ -34,31 +34,53 @@ class ExamDefinitionController < ApplicationController
 	def index
 	end
 
-	def exam_def 
+	def exam_def
+    #este no debería de ir aquí pero marca error al intentarlo hacer en otro controlador
+    #parece que una vez que hago un get en este controlador, ya no puedo cambiarlo.
+    #por lo tanto los queries los voy a hacer aquí
+    hash = params[:hash]
+    exam_name = params[:exam_name]
+    number_of_attempts = params[:number_of_attempts]
+    creationYear = params[:creationYear]
+    creationMonth = params[:creationMonth]
+    creationDay = params[:creationDay]
+    creationHour = params[:creationHour]
+    creationMinute = params[:creationMinute]
+    startYear = params[:startYear]
+    startMonth = params[:startMonth]
+    startDay = params[:startDay]
+    startHour = params[:startHour]
+    startMinute = params[:startMinute]
+    endYear = params[:endYear]
+    endMonth = params[:endMonth]
+    endDay = params[:endDay]
+    endHour = params[:endHour]
+    endMinute = params[:endMinute]
+
+    user = User.find_by_id session[:user_id]
+    master_exam = MasterExam.create(
+      attempts: number_of_attempts,
+      name: exam_name,
+      dateCreation: Time.strptime("#{creationYear}-#{creationMonth}-#{creationDay} #{creationHour}:#{creationMinute}", '%Y-%m-%d %H:%M').in_time_zone(Time.zone),
+      startDate: Time.strptime("#{startYear}-#{startMonth}-#{startDay} #{startHour}:#{startMinute}", '%Y-%m-%d %H:%M').in_time_zone(Time.zone),
+      finishDate: Time.strptime("#{endYear}-#{endMonth}-#{endDay} #{endHour}:#{endMinute}", '%Y-%m-%d %H:%M').in_time_zone(Time.zone),
+      user: user
+    )
+    
+    $i = 1
+    hash.each do |h|
+      w = h[1]['value'].to_f
+      ExamDefinition.create( 
+        master_question: MasterQuestion.find_by_id( h[1]['master_question_id'][$i-1] ), 
+        master_exam: MasterExam.find_by_id(master_exam.id), 
+        questionNum: $i, 
+        weight: w 
+      )
+      $i+=1
+    end
+
+    respond_to do |format|
+      format.json { render json: hash.to_json }
+    end
 	end
-
-
-	def get_exams
-		@exams = MasterExam.where(user_id: session[:user_id]).select("name, dateCreation")
-	    respond_to do |format|
-	      format.json { render json: @exams.to_json }
-	    end
-  	end
-  	def get_groups
-		@groups = Group.where(user_id: session[:user_id]).select("name")
-	    respond_to do |format|
-	      format.json { render json: @groups.to_json }
-	    end
-  	end
-  	def get_users
-		@users = User.all
-	    respond_to do |format|
-	      format.json { render json: @users.to_json }
-	    end
-  	end
-  	def get_current_user
-  		respond_to do |format|
-  			format.json { render json: session[:user_id].to_json }
-  		end
-  	end
 end

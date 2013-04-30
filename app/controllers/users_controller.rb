@@ -88,12 +88,24 @@ class UsersController < ApplicationController
 	end
 
 	def get_users
-		#pendiente de terminar PABLO TODO
 		if check_admin || @current_user.id.to_s == params[:id]
-	    	users = MasterQuestion.select("DISTINCT(concept), id").group("concept").where(language: params[:language])
+			@users = User.all
 		    respond_to do |format|
-		      format.json { render json: concepts.to_json }
+		      format.json { render json: @users.to_json }
 		    end
 		end
-  	end
+	end	
+
+	def get_current_user
+		respond_to do |format|
+			format.json { render json: session[:user_id].to_json }
+		end
+	end
+
+	def transmit_UserId
+	    user_id = session[:user_id]
+	    respond_to do |format|
+	      format.json { render json: user_id.to_json }
+	    end
+	end
 end

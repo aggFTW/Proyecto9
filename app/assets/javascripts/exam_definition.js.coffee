@@ -137,7 +137,7 @@ $(document).ready ->
             
           dataIndex++
 
-        $.getJSON "/master_question/exam_def",
+        $.getJSON "/exam_definition/exam_def",
           hash: dataToSend
           exam_name: $("#name_exam").val()
           number_of_attempts: $("#attempts_number").val()
@@ -280,23 +280,18 @@ $(document).ready ->
 $(document).ready ->
   $(window).load ->
     $("#examname").ready ->  
-      $.getJSON "/master_question/transmit_UserId"
+      $.getJSON "/user/transmit_UserId"
         , (data) ->
           user_id = data
-          $.getJSON "/exam_definition/get_exams"
+          $.getJSON "/exam/get_exams"
             , (data) ->
               examDropDown = $("#examName")
               $.each data, (item) ->
                 examDropDown.append $("<option />").val(data[item].id).text(data[item].name)
-
-          # $.getJSON "/exam_definition/get_groups"
-          #   , (data) ->
-          #     if data is null
-          #       alert "No se encontraron grupos para mostrar."
-          #       window.console and console.log("No se encontraron grupos para mostrar.")
-          #       return
-          #     groupsCheckBox = $("#groups")
-          #     $.each data, (item) ->
-          #       alert data[item].name
-          #       groupsCheckBox.append $("<option />").val(data[item].id).text(data[item].name)
+          $.getJSON "/group/get_groups"
+            , (data) ->
+              groupsCheckBox = $("#groups")
+              $.each data, (item) ->
+                # alert data[item].name
+                groupsCheckBox.append $("<option />").val(data[item].id).text(data[item].name)
 
