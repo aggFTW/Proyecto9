@@ -58,7 +58,7 @@ class ApplicationController < ActionController::Base
 		if session[:user_id]
 			# set current user object to @current_user object variable
 			@current_user = User.find session[:user_id]
-			if @current_user && @current_user.utype == 0 #Student
+			if @current_user && @current_user.utype >= 0 #Student
 				return true
 			end
 		end
