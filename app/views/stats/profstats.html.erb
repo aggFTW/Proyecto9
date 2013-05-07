@@ -1,0 +1,36 @@
+<div class="table">
+
+  <!-- Languages 2: <%= @exams_created %><br /> -->
+
+
+  <h2>Historial de Exámenes</h2>
+  <% if @exams_created != nil %>
+  
+    <%= table_for @exams_created, html: {id: 'exams', class: 'summary table table-striped table-bordered table-condensed'} do -%>
+      <% column title: 'Nombre' do |mexam| %>
+        <% link_to mexam.name, "#"%>
+      <% end %>
+      <% column :attempts, title: 'Intentos' %>
+      <% column :startDate, title: 'Fecha de inicio' %>
+      <% column :finishDate, title: 'Fecha de fin' %>
+    <% end %>
+
+  <% else %>
+    
+    <table class="table table-striped table-bordered table-condensed">
+      <tbody>
+        <tr>
+          <td style='text-align: center; height: 60px; vertical-align: middle;'><span style='font-size: 30px; font-color: black; font-weight: bold;'>Usted no ha creado exámenes aún.</span></td>
+        </tr>
+      </tbody>
+    </table>
+  
+  <% end %>
+
+
+
+
+
+  <h2>Historial de Preguntas</h2>
+
+</div>

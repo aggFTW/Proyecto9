@@ -24,6 +24,8 @@ GenRap::Application.routes.draw do
   match "create/exam/:id", to: "exams#create", as: "create_exam"
   match "pending", to: "exams#pending"
   match "edit/:id", to: "exam_definition#edit"
+  match "mystats", to: "stats#mystats"
+  match "profstats", to: "stats#profstats"
 
   #json stuff for exam definition
   # match "exam_definition/exam_def" => "exam_definitions#exam_def"
@@ -40,5 +42,7 @@ GenRap::Application.routes.draw do
   match "exam_definition/get_current_user" => "exam_definition#get_current_user"
 
   #resources :master_questions, :only => [:show], :defaults => { :format => 'json' }
+
+  # map.exam_show, '/exams/:id', :controller => :exams, :action => :show
 
 end

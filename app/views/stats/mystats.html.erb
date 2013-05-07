@@ -1,0 +1,114 @@
+<div class="table">
+
+  <!-- Languages 2: <%= @q_taken_by_language %><br /> -->
+
+
+  <h2>Historial de Exámenes</h2>
+  <% if @exams_taken != nil %>
+    
+    <%= table_for @exams_taken, html: {id: 'exams', class: 'summary table table-striped table-bordered table-condensed'} do -%>
+      <% column title: 'Nombre' do |exam| %>
+        <% link_to MasterExam.find(exam.master_exam_id).name, 
+        #exam_show_path(:id => exam.id)
+        :controller => "exams", :action => "show", :id => exam.id%>
+      <% end %>
+      <% column :state, title: 'Estado' %>
+      <% column :date, title: 'Tomado en' %>
+      <% column :score, title: 'Calificación' %>
+      <% column :attemptnumber, title: 'Intento No.' %>
+    <% end %>
+
+    <%
+      average = 0
+      for exam in @exams_taken
+        average += exam.score
+      end
+      average = average / @exams_taken.length
+    %>
+
+    <ul>
+      <li>
+        <b>Calificación promedio: </b><%= average %>
+      </li>
+    </ul>
+
+  <% else %>
+    
+    <table class="table table-striped table-bordered table-condensed">
+      <tbody>
+        <tr>
+          <td style='text-align: center; height: 60px; vertical-align: middle;'><span style='font-size: 30px; font-color: black; font-weight: bold;'>Usted no ha tomado exámenes aún.</span></td>
+        </tr>
+      </tbody>
+    </table>
+  
+  <% end %>
+
+
+  <script type="text/javascript" charset="utf-8">
+    function createChart(language, xLabels, right, wrong) {
+
+      new Highcharts.Chart({
+        chart: { renderTo: language, type: 'column' },
+        title: { text: 'Preguntas de ' + language },
+        xAxis: { categories: xLabels },
+        yAxis: {
+          min: 0,
+          title: {
+            text: 'Preguntas'
+          },
+          stackLabels: {
+            enabled: true,
+            style: {
+              fontWeight: 'bold',
+              color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+            }
+          }
+        },
+        plotOptions: {
+          column: {
+            stacking: 'normal',
+            dataLabels: {
+              enabled: true,
+              color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white'
+            }
+          }
+        },
+        series: [{
+          name: 'Correctas',
+          data: right
+        },{
+          name: 'Incorrectas',
+          data: wrong
+        }]
+      });
+
+    }
+  </script>
+
+  <h2>Historial de Preguntas</h2>
+
+  <% for language in @q_taken_by_language.keys %>
+    <%= content_tag(:div, nil, :id => language, :style => "width:100%; height:400px;") %>
+    <%= javascript_tag do %>
+      var xAxis = new Array();
+      var right = new Array();
+      var wrong = new Array();
+      <%
+        for concept in @q_taken_by_language[language].keys
+          for subconcept in @q_taken_by_language[language][concept].keys
+            right = @q_taken_by_language[language][concept][subconcept].inject{ |sum,x| sum + x }
+            wrong = @q_taken_by_language[language][concept][subconcept].length - right
+      %>
+            xAxis.push('<%= concept + '-' + subconcept %>');
+            right.push(<%= right %>);
+            wrong.push(<%= wrong %>);
+      <%
+          end
+        end 
+      %>
+      createChart('<%= language %>', xAxis, right, wrong);
+    <% end %> 
+  <% end %>
+
+</div>
