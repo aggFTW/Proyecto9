@@ -1,19 +1,40 @@
 <div class="table">
 
-  <!-- Languages 2: <%= @exams_created %><br /> -->
+  <!-- Languages 2: <%= @questions_agg %><br /> -->
 
 
   <h2>Historial de Exámenes</h2>
-  <% if @exams_created != nil %>
+  <% if @exams_agg.length > 0 %>
   
-    <%= table_for @exams_created, html: {id: 'exams', class: 'summary table table-striped table-bordered table-condensed'} do -%>
-      <% column title: 'Nombre' do |mexam| %>
-        <% link_to mexam.name, "#"%>
+    
+
+    <table class="table table-bordered table-striped">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Intentos</th>
+          <th>Fecha de inicio</th>
+          <th>Fecha de fin</th>
+          <th>Promedio</th>
+          <th>Veces tomado</th>
+          <th>Disponible a __ usuarios</th>
+        </tr>
+      </thead>
+     
+      <tbody>
+      <% @exams_agg.keys.each do |e| %>
+        <tr>
+          <td><%= e.name %></td>
+          <td><%= e.attempts %></td>
+          <td><%= e.startDate %></td>
+          <td><%= e.finishDate %></td>
+          <td><%= @exams_agg[e][0] %></td>
+          <td><%= @exams_agg[e][1] %></td>
+          <td><%= @exams_agg[e][2] %></td>
+        </tr>
       <% end %>
-      <% column :attempts, title: 'Intentos' %>
-      <% column :startDate, title: 'Fecha de inicio' %>
-      <% column :finishDate, title: 'Fecha de fin' %>
-    <% end %>
+      </tbody>
+    </table>
 
   <% else %>
     
@@ -31,6 +52,49 @@
 
 
 
-  <h2>Historial de Preguntas</h2>
+  <h2>Historial de Preguntas usadas en sus exámenes</h2>
+  <h4>La información presentada aquí es un agregado de todas las preguntas utilizadas en sus exámenes, sin importar si fue presentada en algún examen de otro profesor.</h4>
+  <% if @questions_agg.length > 0 %>
+
+    <table class="table table-bordered table-striped">
+      <thead>
+        <tr>
+          <th>Lenguaje</th>
+          <th>Concepto</th>
+          <th>Subconcepto</th>
+          <th>Pregunta</th>
+          <th>Total de veces contestada</th>
+          <th>Porcentaje de contestación correcta</th>
+          <th>Porcentaje de contestación incorrecta</th>
+        </tr>
+      </thead>
+     
+      <tbody>
+      <% @questions_agg.keys.each do |q| %>
+        <tr>
+          <td><%= q.language.capitalize %></td>
+          <td><%= q.concept.capitalize %></td>
+          <td><%= q.subconcept.capitalize %></td>
+          <td><%= q.inquiry %></td>
+          <% total = @questions_agg[q][0] + @questions_agg[q][1] %>
+          <td><%= total %></td>
+          <td><%= 100 * @questions_agg[q][0] / total.to_f %>%</td>
+          <td><%= 100 * @questions_agg[q][1] / total.to_f %>%</td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+
+  <% else %>
+    
+    <table class="table table-striped table-bordered table-condensed">
+      <tbody>
+        <tr>
+          <td style='text-align: center; height: 60px; vertical-align: middle;'><span style='font-size: 30px; font-color: black; font-weight: bold;'>Usted no ha creado exámenes aún, por lo que no hay información sobre sus preguntas.</span></td>
+        </tr>
+      </tbody>
+    </table>
+  
+  <% end %>
 
 </div>

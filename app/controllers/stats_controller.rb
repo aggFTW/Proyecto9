@@ -51,7 +51,38 @@ class StatsController < ApplicationController
 
 	def profstats
 		if check_prof
-			@exams_created = @current_user.master_exams
+
+			@exams_agg = {}
+			for e in @current_user.master_exams
+				actualExams = e.exams
+				average = 0
+				for a in actualExams
+					average += a.score
+				end
+				average /= actualExams.length
+
+				@exams_agg[e] = [average, actualExams.length, e.users.length]
+			end
+
+			# Information returned is about questions from all professors, in aggregate
+			# not only from exams by professor
+			@questions_agg = {}
+			for e in @current_user.master_exams
+				for q in e.master_questions
+					actualQuestions = q.questions
+					
+					right = actualQuestions.map { |a| right_answer? a }
+					right = right.inject{|sum,x| sum + x }
+
+					if @questions_agg.has_key? q
+						@questions_agg[q][0] += right
+						@questions_agg[q][1] += (actualQuestions.length - right)
+					else
+						@questions_agg[q] = [right, actualQuestions.length - right]
+					end
+				end
+			end
+
 		else
 			flash[:error] = "Usted necesita ser profesor para ver información de sus exámenes."
 			redirect_to(root_path)
