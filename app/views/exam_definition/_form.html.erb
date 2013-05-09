@@ -55,7 +55,7 @@
 
 	<div class="control-group">
 		<div class="controls">	
-			<button type="button" id="addUsers">Agregar Usuarios</button>
+			<%= f.submit "Crear Examen", {type:"button", id:"submit"} %>
 			<button type="button" id="calculateValues">Calcular Valores</button>
 			<button type="button" id="setDefaults">Valores por Defecto</button>
 			<button type="button" id="ereaseEverything">Borrar Todo</button>
@@ -63,7 +63,7 @@
 	</div>
 	<div class="control-group">
 		<div class="controls">	
-			<%= f.submit "Crear Examen", {type:"button", id:"submit"} %>
+			<button type="button" id="addUsers">Continuar [Selección de Usuarios]</button>
 		</div>
 	</div>
 	

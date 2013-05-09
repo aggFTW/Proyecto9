@@ -43,6 +43,5 @@ GenRap::Application.routes.draw do
   #json routes in Users controller
   match "user/get_users" => "users#get_users"
   match "user/get_current_user" => "users#get_current_user"
-  match "user/transmit_UserId" => "users#transmit_UserId"
 
 end

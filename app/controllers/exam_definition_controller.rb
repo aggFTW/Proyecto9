@@ -77,7 +77,10 @@ class ExamDefinitionController < ApplicationController
         weight: w 
       )
       $i+=1
+
     end
+    flash.now[:notice] = "Examen agregado exitosamente"
+    redirect_to(def_path)
 
     respond_to do |format|
       format.json { render json: hash.to_json }

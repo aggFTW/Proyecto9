@@ -5,6 +5,7 @@ addition = 0
 calculated = false
 i = 1
 user_id = -1
+groups_ids = []
 
 $(document).ready ->
   $("#examInquiriesHeaders").hide()
@@ -180,7 +181,6 @@ $(document).ready ->
         $("#examInquiries tr").remove()
         $("#examInquiriesHeaders").hide()
         $("#name_exam").hide()
-
         i = 1
       else
         window.console and console.log("Nombre de examen debe ser mayor a 5")
@@ -277,21 +277,116 @@ $(document).ready ->
     window.location = "/edit/"+user_id
     addUser = true
 
+
+# $(document).ready ->
+#   $(window).load ->
+#     $("#examname").ready ->  
+#       $.getJSON "/user/get_current_user"
+#         , (data) ->
+#           user_id = data
+#           $.getJSON "/exam/get_exams"
+#             , (data) ->
+#               examDropDown = $("#examName")
+#               $.each data, (item) ->
+#                 examDropDown.append $("<option />").val(data[item].id).text(data[item].name)
+#           $.getJSON "/group/get_groups", (data) ->
+#             groupsCheckBox = $("#groups")
+#             groups_ids = []
+#             $.each data, (item) ->
+#               groups_ids.push id: data[item].id
+#               groupsCheckBox.append $("<input />",
+#                 type: "checkbox"
+#                 name: "groups"
+#                 value: data[item].id
+#                 text: data[item].name
+#               )
+#                 # groupsCheckBox.append $("<option />").val(data[item].id).text(data[item].name)
+#           if groups_ids.length < 1
+#             groups_ids = null
+#           $.getJSON "/user/get_users",#different than me
+#             groups_ids_: groups_ids
+#             , (data) ->
+#               groupsCheckBox = $("#users")
+#               $.each data, (item) ->
+#                 groupsCheckBox.append($("<input />", 
+#                   id: data[item].id, 
+#                   type: "checkbox", 
+#                   name: "users", 
+#                   value: data[item].username,
+#                   text: data[item].username + " " + data[item].fname + " " + data[item].lname
+#                   )#.append($("<label />", for: data[item].id, prop: "Input Value"))
+#                 )
+
+
 $(document).ready ->
   $(window).load ->
-    $("#examname").ready ->  
-      $.getJSON "/user/transmit_UserId"
-        , (data) ->
-          user_id = data
-          $.getJSON "/exam/get_exams"
-            , (data) ->
-              examDropDown = $("#examName")
-              $.each data, (item) ->
-                examDropDown.append $("<option />").val(data[item].id).text(data[item].name)
-          $.getJSON "/group/get_groups"
-            , (data) ->
-              groupsCheckBox = $("#groups")
-              $.each data, (item) ->
-                # alert data[item].name
-                groupsCheckBox.append $("<option />").val(data[item].id).text(data[item].name)
+    $("#examname").ready ->
+      $.getJSON "/user/get_current_user", (data) ->
+        user_id = data
+        $.getJSON "/exam/get_exams", (data) ->
+          examDropDown = $("#examName")
+          $.each data, (item) ->
+            examDropDown.append $("<option />").val(data[item].id).text(data[item].name)
 
+        $.getJSON "/group/get_groups", (data) ->
+          groupsCheckBox = $("#groups")
+          groups_ids = []
+          $.each data, (item) ->
+            groups_ids.push id: data[item].id
+            groupsCheckBox.append ($("<label />")
+            .append $("<input />",
+              type: "checkbox"
+              name: "groups"
+              value: data[item].id
+              # text: data[item].name
+            ))
+            $("#groups label:last").append( data[item].name )
+          groups_ids = null  if groups_ids.length < 1
+          $.getJSON "/user/get_users",
+            groups_ids_: groups_ids
+          , (data) ->
+            groupsCheckBox = $("#users")
+            $.each data, (item) ->
+              groupsCheckBox.append $("<input />",
+                id: data[item].id
+                type: "checkbox"
+                name: "users"
+                value: data[item].username
+                text: data[item].username + " " + data[item].fname + " " + data[item].lname
+              )
+
+
+$(document).ready ->
+  $(window).load ->
+    $("#groupsToUsers").click ->
+      boxes = $("input[name=groups]:checked")
+      $.each boxes, (item) ->
+        alert boxes[item].value
+        # boxes
+    
+
+    
+(($, undefined_) ->
+  $.notification = (options) ->
+    opts = $.extend({},
+      type: "notice"
+      time: 3000
+    , options)
+    o = opts
+    timeout = setTimeout("$.notification.removebar()", o.time)
+    message_span = $("<span />").addClass("jbar-content").html(o.message)
+    wrap_bar = $("<div />").addClass("jbar jbar-top").css("cursor", "pointer")
+    wrap_bar.css color: "#D8000C"  if o.type is "error"
+    wrap_bar.click ->
+      $.notification.removebar()
+
+    wrap_bar.append(message_span).hide().insertBefore($(".container")).fadeIn "fast"
+
+  timeout = undefined
+  $.notification.removebar = (txt) ->
+    if $(".jbar").length
+      clearTimeout timeout
+      $(".jbar").fadeOut "fast", ->
+        $(this).remove()
+
+) jQuery

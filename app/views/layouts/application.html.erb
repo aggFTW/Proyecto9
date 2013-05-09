@@ -18,6 +18,15 @@
     <%= stylesheet_link_tag "application", :media => "all" %>
     <%= csrf_meta_tags %>
     <%= yield(:head) %>
+
+    <% if flash[:notice] %>
+      <script language='javascript'>
+        $(document).ready(function() {
+          <%= fading_flash_notice %>
+        });
+      </script>
+    <% end %>
+    
   </head>
   <body>
     <header class="navbar navbar-fixed-top">

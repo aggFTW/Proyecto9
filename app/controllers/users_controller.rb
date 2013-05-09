@@ -89,7 +89,22 @@ class UsersController < ApplicationController
 
 	def get_users
 		if check_admin || @current_user.id.to_s == params[:id]
-			@users = User.all
+			tempStr = ""
+			hash = params[:groups_ids_]
+			$i = 1
+		    hash.each do |h|
+		    	tempStr += "#{h[1][:id][$i-2]}"
+		    	if $i < ( hash.length )
+					tempStr += ","
+				end
+		      	$i+=1
+		    end
+			if tempStr != ""
+				# @users = User.where("id != #{session[:user_id]} and group_id not in '(#{tempStr})'")
+				@users = Group.includes(:users).where("groups_users.user_id not in (#{tempStr})").where("groups_users.user_id != #{session[:user_id]}")
+			else
+				@users = User.where("id != #{session[:user_id]}")
+			end
 		    respond_to do |format|
 		      format.json { render json: @users.to_json }
 		    end
@@ -100,12 +115,5 @@ class UsersController < ApplicationController
 		respond_to do |format|
 			format.json { render json: session[:user_id].to_json }
 		end
-	end
-
-	def transmit_UserId
-	    user_id = session[:user_id]
-	    respond_to do |format|
-	      format.json { render json: user_id.to_json }
-	    end
 	end
 end

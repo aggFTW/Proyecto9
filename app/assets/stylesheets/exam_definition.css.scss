@@ -493,3 +493,49 @@ fieldset.x-panel-collapsed .x-fieldset-bwrap {
 .x-fieldset-body {
     overflow:hidden;
 }
+
+
+
+
+
+/*
+    Flash errors and notice
+*/
+
+
+.jbar{
+    height:50px;
+    width:100%;
+    position:fixed;
+    text-align:center;
+    left:0px;
+    z-index:9999999;
+    margin:0px;
+    padding:0px;
+    filter:progid:DXImageTransform.Microsoft.Alpha(opacity=92); 
+    opacity: 0.92;
+    -moz-opacity: 0.92;
+    -moz-box-shadow: #555 0px 0px 5px;
+    box-shadow: #555 0px 0px 5px;
+}
+
+.jbar-top{
+    top:0px;
+}
+
+.jbar-bottom{
+    bottom:0px;
+}
+
+.jbar-content{
+    line-height:46px;
+    font-size: 18px;
+}
+
+.jbar-top a.jbar-cross{
+    top:8px;    
+}
+
+.jbar-bottom a.jbar-cross{
+    bottom:8px;
+}

@@ -63,7 +63,7 @@ class GroupsController < ApplicationController
 
 	def get_groups
 		if check_admin || @current_user.id.to_s == params[:id]
-			@groups = Group.where(user_id: session[:user_id]).select("name")
+			@groups = Group.where(user_id: session[:user_id]).select("name, id")
 		    respond_to do |format|
 		      format.json { render json: @groups.to_json }
 		    end
