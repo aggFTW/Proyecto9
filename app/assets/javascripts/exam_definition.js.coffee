@@ -366,27 +366,27 @@ $(document).ready ->
     
 
     
-(($, undefined_) ->
-  $.notification = (options) ->
-    opts = $.extend({},
-      type: "notice"
-      time: 3000
-    , options)
-    o = opts
-    timeout = setTimeout("$.notification.removebar()", o.time)
-    message_span = $("<span />").addClass("jbar-content").html(o.message)
-    wrap_bar = $("<div />").addClass("jbar jbar-top").css("cursor", "pointer")
-    wrap_bar.css color: "#D8000C"  if o.type is "error"
-    wrap_bar.click ->
-      $.notification.removebar()
+# (($, undefined_) ->
+#   $.notification = (options) ->
+#     opts = $.extend({},
+#       type: "notice"
+#       time: 3000
+#     , options)
+#     o = opts
+#     timeout = setTimeout("$.notification.removebar()", o.time)
+#     message_span = $("<span />").addClass("jbar-content").html(o.message)
+#     wrap_bar = $("<div />").addClass("jbar jbar-top").css("cursor", "pointer")
+#     wrap_bar.css color: "#D8000C"  if o.type is "error"
+#     wrap_bar.click ->
+#       $.notification.removebar()
 
-    wrap_bar.append(message_span).hide().insertBefore($(".container")).fadeIn "fast"
+#     wrap_bar.append(message_span).hide().insertBefore($(".container")).fadeIn "fast"
 
-  timeout = undefined
-  $.notification.removebar = (txt) ->
-    if $(".jbar").length
-      clearTimeout timeout
-      $(".jbar").fadeOut "fast", ->
-        $(this).remove()
+#   timeout = undefined
+#   $.notification.removebar = (txt) ->
+#     if $(".jbar").length
+#       clearTimeout timeout
+#       $(".jbar").fadeOut "fast", ->
+#         $(this).remove()
 
-) jQuery
+# ) jQuery

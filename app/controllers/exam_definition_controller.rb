@@ -72,18 +72,18 @@ class ExamDefinitionController < ApplicationController
       w = h[1]['value'].to_f
       ExamDefinition.create( 
         master_question: MasterQuestion.find_by_id( h[1]['master_question_id'][$i-1] ), 
-        master_exam: MasterExam.find_by_id(master_exam.id), 
-        questionNum: $i, 
+        master_exam: MasterExam.find_by_id(master_exam.id),
+         questionNum: $i, 
         weight: w 
       )
       $i+=1
 
     end
     flash.now[:notice] = "Examen agregado exitosamente"
-    redirect_to(def_path)
 
     respond_to do |format|
       format.json { render json: hash.to_json }
     end
+    redirect_to(def_path)
 	end
 end

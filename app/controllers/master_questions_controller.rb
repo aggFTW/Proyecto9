@@ -169,21 +169,21 @@ class MasterQuestionsController < ApplicationController
   end
 
   def concepts_for_question
-    concepts = MasterQuestion.select("DISTINCT(concept), id").group("concept").where(language: params[:language])
+    concepts = MasterQuestion.select("DISTINCT(concept), id").group("upper(concept)").where("upper(language) = upper('#{params[:language]}')")
     respond_to do |format|
       format.json { render json: concepts.to_json }
     end
   end
 
   def subconcepts_for_question
-    subconcepts = MasterQuestion.select("DISTINCT(subconcept), id").group("subconcept").where(language: params[:language], concept: params[:concept])
+    subconcepts = MasterQuestion.select("DISTINCT(subconcept), id").group("upper(subconcept)").where("upper(language) = upper('#{params[:language]}')").where("upper(concept) = upper('#{params[:concept]}')")
     respond_to do |format|
       format.json { render json: subconcepts.to_json }
     end
   end
 
   def filtered_master_questions
-    filteredMQs = MasterQuestion.select("inquiry, id").where(language: params[:language], concept: params[:concept], subconcept: params[:subconcept])
+    filteredMQs = MasterQuestion.select("inquiry, id").where("upper(language) = upper('#{params[:language]}')").where("upper(concept) = upper('#{params[:concept]}')").where("upper(subconcept) = upper('#{params[:subconcept]}')")
     respond_to do |format|
       format.json { render json: filteredMQs.to_json }
     end
