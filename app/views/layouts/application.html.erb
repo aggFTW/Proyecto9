@@ -19,6 +19,15 @@
     <%= javascript_include_tag "http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js", "rails.js", "http://code.highcharts.com/highcharts.js" %> 
     <%= csrf_meta_tags %>
     <%= yield(:head) %>
+
+    <% if flash[:notice] %>
+      <script language='javascript'>
+        $(document).ready(function() {
+          <%= fading_flash_notice %>
+        });
+      </script>
+    <% end %>
+    
   </head>
   <body>
     <header class="navbar navbar-fixed-top">

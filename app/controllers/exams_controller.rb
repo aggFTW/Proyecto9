@@ -134,4 +134,13 @@ class ExamsController < ApplicationController
 		end
 		validUsers
 	end
+
+	def get_exams
+		@exams = MasterExam.where(user_id: session[:user_id]).select("name, dateCreation")
+	    respond_to do |format|
+	      format.json { render json: @exams.to_json }
+	    end
+  	end
+
+  	
 end

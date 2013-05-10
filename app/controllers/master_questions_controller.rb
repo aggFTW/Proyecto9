@@ -169,21 +169,21 @@ class MasterQuestionsController < ApplicationController
   end
 
   def concepts_for_question
-    concepts = MasterQuestion.select("DISTINCT(concept), id").group("concept").where(language: params[:language])
+    concepts = MasterQuestion.select("DISTINCT(concept), id").group("upper(concept)").where("upper(language) = upper('#{params[:language]}')")
     respond_to do |format|
       format.json { render json: concepts.to_json }
     end
   end
 
   def subconcepts_for_question
-    subconcepts = MasterQuestion.select("DISTINCT(subconcept), id").group("subconcept").where(language: params[:language], concept: params[:concept])
+    subconcepts = MasterQuestion.select("DISTINCT(subconcept), id").group("upper(subconcept)").where("upper(language) = upper('#{params[:language]}')").where("upper(concept) = upper('#{params[:concept]}')")
     respond_to do |format|
       format.json { render json: subconcepts.to_json }
     end
   end
 
   def filtered_master_questions
-    filteredMQs = MasterQuestion.select("inquiry, id").where(language: params[:language], concept: params[:concept], subconcept: params[:subconcept])
+    filteredMQs = MasterQuestion.select("inquiry, id").where("upper(language) = upper('#{params[:language]}')").where("upper(concept) = upper('#{params[:concept]}')").where("upper(subconcept) = upper('#{params[:subconcept]}')")
     respond_to do |format|
       format.json { render json: filteredMQs.to_json }
     end
@@ -196,62 +196,4 @@ class MasterQuestionsController < ApplicationController
       format.json { render json: @inquiriesMasterQuestionsIDs.to_json }
     end
   end
-
-  def transmit_UserId
-    user_id = session[:user_id]
-    respond_to do |format|
-      format.json { render json: user_id.to_json }
-    end
-  end
-
-  def exam_def
-    #este no debería de ir aquí pero marca error al intentarlo hacer en otro controlador
-    #parece que una vez que hago un get en este controlador, ya no puedo cambiarlo.
-    #por lo tanto los queries los voy a hacer aquí
-    hash = params[:hash]
-    exam_name = params[:exam_name]
-    number_of_attempts = params[:number_of_attempts]
-    creationYear = params[:creationYear]
-    creationMonth = params[:creationMonth]
-    creationDay = params[:creationDay]
-    creationHour = params[:creationHour]
-    creationMinute = params[:creationMinute]
-    startYear = params[:startYear]
-    startMonth = params[:startMonth]
-    startDay = params[:startDay]
-    startHour = params[:startHour]
-    startMinute = params[:startMinute]
-    endYear = params[:endYear]
-    endMonth = params[:endMonth]
-    endDay = params[:endDay]
-    endHour = params[:endHour]
-    endMinute = params[:endMinute]
-
-    user = User.find_by_id session[:user_id]
-    master_exam = MasterExam.create(
-      attempts: number_of_attempts,
-      name: exam_name,
-      dateCreation: Time.strptime("#{creationYear}-#{creationMonth}-#{creationDay} #{creationHour}:#{creationMinute}", '%Y-%m-%d %H:%M').in_time_zone(Time.zone),
-      startDate: Time.strptime("#{startYear}-#{startMonth}-#{startDay} #{startHour}:#{startMinute}", '%Y-%m-%d %H:%M').in_time_zone(Time.zone),
-      finishDate: Time.strptime("#{endYear}-#{endMonth}-#{endDay} #{endHour}:#{endMinute}", '%Y-%m-%d %H:%M').in_time_zone(Time.zone),
-      user: user
-    )
-    
-    $i = 1
-    hash.each do |h|
-      w = h[1]['value'].to_f
-      ExamDefinition.create( 
-        master_question: MasterQuestion.find_by_id( h[1]['master_question_id'][$i-1] ), 
-        master_exam: MasterExam.find_by_id(master_exam.id), 
-        questionNum: $i, 
-        weight: w 
-      )
-      $i+=1
-    end
-
-    respond_to do |format|
-      format.json { render json: hash.to_json }
-    end
-  end
-
 end
