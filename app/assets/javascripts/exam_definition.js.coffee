@@ -367,8 +367,22 @@ $(document).ready ->
 
 # Also, when I remove a user, add it to the selectable checkboxes
 
+
+# When I clic on Agregar
+$(document).ready ->
+  $("#add").click ->
+    
+
+# When I clic on Quitar
+
+
 # When I clic on Agregar Grupos
-# When I clic on Agregar Usuarios 
+
+# When I clic on Agregar Usuarios
+# When I clic on Continuar 
+$(document).ready ->
+  $("#continueToHome").click ->
+    window.location = "/users/"+user_id
 
 
 
