@@ -92,23 +92,18 @@ class UsersController < ApplicationController
 			tempStr = ""
 			@users = {}
 			hash = params[:groups_ids_]
-			# $i = 1
 			hash.each_with_index{ |h, index|
-				tempStr += "#{h[1][:id][index]}"
-		    	if index < ( hash.length-2 )
+				# tempStr += "#{h[1][:id][index]}"
+				tempStr += "#{h[1][:id]}"
+		    	if index < ( hash.length-1 )
 					tempStr += ","
 				end
 			}
-			# puts tempStr
-		  #   hash.each do |h|
-		  #   	tempStr += "#{h[1][:id][$i-2]}"
-		  #   	if $i < ( hash.length )
-				# 	tempStr += ","
-				# end
-		  #     	$i+=1
-		  #   end
+			# hash.each do |key, value|
+
+			# end
 			if tempStr != ""
-				@users = Group.includes(:users).where("groups_users.group_id not in (#{tempStr})").where("groups_users.user_id == #{session[:user_id]}")
+				@users = User.joins(:groups).where("groups.user_id == users.id").select("DISTINCT(users.username)").where("groups_users.group_id not in (#{tempStr})").where("groups_users.user_id != #{session[:user_id]}")
 				# @users = Group.includes(:users).where("groups_users.group_id not in (#{tempStr})").where("groups_users.user_id == #{session[:user_id]}")
 			else
 				@users = User.where("id != #{session[:user_id]}")
