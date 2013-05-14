@@ -346,15 +346,17 @@ $(document).ready ->
           $.getJSON "/user/get_users",
             groups_ids_: groups_ids
           , (data) ->
-            groupsCheckBox = $("#users")
+            usersCheckBox = $("#users")
             $.each data, (item) ->
-              groupsCheckBox.append $("<input />",
-                id: data[item].id
+              usersCheckBox.append ($("<label />")
+              .append $("<input />",
                 type: "checkbox"
                 name: "users"
-                value: data[item].username
-                text: data[item].username + " " + data[item].fname + " " + data[item].lname
-              )
+                value: data[item].id
+                # text: data[item].name
+              ))
+              $("#users label:last").append( data[item].username + " " + data[item].fname + " " + data[item].lname )
+            
 
 
 # Add a "When selected exam changes get all users an groups that can take that exam"
