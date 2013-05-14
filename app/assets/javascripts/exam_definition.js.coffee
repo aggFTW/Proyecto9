@@ -320,13 +320,14 @@ $(document).ready ->
 
 $(document).ready ->
   $(window).load ->
-    $("#examname").ready ->
+    $("#examName").ready ->
       $.getJSON "/user/get_current_user", (data) ->
         user_id = data
         $.getJSON "/exam/get_exams", (data) ->
           examDropDown = $("#examName")
           $.each data, (item) ->
             examDropDown.append $("<option />").val(data[item].id).text(data[item].name)
+          $("#examName").prop "selectedIndex", -1
 
         $.getJSON "/group/get_groups", (data) ->
           groupsCheckBox = $("#groups")
@@ -355,14 +356,14 @@ $(document).ready ->
                 text: data[item].username + " " + data[item].fname + " " + data[item].lname
               )
 
-
-$(document).ready ->
-  $(window).load ->
-    $("#groupsToUsers").click ->
-      boxes = $("input[name=groups]:checked")
-      $.each boxes, (item) ->
-        alert boxes[item].value
-        # boxes
+# This is the convert groups to users
+# $(document).ready ->
+#   $(window).load ->
+#     $("#groupsToUsers").click ->
+#       boxes = $("input[name=groups]:checked")
+#       $.each boxes, (item) ->
+#         alert boxes[item].value
+#         # boxes
     
 
     
