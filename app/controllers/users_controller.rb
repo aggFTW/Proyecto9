@@ -103,10 +103,15 @@ class UsersController < ApplicationController
 
 			# end
 			if tempStr != ""
-				@users = User.joins(:groups).where("groups.user_id == users.id").select("DISTINCT(users.username)").where("groups_users.group_id not in (#{tempStr})").where("groups_users.user_id != #{session[:user_id]}")
-				# @users = Group.includes(:users).where("groups_users.group_id not in (#{tempStr})").where("groups_users.user_id == #{session[:user_id]}")
+				# Query: Get users from groups that are not displayed
+				u = User.joins(:groups).select("DISTINCT users.id").where("groups_users.group_id in (3,4)")
+				@users = User.select("distinct id").where("id not in #{u}")
+
+				# @users = User.joins(:groups).where("groups.user_id == users.id").select("DISTINCT users.id, users.username").where("groups_users.group_id not in (#{tempStr})").where("groups_users.user_id == #{session[:user_id]}")
 			else
-				@users = User.where("id != #{session[:user_id]}")
+				# if no group is displayed, then if he is admin, show all users.
+				# change this maybe to something that does not show all users
+				@users = User.where("id != #{session[:user_id]}").select("DISTINCT users.id, users.username")
 			end
 		    respond_to do |format|
 		      format.json { render json: @users.to_json }

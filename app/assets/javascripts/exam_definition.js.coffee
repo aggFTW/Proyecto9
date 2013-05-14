@@ -326,7 +326,7 @@ $(document).ready ->
         $.getJSON "/exam/get_exams", (data) ->
           examDropDown = $("#examName")
           $.each data, (item) ->
-            examDropDown.append $("<option />").val(data[item].id).text(data[item].name)
+            examDropDown.append $("<option />").val(data[item].id).text(data[item].name + " - " + data[item].dateCreation)
           $("#examName").prop "selectedIndex", -1
 
         $.getJSON "/group/get_groups", (data) ->
@@ -356,7 +356,23 @@ $(document).ready ->
                 text: data[item].username + " " + data[item].fname + " " + data[item].lname
               )
 
-# This is the convert groups to users
+
+# Add a "When selected exam changes get all users an groups that can take that exam"
+
+# Also, improve queries to allow that if users are selected when we select an exam don't display them again
+
+# Also, when I add a user, delete it from the selectable checkboxes
+
+# Also, when I remove a user, add it to the selectable checkboxes
+
+# When I clic on Agregar Grupos
+# When I clic on Agregar Usuarios 
+
+
+
+
+
+# This is the converter of groups to users
 # $(document).ready ->
 #   $(window).load ->
 #     $("#groupsToUsers").click ->
@@ -366,7 +382,7 @@ $(document).ready ->
 #         # boxes
     
 
-    
+    # This is a desperate way to show the flashes made in ruby
 # (($, undefined_) ->
 #   $.notification = (options) ->
 #     opts = $.extend({},
