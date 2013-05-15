@@ -104,7 +104,7 @@ class UsersController < ApplicationController
 			# end
 			if tempStr != ""
 				# Query: Get users from groups that are not displayed
-				u = User.joins(:groups).select("DISTINCT users.id").where("groups_users.group_id in (3,4)")
+				u = User.joins(:groups).select("DISTINCT users.id").where("groups_users.group_id in (#{tempStr})")
 				@users = User.select("DISTINCT id, username, fname, lname").where("id not in (?)", u)
 
 				# @users = User.joins(:groups).where("groups.user_id == users.id").select("DISTINCT users.id, users.username").where("groups_users.group_id not in (#{tempStr})").where("groups_users.user_id == #{session[:user_id]}")
@@ -122,6 +122,29 @@ class UsersController < ApplicationController
 	def get_current_user
 		respond_to do |format|
 			format.json { render json: session[:user_id].to_json }
+		end
+	end
+
+	def set_users_cantake
+		dummy = {}
+		exam_id = params[:exam_id]
+		checked_groups = params[:checked_groups]
+      	checked_users = params[:checked_users]
+      	usersFromGroups = User.joins(:groups).select("DISTINCT users.id").where("groups_users.group_id in (?)", checked_groups)
+      	usersFromGroups.each do |user|
+      		if !Cantake.exists?(master_exam_id: exam_id, user_id: user[:id])
+	  			c = Cantake.new
+	  			c.master_exam_id = exam_id
+	  			c.user_id = user[:id]
+	  			c.save
+  			end
+  			# Cantake.create( 
+		   #      master_exam_id: MasterExam.find_by_id( exam_id ), 
+		   #      user_id: User.find_by_id(user[:id]),
+	    #   	)
+      	end
+		respond_to do |format|
+			format.json { render json: usersFromGroups.to_json }
 		end
 	end
 end

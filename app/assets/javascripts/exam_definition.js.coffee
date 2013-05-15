@@ -277,47 +277,6 @@ $(document).ready ->
     window.location = "/edit/"+user_id
     addUser = true
 
-
-# $(document).ready ->
-#   $(window).load ->
-#     $("#examname").ready ->  
-#       $.getJSON "/user/get_current_user"
-#         , (data) ->
-#           user_id = data
-#           $.getJSON "/exam/get_exams"
-#             , (data) ->
-#               examDropDown = $("#examName")
-#               $.each data, (item) ->
-#                 examDropDown.append $("<option />").val(data[item].id).text(data[item].name)
-#           $.getJSON "/group/get_groups", (data) ->
-#             groupsCheckBox = $("#groups")
-#             groups_ids = []
-#             $.each data, (item) ->
-#               groups_ids.push id: data[item].id
-#               groupsCheckBox.append $("<input />",
-#                 type: "checkbox"
-#                 name: "groups"
-#                 value: data[item].id
-#                 text: data[item].name
-#               )
-#                 # groupsCheckBox.append $("<option />").val(data[item].id).text(data[item].name)
-#           if groups_ids.length < 1
-#             groups_ids = null
-#           $.getJSON "/user/get_users",#different than me
-#             groups_ids_: groups_ids
-#             , (data) ->
-#               groupsCheckBox = $("#users")
-#               $.each data, (item) ->
-#                 groupsCheckBox.append($("<input />", 
-#                   id: data[item].id, 
-#                   type: "checkbox", 
-#                   name: "users", 
-#                   value: data[item].username,
-#                   text: data[item].username + " " + data[item].fname + " " + data[item].lname
-#                   )#.append($("<label />", for: data[item].id, prop: "Input Value"))
-#                 )
-
-
 $(document).ready ->
   $(window).load ->
     $("#examName").ready ->
@@ -369,9 +328,23 @@ $(document).ready ->
 
 
 # When I clic on Agregar
+
 $(document).ready ->
   $("#add").click ->
-    
+    checkedGroups = $("input[name=groups]:checked").map(->
+      $(this).val()
+    ).get()
+    checkedUsers = $("input[name=users]:checked").map(->
+      $(this).val()
+    ).get()
+    $.getJSON "/user/set_users_cantake",
+      checked_groups: checkedGroups
+      checked_users: checkedUsers
+      exam_id: $("#examName").val()
+    , (data) ->
+    window.location = "/edit/" + user_id
+
+
 
 # When I clic on Quitar
 
