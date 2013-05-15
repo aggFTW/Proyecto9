@@ -13,13 +13,13 @@
 
 			<%= simple_fields_for ":questions[]", question do |question_field| %>
 				<% answers = format_answers(question.answers) %>
-				<%= question_field.select :givenAns, answers.map{ |ansNum| [ansNum.last, ansNum.first] } %>
+				<%= question_field.select :givenAns, answers.map{ |ansNum| [ansNum.split(": ").second, ansNum.split(": ").first] } %>
 			<% end %>
 		<% end %>
 
 		<div class="control-group">
 			<div class="controls">
-				<%= exam_field.button :submit %>
+				<%= exam_field.button :submit, "Enviar" %>
 			</div>
 		</div>
 	</fieldset>
