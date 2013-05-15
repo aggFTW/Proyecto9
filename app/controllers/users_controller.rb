@@ -131,6 +131,7 @@ class UsersController < ApplicationController
 		checked_groups = params[:checked_groups]
       	checked_users = params[:checked_users]
       	usersFromGroups = User.joins(:groups).select("DISTINCT users.id").where("groups_users.group_id in (?)", checked_groups)
+      	usersNotFromGroups = User.select("DISTINCT id").where("id in (?)", checked_users)
       	usersFromGroups.each do |user|
       		if !Cantake.exists?(master_exam_id: exam_id, user_id: user[:id])
 	  			c = Cantake.new
@@ -138,10 +139,14 @@ class UsersController < ApplicationController
 	  			c.user_id = user[:id]
 	  			c.save
   			end
-  			# Cantake.create( 
-		   #      master_exam_id: MasterExam.find_by_id( exam_id ), 
-		   #      user_id: User.find_by_id(user[:id]),
-	    #   	)
+      	end
+      	usersNotFromGroups.each do |user|
+      		if !Cantake.exists?(master_exam_id: exam_id, user_id: user[:id])
+	  			c = Cantake.new
+	  			c.master_exam_id = exam_id
+	  			c.user_id = user[:id]
+	  			c.save
+  			end
       	end
 		respond_to do |format|
 			format.json { render json: usersFromGroups.to_json }
