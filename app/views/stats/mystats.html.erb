@@ -9,7 +9,6 @@
     <%= table_for @exams_taken, html: {id: 'exams', class: 'summary table table-striped table-bordered table-condensed'} do -%>
       <% column title: 'Nombre' do |exam| %>
         <% link_to MasterExam.find(exam.master_exam_id).name, 
-        #exam_show_path(:id => exam.id)
         :controller => "exams", :action => "show", :id => exam.id%>
       <% end %>
       <% column :state, title: 'Estado' %>
