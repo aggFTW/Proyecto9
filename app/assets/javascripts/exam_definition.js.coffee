@@ -159,20 +159,6 @@ $(document).ready ->
           endMinute: $("#end_Time_5i").val()
 
         , (data) ->
-          # alert data
-        #$.ajax
-          #type: "POST"
-          #url: "/examDef/1"
-          #data: JSON.stringify(dataToSend, null, 2)
-          #dataType: "json"
-          #success: ->
-            #alert "WTF!! FINALLY"
-
-          #error: (XMLHttpRequest, textStatus, errorThrown) ->
-            #console.log "An Ajax error was thrown."
-            #console.log XMLHttpRequest
-            #console.log textStatus
-            #console.log errorThrown                            
         $("#exam_definition_master_question").prop "selectedIndex", 0
         $("#filteredMQ tr").remove()
         $("#concept option").remove()
@@ -244,30 +230,6 @@ $(document).ready ->
     $("#end_Time_4i").prop "selectedIndex", -1
     $("#examInquiriesHeaders").hide()
     $("#name_exam").hide()
-
-
-$(document).ready ->
-  $("#setDefaults").click ->
-    $("#filteredMQ tr").remove()
-    $("#examInquiries tr").remove()
-    $("#concept option").remove()
-    $("#subconcept option").remove()
-    $("#exam_definition_master_question").prop "selectedIndex", 0
-    $("#attempts_number").val ""
-    $("#name_exam").val ""
-    $("#start_Date_3i").prop "selectedIndex", 0
-    $("#start_Date_2i").prop "selectedIndex", 0
-    $("#start_Date_1i").prop "selectedIndex", 0
-    $("#start_Time_5i").prop "selectedIndex", 0
-    $("#start_Time_4i").prop "selectedIndex", 0
-    $("#end_Date_3i").prop "selectedIndex", 0
-    $("#end_Date_2i").prop "selectedIndex", 0
-    $("#end_Date_1i").prop "selectedIndex", 0
-    $("#end_Time_5i").prop "selectedIndex", 0
-    $("#end_Time_4i").prop "selectedIndex", 0 
-    $("#examInquiriesHeaders").hide()
-    $("#name_exam").hide()
-
 
 
 # edit view
