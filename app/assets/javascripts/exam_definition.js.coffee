@@ -210,7 +210,7 @@ $(document).ready ->
       alert "No hay reactivos seleccionados"
 
 $(document).ready ->
-  $("#ereaseEverything").click ->
+  $("#eraseEverything").click ->
     $("#filteredMQ tr").remove()
     $("#examInquiries tr").remove()
     $("#concept option").remove()
