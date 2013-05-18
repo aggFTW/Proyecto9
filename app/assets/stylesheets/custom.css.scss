@@ -1,3 +1,20 @@
 @import 'bootstrap';
-body { padding-top: 60px; }
+body { padding-top: 60px;}
 @import "bootstrap-responsive";
+
+.icon-home {
+  margin-left: 5px;
+  vertical-align: middle;
+}
+
+.navbar {
+	.pull-right {
+		margin-top: 10px;
+	}
+}
+
+.banner{
+	text-align: center;
+	background-color: #efffcd;
+	margin-bottom: 20px;
+}
