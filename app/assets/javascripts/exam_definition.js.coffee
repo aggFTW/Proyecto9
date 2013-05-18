@@ -9,7 +9,6 @@ groups_ids = []
 
 $(document).ready ->
   $("#examInquiriesHeaders").hide()
-  $("#name_exam").hide()
 
 
 $(document).ready ->
@@ -66,10 +65,10 @@ $(document).ready ->
         rows.append $("<td />").append($("<button/>",
           text: "Agregar Reactivo"
           type: "button"
+          class: "btn"
           click: ->
             calculated = false
             $("#examInquiriesHeaders").show()
-            $("#name_exam").show()
 
             inquiry = $("#examInquiries")
             inquiry.append $("<tr />")
@@ -84,12 +83,12 @@ $(document).ready ->
             inquiry.append $("<td />").append($("<button/>",
               text: "Eliminar Reactivo"
               type: "button"
+              class: "btn btn-danger"
               click: ->
                 $(this).parent().parent().remove()
                 calculated = false;
                 if $("#examInquiries").prop("rows").length < 1
                   $("#examInquiriesHeaders").hide()
-                  $("#name_exam").hide()
 
             ))
             inquiry = $("#examInquiries tbody")
@@ -166,7 +165,6 @@ $(document).ready ->
         $("#attempts_number").val ""
         $("#examInquiries tr").remove()
         $("#examInquiriesHeaders").hide()
-        $("#name_exam").hide()
         i = 1
       else
         window.console and console.log("Nombre de examen debe ser mayor a 5")
@@ -229,7 +227,6 @@ $(document).ready ->
     $("#end_Time_5i").prop "selectedIndex", -1
     $("#end_Time_4i").prop "selectedIndex", -1
     $("#examInquiriesHeaders").hide()
-    $("#name_exam").hide()
 
 
 # edit view
