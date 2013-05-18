@@ -84,6 +84,5 @@ class ExamDefinitionController < ApplicationController
     respond_to do |format|
       format.json { render json: hash.to_json }
     end
-    redirect_to(def_path)
 	end
 end
