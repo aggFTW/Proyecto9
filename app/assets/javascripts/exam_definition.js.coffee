@@ -8,47 +8,58 @@ user_id = -1
 groups_ids = []
 
 $(document).ready ->
-  $("#examInquiriesHeaders").hide()
+  $(window).load ->
+    $("#examInquiriesHeaders").hide()
+    languages = $("#language")
+    $.getJSON "/master_question/get_languages"
+      , (data) ->
+        $.each data, (item) ->
+          languages.append $("<option />").val(data[item].language).text(data[item].language)
 
 $(document).ready ->
-  $("#exam_definition_master_question").change ->
+  $("#language").change ->
     i = 1
     $("#concept option").remove()
     $("#subconcept option").remove()
     $("#filteredMQ tr").remove()
     $("#examInquiries tr").remove()
     $.getJSON "/master_question/concepts_for_question",
-      language: $("#exam_definition_master_question").val()
+      language: $("#language").val()
     , (data) ->
       if data is null
         window.console and console.log("null :(")
         return
       options = $("#concept")
+      options.append $("<option />").val(-1).text("Selecciona un Concepto")
       $.each data, (item) ->
         options.append $("<option />").val(data[item].id).text(data[item].concept)
-        $("#concept").prop "selectedIndex", -1
+      $("#concept").prop "selectedIndex", 0
+      $("#subconcept").append $("<option />").val(-1).text("Selecciona un Subconcepto")
+      $("#subconcept").prop "selectedIndex", 0
+
 
 $(document).ready ->
   $("#concept").change ->
     $("#subconcept option").remove()
     $("#filteredMQ tr").remove()
     $.getJSON "/master_question/subconcepts_for_question",
-      language: $("#exam_definition_master_question").val()
+      language: $("#language").val()
       concept: $("#concept option:selected").text()
     , (data) ->
       if data is null
         window.console and console.log("null :(")
         return
       options = $("#subconcept")
+      options.append $("<option />").val(-1).text("Selecciona un Subconcepto")
       $.each data, (item) ->
         options.append $("<option />").val(data[item].id).text(data[item].subconcept)
-        $("#subconcept").prop "selectedIndex", -1
+        $("#subconcept").prop "selectedIndex", 0
 
 $(document).ready ->
   $("#subconcept").change ->
     $("#filteredMQ tr").remove()
     $.getJSON "/master_question/filtered_master_questions",
-      language: $("#exam_definition_master_question").val()
+      language: $("#language").val()
       concept: $("#concept option:selected").text()
       subconcept: $("#subconcept option:selected").text()
     , (data) ->
@@ -72,8 +83,9 @@ $(document).ready ->
             inquiry = $("#examInquiries")
             inquiry.append $("<tr />")
             inquiry = $("#examInquiries tr:last")
-            inquiry.append $("<td />").append(i++)
-            inquiry.append $("<td />").append(data[item].id)
+            # inquiry.append $("<td />").append(i++)
+            inquiry.append $("<td />").append(data[item].id).hide()
+            # groups_ids.push id: data[item].id
             inquiry.append $("<td />").append(data[item].inquiry)
             input1 = $("<input type=\"text\" id=\"value\" size=\"5\" placeholder=\"Valor del Reactivo\" />").change(->
               calculated = false
@@ -124,21 +136,21 @@ $(document).ready ->
             calculated = true
             rows.each (index, value) ->
               temp = undefined
-              temp = $(this).find("td:nth-child(4) input:first").val()
+              temp = $(this).find("td:nth-child(3) input:first").val()
               if $.isNumeric(temp) is true
                 if parseInt(temp) > 0
                   addition += parseInt(temp)
                 else
                   addition += 1
-                  $(this).find("td:nth-child(4) input:first").val 1
+                  $(this).find("td:nth-child(3) input:first").val 1
               else
                 addition += 1
-                $(this).find("td:nth-child(4) input:first").val 1
+                $(this).find("td:nth-child(3) input:first").val 1
 
             rows.each (index, value) ->
               temp = undefined
-              temp = $(this).find("td:nth-child(4) input:first").val()
-              $(this).find("td:nth-child(4) input:first").val (parseInt(temp) / parseInt(addition)) * 100  if $.isNumeric(temp) is true
+              temp = $(this).find("td:nth-child(3) input:first").val()
+              $(this).find("td:nth-child(3) input:first").val (parseInt(temp) / parseInt(addition)) * 100  if $.isNumeric(temp) is true
 
           dataToSend = []
           dataIndex = 0
@@ -146,9 +158,9 @@ $(document).ready ->
           $("#examInquiries tr").each ->
             dataToSend.push
               numQuestion: parseInt(dataIndex + 1)
-              numInquiry: parseInt($(this).find("td:nth-child(2)").text())
-              value: parseFloat($(this).find("td:nth-child(4) input:first").val()) / 100
-              master_question_id: parseInt($("#examInquiries").find("td:nth-child(2)").text())
+              numInquiry: parseInt($(this).find("td:nth-child(1)").text())
+              value: parseFloat($(this).find("td:nth-child(3) input:first").val()) / 100
+              master_question_id: parseInt($("#examInquiries").find("td:nth-child(1)").text())
 
             dataIndex++
 
@@ -178,14 +190,17 @@ $(document).ready ->
             exam_id: $("#examName").val()
           , (data) ->
 
-          $("#exam_definition_master_question").prop "selectedIndex", 0
+          $("#language").prop "selectedIndex", 0
           $("#filteredMQ tr").remove()
           $("#concept option").remove()
+          $("#concept").append $("<option />").val(-1).text("Selecciona un Concepto").prop "selectedIndex", 0
           $("#subconcept option").remove()
-          $("#attempts_number").val ""
+          $("#subconcept").append $("<option />").val(-1).text("Selecciona un Concepto").prop "selectedIndex", 0
+          $("#attempts_number").prop "selectedIndex", 0
           $("#examInquiries tr").remove()
           $("#examInquiriesHeaders").hide()
-          $("#name_exam").hide()
+          $("#name_exam").val ""
+
           i = 1
         else
           window.console and console.log("Debe seleccionar por lo menos un grupo")
@@ -212,20 +227,20 @@ $(document).ready ->
       unless calculated
         calculated = true
         rows.each (index, value) ->
-          temp = $(this).find("td:nth-child(4) input:first").val()
+          temp = $(this).find("td:nth-child(3) input:first").val()
           if $.isNumeric(temp) is true
             if parseInt(temp) > 0
               addition += parseInt(temp)
             else
               addition += 1
-              $(this).find("td:nth-child(4) input:first").val 1
+              $(this).find("td:nth-child(3) input:first").val 1
           else
             addition += 1
-            $(this).find("td:nth-child(4) input:first").val 1
+            $(this).find("td:nth-child(3) input:first").val 1
 
         rows.each (index, value) ->
-          temp = $(this).find("td:nth-child(4) input:first").val()
-          $(this).find("td:nth-child(4) input:first").val (parseInt(temp) / parseInt(addition)) * 100  if $.isNumeric(temp) is true
+          temp = $(this).find("td:nth-child(3) input:first").val()
+          $(this).find("td:nth-child(3) input:first").val (parseInt(temp) / parseInt(addition)) * 100  if $.isNumeric(temp) is true
 
       else
         alert "Ya fue calculado. Modifique el valor de algún reactivo para poder volver a calcular."
@@ -233,26 +248,26 @@ $(document).ready ->
       window.console and console.log("No hay reactivos seleccionados")
       alert "No hay reactivos seleccionados"
 
-$(document).ready ->
-  $("#eraseEverything").click ->
-    $("#filteredMQ tr").remove()
-    $("#examInquiries tr").remove()
-    $("#concept option").remove()
-    $("#subconcept option").remove()
-    $("#exam_definition_master_question").prop "selectedIndex", -1
-    $("#attempts_number").val ""
-    $("#name_exam").val ""
-    $("#start_Date_3i").prop "selectedIndex", -1
-    $("#start_Date_2i").prop "selectedIndex", -1
-    $("#start_Date_1i").prop "selectedIndex", -1
-    $("#start_Time_5i").prop "selectedIndex", -1
-    $("#start_Time_4i").prop "selectedIndex", -1
-    $("#end_Date_3i").prop "selectedIndex", -1
-    $("#end_Date_2i").prop "selectedIndex", -1
-    $("#end_Date_1i").prop "selectedIndex", -1
-    $("#end_Time_5i").prop "selectedIndex", -1
-    $("#end_Time_4i").prop "selectedIndex", -1
-    $("#examInquiriesHeaders").hide()
+# $(document).ready ->
+#   $("#eraseEverything").click ->
+#     $("#filteredMQ tr").remove()
+#     $("#examInquiries tr").remove()
+#     $("#concept option").remove()
+#     $("#subconcept option").remove()
+#     $("#language").prop "selectedIndex", -1
+#     $("#attempts_number").val ""
+#     $("#name_exam").val ""
+#     $("#start_Date_3i").prop "selectedIndex", -1
+#     $("#start_Date_2i").prop "selectedIndex", -1
+#     $("#start_Date_1i").prop "selectedIndex", -1
+#     $("#start_Time_5i").prop "selectedIndex", -1
+#     $("#start_Time_4i").prop "selectedIndex", -1
+#     $("#end_Date_3i").prop "selectedIndex", -1
+#     $("#end_Date_2i").prop "selectedIndex", -1
+#     $("#end_Date_1i").prop "selectedIndex", -1
+#     $("#end_Time_5i").prop "selectedIndex", -1
+#     $("#end_Time_4i").prop "selectedIndex", -1
+#     $("#examInquiriesHeaders").hide()
 
 
 # edit view

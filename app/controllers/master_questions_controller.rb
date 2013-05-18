@@ -196,4 +196,11 @@ class MasterQuestionsController < ApplicationController
       format.json { render json: @inquiriesMasterQuestionsIDs.to_json }
     end
   end
+
+  def get_languages
+    languages = MasterQuestion.select("DISTINCT(language), id").group("upper(language)")
+    respond_to do |format|
+      format.json { render json: languages.to_json }
+    end
+  end
 end

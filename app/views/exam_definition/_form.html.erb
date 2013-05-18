@@ -31,22 +31,19 @@
 	<table>
 		<tr>
 			<td>
-				<%= f.input :master_question, 
-				collection: @master_questions,#.where(distinct("upper(language)")), 
-				label_method: :language, 
-				value_method: :language,
-				prompt: "Selecciona un Lenguaje", 
-				label: "Lenguaje:" %>
 
-				<%= label_tag "tag0", "Concepto:" %>
+				<select id="language">
+					<option>Selecciona un Lenguaje</option>
+				</select>
+
 				<select id="concept">
 					<option>Selecciona un Concepto</option>
 				</select>
 
-				<%= label_tag "tag00", "Subconcepto:" %>
 				<select id="subconcept">
 					<option>Selecciona un Subconcepto</option>
 				</select>
+
 			</td>
 			<td>
 				<table id="filteredMQ" class="table"></table>
@@ -57,8 +54,6 @@
 	<table id="examInquiriesHeaders" class="table">
 		<tbody>
 			<tr class="info">
-				<td>Número Pregunta</td>
-				<td>Número Reactivo</td>
 				<td>Reactivo</td>
 				<td>Valor</td>
 				<td></td>
@@ -133,7 +128,7 @@
 	</div>
 	<div class="control-group">
 		<div class="controls">
-			<%= link_to("Continuar [Selección de Usuarios]", "#", {:class => "btn", :style => "", :id => "addUsers"}) %>
+			<!-- <%= link_to("Continuar [Selección de Usuarios]", "#", {:class => "btn", :style => "", :id => "addUsers"}) %> -->
 			<!-- <button type="button" id="addUsers">Continuar [Selección de Usuarios]</button> -->
 		</div>
 	</div>
