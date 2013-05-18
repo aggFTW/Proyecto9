@@ -281,7 +281,14 @@ $(document).ready ->
 
 
 # Add a "When selected exam changes get all users an groups that can take that exam"
-
+$(document).ready->
+  $("#examName").change->
+    $.getJSON "/user/set_users_cantake",
+      checked_groups: checkedGroups
+      checked_users: checkedUsers
+      exam_id: $("#examName").val()
+    , (data) ->
+    window.location = "/edit/" + user_id
 # Also, improve queries to allow that if users are selected when we select an exam don't display them again
 
 # Also, when I add a user, delete it from the selectable checkboxes
