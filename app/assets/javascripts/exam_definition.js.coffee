@@ -200,6 +200,9 @@ $(document).ready ->
           $("#examInquiries tr").remove()
           $("#examInquiriesHeaders").hide()
           $("#name_exam").val ""
+          checkedGroups = $("input[name=groups]:checked").map(->
+            $(this).attr('checked', false);
+          )
 
           i = 1
         else
