@@ -8,7 +8,7 @@
 
 	<%= label_tag "tag0000", "Número de Intentos:" %>
 	<!-- <%= text_field "attempts", "number", "size" => 5, placeholder:"Número" %> -->
-	<select id="attempts_number">
+	<select id="attempts_number" style="width: 80px">
 	  <option value="1" selected>1</option>
 	  <option value="2">2</option>
 	  <option value="3">3</option>
@@ -75,31 +75,47 @@
 
 	<h3>Fechas</h3>
 
-	<%= label_tag "tag1", "Fecha Inicio:" %>
-	<%= text_field nil, nil, {:class => 'date_picker', :id => "testdatepicker"} %>
-	<%= date_select "start", "Date", :order => [:day,:month,:year],
-										default: Time.zone.now,
-										#:prompt => { :day => Time.zone.now.day, :month => Time.zone.now.month, :year => Time.zone.now.year},
-										:start_year => Time.zone.now.year, use_month_numbers: true
-		%>
-	<%= label_tag "tag2", "Hora Inicio:" %>
-	<%= time_select "start", "Time", :order => [:hour, :minute],
-										default: Time.now
-										#:prompt => { hour: Time.now.hour, minute: Time.now.min }
-		%>
+	<table class="table table-bordered">
+		<tr>
+			<td>
+				Inicio
+			</td>
+			<td>
+				<%= label_tag "tag1", "Fecha Inicio:" %>
+				<%= text_field nil, nil, {:class => 'date_picker', :id => "datestart"} %>
+			</td>
+			<td>
+				<%= label_tag "tag2", "Hora Inicio:" %>
+				<%= time_select "start", "Time",
+												{order: [:hour, :minute], default: Time.now},
+												{style: 'width: 80px'}
+					%>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				Fin
+			</td>
+			<td>
+				<%= label_tag "tag3", "Fecha de Entrega:" %>
+				<%= text_field nil, nil, {:class => 'date_picker', :id => "dateend"} %>
+			</td>
+			<td>
+				<%= label_tag "tag4", "Hora de Entrega:" %>
+				<%= time_select "end", "Time",
+												{order: [:hour, :minute], default: { hour: 23, minute: 59 }},
+												{style: 'width: 80px'}
+					%>
+			</td>
+		</tr>
+	</table>
 
-	<%= label_tag "tag3", "Fecha de Entrega:" %>
-	<%= date_select "end", "Date", :order => [:day,:month,:year],
-										default: Time.zone.now.tomorrow,
-										#:prompt => { :day => Time.zone.now.tomorrow.day, :month => Time.zone.now.tomorrow.month, :year => Time.zone.now.tomorrow.year},
-										:start_year => Time.zone.now.year, use_month_numbers: true
-		%>
-	<%= label_tag "tag4", "Hora de Entrega:" %>
-	<%= time_select "end", "Time", :order => [:hour, :minute],
-										default: { hour: 23, minute: 59 }
-		%>
 
-	<%= label_tag "tag0111", "Grupos:" %>
+
+
+
+
+	<h3>Grupos</h3>
 	<div id= "groups"> </div>
 
 	<br />

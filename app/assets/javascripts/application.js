@@ -16,8 +16,10 @@
 //= require_tree .
 (function($) {
         $(document).ready(function(){
-            // $("input.date_picker").datepicker();
-            $("#testdatepicker").datepicker();
+        	var currentDate = new Date();
+
+            $("input.date_picker").datepicker({ dateFormat: 'yy-mm-dd'});
+            $("input.date_picker").datepicker("setDate", currentDate);
         });
 
     })(jQuery);
