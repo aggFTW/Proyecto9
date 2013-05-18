@@ -53,16 +53,21 @@
 										default: { hour: 23, minute: 59 }
 		%>
 
+
+
 	<div class="control-group">
 		<div class="controls">	
-			<%= f.submit "Crear Examen", {type:"button", id:"submit"} %>
-			<button type="button" id="calculateValues">Calcular Valores</button>
-			<button type="button" id="ereaseEverything">Borrar Todo</button>
+			<%= f.submit "Crear Examen", {type:"button", id:"submit", :class => "btn", :style => ""} %>
+			<%= link_to("Calcular Valores", "#", {:class => "btn", :style => "", :id => "calculateValues"}) %>
+			<%= link_to("Borrar Todo", "#", {:class => "btn", :style => "", :id => "eraseEverything"}) %>
+			<!-- <button type="button" id="calculateValues">Calcular Valores</button> -->
+			<!-- <button type="button" id="eraseEverything">Borrar Todo</button> -->
 		</div>
 	</div>
 	<div class="control-group">
-		<div class="controls">	
-			<button type="button" id="addUsers">Continuar [Selección de Usuarios]</button>
+		<div class="controls">
+			<%= link_to("Continuar [Selección de Usuarios]", "#", {:class => "btn", :style => "", :id => "addUsers"}) %>
+			<!-- <button type="button" id="addUsers">Continuar [Selección de Usuarios]</button> -->
 		</div>
 	</div>
 	
