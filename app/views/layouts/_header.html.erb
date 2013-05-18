@@ -1,75 +1,75 @@
-        <% if protect_against_forgery? %>
-          <script type='text/javascript'>
-              //<![CDATA[
-                window._auth_token_name = "#{request_forgery_protection_token}";
-                window._auth_token = "#{form_authenticity_token}";
-            //]]>
-            </script>
-        <% end %>
-        <%= javascript_include_tag 'application' %>
+<% if protect_against_forgery? %>
+<script type='text/javascript'>
+  //<![CDATA[
+  window._auth_token_name = "#{request_forgery_protection_token}";
+  window._auth_token = "#{form_authenticity_token}";
+//]]>
+</script>
+<% end %>
+<%= javascript_include_tag 'application' %>
 <div class="navbar navbar-fixed-top navbar-inverse">
-  <div class="navbar-inner">
-  	<div class="container">
-	    
-	    <%= link_to("GenRap <i class='icon-home icon-white'></i>".html_safe, root_path, {:class => "brand"}) %>
+	<div class="navbar-inner">
+		<div class="container">
 
-	    <% if session[:user_id].nil? %>
-	    	<%= form_tag({:controller=>"sessions", :action => 'login'}, {:class => "navbar-form pull-right"}) do %>
-				<%= text_field_tag(:gusername, nil, {:placeholder => 'Usuario', :class => 'span2'})%>
-				<%= password_field_tag(:gspassword, nil, {:placeholder => 'Contraseña', :class => 'span2'})%>
-				<%= submit_tag("Sign In", :class => "btn") %>
+			<%= link_to("<img src='/assets/logo3_small.png'><i class='icon-home icon-white'></i>".html_safe, root_path, {:class => "brand"}) %>
+
+			<% if session[:user_id].nil? %>
+			<%= form_tag({:controller=>"sessions", :action => 'login'}, {:class => "navbar-form pull-right"}) do %>
+			<%= text_field_tag(:gusername, nil, {:placeholder => 'Usuario', :class => 'span2'})%>
+			<%= password_field_tag(:gspassword, nil, {:placeholder => 'Contraseña', :class => 'span2'})%>
+			<%= submit_tag("Sign In", :class => "btn") %>
 			<% end %>
-		<% else %>
-		<!-- If logged in: -->
+			<% else %>
+			<!-- If logged in: -->
 			<ul class="nav pull-right">
 				<!-- Student dropdown -->
 				<% if check_student %>
-					<div class="btn-group" style="display:inline-block;">
-						<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-					    	Alumno
-					 		<span class="caret"></span>
-						</a>
-						<ul class="dropdown-menu">
-							<li><%= link_to "Examenes", pending_path %></li>
-							<li><%= link_to "Historial de Examenes", :controller => "stats", :action => "mystats" %></li>
-						</ul>
-					</div>
-					<li class="divider-vertical"></li>
+				<div class="btn-group" style="display:inline-block;">
+					<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+						Alumno
+						<span class="caret"></span>
+					</a>
+					<ul class="dropdown-menu">
+						<li><%= link_to "Examenes", pending_path %></li>
+						<li><%= link_to "Historial de Examenes", :controller => "stats", :action => "mystats" %></li>
+					</ul>
+				</div>
+				<li class="divider-vertical"></li>
 				<% end %>
 				<!-- Professor dropdown -->
 				<% if check_prof %>
-					<div class="btn-group" style="display:inline-block;">
-						<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-					    	Professor
-					 		<span class="caret"></span>
-						</a>
-						<ul class="dropdown-menu">
-							<li><%= link_to "Definir Pregunta Maestra", :controller => :master_questions, :action => :new %></li>
-							<li><%= link_to "Historial de Examenes", :controller => "stats", :action => "profstats" %></li>
-							<li><%= link_to "Definir examen", :controller => "exam_definition", :action => "new" %></li>
-							<li><%= link_to "Grupos", :controller => :groups, :action => :index %></li>
-						</ul>
-					</div>
-					<li class="divider-vertical"></li>
+				<div class="btn-group" style="display:inline-block;">
+					<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+						Professor
+						<span class="caret"></span>
+					</a>
+					<ul class="dropdown-menu">
+						<li><%= link_to "Definir Pregunta Maestra", :controller => :master_questions, :action => :new %></li>
+						<li><%= link_to "Historial de Examenes", :controller => "stats", :action => "profstats" %></li>
+						<li><%= link_to "Definir examen", :controller => "exam_definition", :action => "new" %></li>
+						<li><%= link_to "Grupos", :controller => :groups, :action => :index %></li>
+					</ul>
+				</div>
+				<li class="divider-vertical"></li>
 				<% end %>
 				<!-- Admin dropdown -->
 				<% if check_admin %>
-					<div class="btn-group" style="display:inline-block;">
-						<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-					    	Admin
-					 		<span class="caret"></span>
-						</a>
-						<ul class="dropdown-menu">
-							<li><%= link_to "Usuarios", :controller => :users, :action => :index %></li>
-						</ul>
-					</div>
-					<li class="divider-vertical"></li>
+				<div class="btn-group" style="display:inline-block;">
+					<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+						Admin
+						<span class="caret"></span>
+					</a>
+					<ul class="dropdown-menu">
+						<li><%= link_to "Usuarios", :controller => :users, :action => :index %></li>
+					</ul>
+				</div>
+				<li class="divider-vertical"></li>
 				<% end %>
 				<!-- Log out -->
 				<%= link_to("Log out", {:controller => :sessions, :action => :logout}, {:class => "btn btn-danger", :style => ""}) %>
 			</ul>
-		<% end %>
+			<% end %>
 
-    </div>
-  </div>
+		</div>
+	</div>
 </div>
