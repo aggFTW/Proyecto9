@@ -17,12 +17,14 @@ textarea {
 		width: 100%;
 	}
 }
-span {
-	font-weight: bold;
-}
 table {
 	width: 1000px;
 }
 th, td {
 	width: 150px;
+}
+
+label {
+	font-weight: bold;
+	&.tt {display: inline;}
 }

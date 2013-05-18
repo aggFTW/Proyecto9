@@ -6,6 +6,7 @@
       <th>Lenguaje</th>
       <th>Concepto</th>
       <th>Subconcepto</th>
+      <th>Pregunta</th>
       <th></th>
       <th></th>
       <th></th>
@@ -18,6 +19,7 @@
       <td><%= mq.language %></td>
       <td><%= mq.concept %></td>
       <td><%= mq.subconcept %></td>
+      <td><%= mq.inquiry %></td>
       <td><%= link_to 'Ver más', mq %></td>
       <td><%= link_to 'Editar', edit_master_question_path(mq) %></td>
       <td><%= link_to 'Borrar', mq, :confirm => '¿Está seguro que quiere borrar esta pregunta maestra?', :method => :delete %></td>

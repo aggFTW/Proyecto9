@@ -4,24 +4,39 @@
     	<%= label_tag(:language, "Lenguaje:") %>
     	<%= f.select(:language, ['Python', 'SciLab']) %>
   	</div>
-  	<div class = "inline-div">
+  	
+    <div class = "inline-div">
   		<%= label_tag(:concept, "Concepto:") %>
     	<%= f.select(:concept, ['Ciclos', 'Expresiones']) %>
   	</div>
-  	<div class ="inline-div">
+  	
+    <div class ="inline-div">
   		<%= label_tag(:concept, "Subconcepto:") %>
     	<%= f.select(:subconcept, ['Numero iteraciones', 'Evaluacion']) %>
   	</div>
-    <%= label_tag(:inquiry, "Pregunta:") %>
-    <%= f.text_area :inquiry, :size => "150x2" %>
-    <div class = "code-area">
-      <%= label_tag(:randomizer, "Código Randomizer:") %>
-      <%= f.text_area :randomizer, :size => "150x10" %>
-      <%= label_tag(:solver, "Código Solver:") %>
-      <%= f.text_area :solver, :size => "150x10" %>
+
+    <div>
+      <%= label_tag(:inquiry, "Pregunta:", {class: "tt"}) %>
+      <i class='icon-question-sign' title="La pregunta deberá ser escrita de manera que los valores cambiantes estén señalados por el símbolo ^ seguido por un número. Por ejemplo: ¿Cuánto es ^1 + ^2? En esta pregunta, tanto ^1 como ^2 serán sustituidos por valores concretos por el código randomizer."></i>
+      <%= f.text_area :inquiry, :size => "150x2" %>
     </div>
-    <div class="controls">
-      <%= f.submit "Guardar" %>
+
+    <div class = "code-area">
+
+      <%= label_tag(:randomizer, "Código Randomizer:", {class: "tt"}) %>
+      <i class='icon-question-sign' title="La firma de este método debe ser randomize(inquiry). Debe regresar un Hash de valores para sustituir todos los ^n de la pregunta (inquiry), como los valores comentados de value en el código ejemplo."></i>
+      <%= f.text_area :randomizer, :size => "150x10" %>
+      
+      <%= label_tag(:solver, "Código Solver:", {class: "tt"}) %>
+      <i class='icon-question-sign' title="La firma de este método debe ser solve(inquiry, values). El parámetro inquiry es un string que contiene la pregunta con los placeholders ^n. El parámetro values es un Hash con los valores reales de los placeholders. El método debe regresar un Hash de posibles respuestas, el cual contenga tanto la respuesta correcta como respuestas incorrectas. Además, debe regresar el número de la respuesta que es correcta. Observe el código ejemplo."></i>
+      <%= f.text_area :solver, :size => "150x10" %>
+
+    </div>
+
+    <div class="control-group">
+      <div class="controls">
+        <%= f.button :submit %>
+      </div>
     </div>
   </fieldset>
 <% end %>

@@ -12,7 +12,16 @@ class MasterQuestion < ActiveRecord::Base
 
   attr_accessible :concept, :inquiry, :language, :randomizer, :solver, :subconcept
 
+  before_save :capitalizeAttributes
+
   def self.all_languages
     select("DISTINCT language")
   end
+
+  def capitalizeAttributes
+    self.language = self.language.capitalize
+    self.concept = self.concept.capitalize
+    self.subconcept = self.subconcept.capitalize
+  end
+
 end
