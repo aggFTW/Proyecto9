@@ -77,7 +77,7 @@ class ExamDefinitionController < ApplicationController
       finishDate: Time.strptime("#{endYear}-#{endMonth}-#{endDay} #{endHour}:#{endMinute}", '%Y-%m-%d %H:%M').in_time_zone(Time.zone),
       user: user
     )
-    
+        
     hash.each_with_index do |(key, value), index|
       ExamDefinition.create( 
         master_question: MasterQuestion.find_by_id( hash[key]['master_question_id'].to_i ),
@@ -87,6 +87,7 @@ class ExamDefinitionController < ApplicationController
       )
     end
 
+    debugger
     if check_prof
       flash[:notice] = "Examen agregado exitosamente"
     else
