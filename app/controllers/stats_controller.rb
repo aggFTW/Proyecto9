@@ -73,14 +73,16 @@ class StatsController < ApplicationController
 				for q in e.master_questions
 					actualQuestions = q.questions
 					
-					right = actualQuestions.map { |a| right_answer? a }
-					right = right.inject{|sum,x| sum + x }
+					if actualQuestions.length > 0
+						right = actualQuestions.map { |a| right_answer? a }
+						right = right.inject{|sum,x| sum + x }
 
-					if @questions_agg.has_key? q
-						@questions_agg[q][0] += right
-						@questions_agg[q][1] += (actualQuestions.length - right)
-					else
-						@questions_agg[q] = [right, actualQuestions.length - right]
+						if @questions_agg.has_key? q
+							@questions_agg[q][0] += right
+							@questions_agg[q][1] += (actualQuestions.length - right)
+						else
+							@questions_agg[q] = [right, actualQuestions.length - right]
+						end
 					end
 				end
 			end
