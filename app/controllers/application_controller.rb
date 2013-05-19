@@ -11,8 +11,8 @@ class ApplicationController < ActionController::Base
 	
 	def authenticate_user
 		unless session[:user_id]
-			flash[:error] = "Necesita una sesión de usuario válida para esta operación. Por favor inicie sesión."
-			redirect_to(root_path)
+			# flash[:error] = "Necesita una sesión de usuario válida para esta operación. Por favor inicie sesión."
+			redirect_to("/signup")
 			return false
 		else
 			# set current user object to @current_user object variable

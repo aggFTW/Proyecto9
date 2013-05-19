@@ -11,7 +11,7 @@ GenRap::Application.routes.draw do
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
-  root :to => 'users#signup'
+  root :to => 'exams#pending'
 
 
   resources :users, :groups, :master_questions, :exam_definitions, :exams
