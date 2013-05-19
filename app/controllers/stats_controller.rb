@@ -1,7 +1,7 @@
 #encoding: utf-8
 class StatsController < ApplicationController
 
-	before_filter :authenticate_user, :only[:mystats, :profstats]
+	before_filter :authenticate_user, :only => [:mystats, :profstats]
 
 	def mystats
 		@exams_taken = @current_user.exams
