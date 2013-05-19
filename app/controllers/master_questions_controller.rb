@@ -8,10 +8,19 @@ class MasterQuestionsController < ApplicationController
   # Create actions
   def new
     if check_admin || check_prof
-      @master_question = MasterQuestion.new
-      @master_question.randomizer = initialize_file('randomizer')
-      @master_question.solver = initialize_file('solver')
-      @master_question.inquiry = initialize_file('inquiry')
+      if @master_question == nil
+        flash[:notice] = "nil"
+      else
+        flash[:notice] = "no nil"
+      end
+      if @master_question == nil
+        @master_question = MasterQuestion.new
+        @master_question.randomizer = initialize_file('randomizer')
+        @master_question.solver = initialize_file('solver')
+        @master_question.inquiry = initialize_file('inquiry')
+      else
+        @master_question = params[:object]
+      end
     else
       flash[:error] = "Acceso restringido."
       redirect_to(root_path)
@@ -28,8 +37,42 @@ class MasterQuestionsController < ApplicationController
       $solver = "#{uuid}_solver"
       
       # Create solver and randomizer files in /helpers/s and /helpers/r 
-      randomizer_file = File.open(File.dirname(__FILE__) + "/../helpers/r/#{$randomizer}.rb","w") {|f| f.write("#{@master_question.randomizer}") }
-      solver_file = File.open(File.dirname(__FILE__) + "/../helpers/s/#{$solver}.rb","w") {|f| f.write("#{@master_question.solver}")}
+      rand_file = File.dirname(__FILE__) + "/../helpers/r/#{$randomizer}.rb"
+      solv_file = File.dirname(__FILE__) + "/../helpers/s/#{$solver}.rb"
+
+      randomizer_file = File.open(rand_file,"w") {|f| f.write("#{@master_question.randomizer}") }
+      solver_file = File.open(solv_file,"w") {|f| f.write("#{@master_question.solver}")}
+
+      rand_file_error = false
+      solv_file_error = false
+
+
+      # Verficicar error en el randomizer
+      begin
+        load rand_file
+      rescue Exception => exc
+        rand_file_error = true
+      end
+
+      # Verificar error en el solver
+      begin
+        load solv_file
+      rescue Exception => exc
+        solv_file_error = true
+      end
+
+      # Notificar del error
+      if solv_file_error && rand_file_error
+        flash[:error] = "Error al ejecutar randomizer y solver, por favor revise su código."
+        render :action => "new" and return
+      elsif solv_file_error
+        flash[:error] = "Error al ejecutar solver, por favor revise su código."
+        render :action => "new" and return
+      elsif rand_file_error
+        flash[:error] = "Error al ejecutar randomizer, por favor revise su código."
+        render :action => "new" and return
+      end
+
 
       # Save masterquestion solver and randomizer file path
       @master_question.randomizer = "#{$randomizer}"
