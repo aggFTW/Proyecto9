@@ -41,21 +41,21 @@ class ExamDefinitionController < ApplicationController
     hash = params[:hash]
     exam_name = params[:exam_name]
     number_of_attempts = params[:number_of_attempts]
-    creationYear = params[:creationYear]
-    creationMonth = params[:creationMonth]
-    creationDay = params[:creationDay]
-    creationHour = params[:creationHour]
-    creationMinute = params[:creationMinute]
-    startYear = params[:startYear]
-    startMonth = params[:startMonth]
-    startDay = params[:startDay]
-    startHour = params[:startHour]
-    startMinute = params[:startMinute]
-    endYear = params[:endYear]
-    endMonth = params[:endMonth]
-    endDay = params[:endDay]
-    endHour = params[:endHour]
-    endMinute = params[:endMinute]
+    creationYear = params[:creationYear].to_i
+    creationMonth = params[:creationMonth].to_i
+    creationDay = params[:creationDay].to_i
+    creationHour = params[:creationHour].to_i
+    creationMinute = params[:creationMinute].to_i
+    startYear = params[:startYear].to_i
+    startMonth = params[:startMonth].to_i
+    startDay = params[:startDay].to_i
+    startHour = params[:startHour].to_i
+    startMinute = params[:startMinute].to_i
+    endYear = params[:endYear].to_i
+    endMonth = params[:endMonth].to_i
+    endDay = params[:endDay].to_i
+    endHour = params[:endHour].to_i
+    endMinute = params[:endMinute].to_i
 
     user = User.find_by_id session[:user_id]
     master_exam = MasterExam.create(
@@ -71,7 +71,7 @@ class ExamDefinitionController < ApplicationController
     hash.each do |h|
       w = h[1]['value'].to_f
       ExamDefinition.create( 
-        master_question: MasterQuestion.find_by_id( h[1]['master_question_id'][$i-1] ), 
+        master_question: MasterQuestion.find_by_id( h[1]['master_question_id'][$i-1] ),
         master_exam: MasterExam.find_by_id(master_exam.id),
          questionNum: $i, 
         weight: w 
@@ -79,7 +79,7 @@ class ExamDefinitionController < ApplicationController
       $i+=1
 
     end
-    flash.now[:notice] = "Examen agregado exitosamente"
+    flash[:notice] = "Examen agregado exitosamente"
 
     respond_to do |format|
       format.json { render json: hash.to_json }

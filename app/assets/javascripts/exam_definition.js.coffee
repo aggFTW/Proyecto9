@@ -173,14 +173,14 @@ $(document).ready ->
             creationDay: cdt.getDate()
             creationHour: cdt.getHours()
             creationMinute: cdt.getMinutes()
-            startYear: $("#start_Date_1i").val()
-            startMonth: $("#start_Date_2i").val()
-            startDay: $("#start_Date_3i").val()
+            startYear: $("#datestart").datepicker("getDate").getFullYear()
+            startMonth: $("#datestart").datepicker("getDate").getMonth() + 1
+            startDay: $("#datestart").datepicker("getDate").getDate()
             startHour: $("#start_Time_4i").val()
             startMinute: $("#start_Time_5i").val()
-            endYear: $("#end_Date_1i").val()
-            endMonth: $("#end_Date_2i").val()
-            endDay: $("#end_Date_3i").val()
+            endYear: $("#dateend").datepicker("getDate").getFullYear()
+            endMonth: $("#dateend").datepicker("getDate").getMonth() + 1
+            endDay: $("#dateend").datepicker("getDate").getDate()
             endHour: $("#end_Time_4i").val()
             endMinute: $("#end_Time_5i").val()
           , (data) ->
