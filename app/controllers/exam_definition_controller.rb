@@ -78,18 +78,6 @@ class ExamDefinitionController < ApplicationController
       user: user
     )
     
-    # i = 1
-    # hash.each do |key, value|
-    #   w = hash[key]['value'].to_f
-    #   ExamDefinition.create( 
-    #     master_question: MasterQuestion.find_by_id( hash[key]['master_question_id'].to_i ),
-    #     master_exam: MasterExam.find_by_id(master_exam.id),
-    #     questionNum: i, 
-    #     weight: w 
-    #   )
-    #   i+=1
-    # end
-
     hash.each_with_index do |(key, value), index|
       ExamDefinition.create( 
         master_question: MasterQuestion.find_by_id( hash[key]['master_question_id'].to_i ),
