@@ -284,9 +284,6 @@ $(document).ready ->
           $("#name_exam").val ""
 
           i = 1
-
-          #alert "Ejercicio creado exitosamente."
-
           window.location = "/pending"
       else
         window.console and console.log("Nombre de ejercicio debe ser mayor a 5")
@@ -348,77 +345,3 @@ $(document).ready ->
           ))
           $("#groups label:last").append( data[item].name )
 
-# Add a "When selected exam changes get all users an groups that can take that exam"
-# Also, improve queries to allow that if users are selected when we select an exam don't display them again
-
-# Also, when I add a user, delete it from the selectable checkboxes
-
-# Also, when I remove a user, add it to the selectable checkboxes
-
-
-# When I clic on Agregar
-
-# $(document).ready ->
-#   $("#add").click ->
-#     checkedGroups = $("input[name=groups]:checked").map(->
-#       $(this).val()
-#     ).get()
-#     checkedUsers = $("input[name=users]:checked").map(->
-#       $(this).val()
-#     ).get()
-#     $.getJSON "/user/set_users_cantake",
-#       checked_groups: checkedGroups
-#       checked_users: checkedUsers
-#       exam_id: $("#examName").val()
-#     , (data) ->
-#     window.location = "/edit/" + user_id
-
-
-
-# When I clic on Quitar
-
-
-# When I clic on Agregar Grupos
-
-# When I clic on Agregar Usuarios
-# When I clic on Continuar 
-# $(document).ready ->
-#   $("#continueToHome").click ->
-#     window.location = "/users/"+user_id
-
-
-# This is the converter of groups to users
-# $(document).ready ->
-#   $(window).load ->
-#     $("#groupsToUsers").click ->
-#       boxes = $("input[name=groups]:checked")
-#       $.each boxes, (item) ->
-#         alert boxes[item].value
-#         # boxes
-    
-
-    # This is a desperate way to show the flashes made in ruby
-# (($, undefined_) ->
-#   $.notification = (options) ->
-#     opts = $.extend({},
-#       type: "notice"
-#       time: 3000
-#     , options)
-#     o = opts
-#     timeout = setTimeout("$.notification.removebar()", o.time)
-#     message_span = $("<span />").addClass("jbar-content").html(o.message)
-#     wrap_bar = $("<div />").addClass("jbar jbar-top").css("cursor", "pointer")
-#     wrap_bar.css color: "#D8000C"  if o.type is "error"
-#     wrap_bar.click ->
-#       $.notification.removebar()
-
-#     wrap_bar.append(message_span).hide().insertBefore($(".container")).fadeIn "fast"
-
-#   timeout = undefined
-#   $.notification.removebar = (txt) ->
-#     if $(".jbar").length
-#       clearTimeout timeout
-#       $(".jbar").fadeOut "fast", ->
-#         $(this).remove()
-
-# ) jQuery
