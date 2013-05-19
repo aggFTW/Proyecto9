@@ -15,7 +15,18 @@
  
 <p>
   <b>Tipo:</b>
-  <%= @user.utype %>
+  <%
+            if @user.utype == 0
+              type = "Estudiante"
+            elsif @user.utype == 1
+              type = "Profesor"
+            elsif @user.utype == 2
+              type = "Administrador"
+            else
+              type = "Error"
+            end
+        %>
+  <%= type %>
 </p>
  
  
