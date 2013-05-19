@@ -38,6 +38,9 @@ GenRap::Application.routes.draw do
   #json routes in Exams controller
   match "exam/get_exams" => "exams#get_exams"
 
+  #json routes in ExamDefinition controller
+  match "exam_definition/exam_def" => "exam_definition#exam_def"
+
   #json routes in Groups controller 
   match "group/get_groups" => "groups#get_groups"
 
