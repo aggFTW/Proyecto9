@@ -9,11 +9,6 @@ class MasterQuestionsController < ApplicationController
   def new
     if check_admin || check_prof
       if @master_question == nil
-        flash[:notice] = "nil"
-      else
-        flash[:notice] = "no nil"
-      end
-      if @master_question == nil
         @master_question = MasterQuestion.new
         @master_question.randomizer = initialize_file('randomizer')
         @master_question.solver = initialize_file('solver')
