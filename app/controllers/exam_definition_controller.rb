@@ -90,7 +90,6 @@ class ExamDefinitionController < ApplicationController
     #   i+=1
     # end
 
-    debugger
     hash.each_with_index do |(key, value), index|
       ExamDefinition.create( 
         master_question: MasterQuestion.find_by_id( hash[key]['master_question_id'].to_i ),

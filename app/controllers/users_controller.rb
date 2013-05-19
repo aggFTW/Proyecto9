@@ -145,15 +145,14 @@ class UsersController < ApplicationController
 
 	# Used for setting up cantake for exercise purposes
 	def set_user_cantake_own
-		debugger
 		if authenticate_user
 			exam_name = params[:exam_name]
 			thisMasterExam = MasterExam.where(name: exam_name).where(user_id: session[:user_id]).last
 	  		if !Cantake.exists?(master_exam_id: thisMasterExam.id, user_id: session[:user_id])
-	  			c = Cantake.new
-	  			c.master_exam_id = thisMasterExam.id
-	  			c.user_id = user[:id]
-	  			c.save!
+	  			cantake = Cantake.new
+	  			cantake.master_exam_id = thisMasterExam.id
+	  			cantake.user_id = session[:user_id]
+	  			cantake.save!
 			end
 
 			respond_to do |format|
