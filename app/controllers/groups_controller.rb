@@ -19,50 +19,75 @@ class GroupsController < ApplicationController
 	end
 
 	def create
-		@group = Group.new(params[:group])
-		@group.user = @current_user
-		if !@group.users.include? @current_user
-			@group.users << @current_user
-		end
-		
-		if @group.save
-			flash[:notice] = "Grupo creado de manera exitosa."
-			redirect_to(groups_path)
+		if check_prof
+			@group = Group.new(params[:group])
+			@group.user = @current_user
+			if !@group.users.include? @current_user
+				@group.users << @current_user
+			end
+			
+			if @group.save
+				flash[:notice] = "Grupo creado de manera exitosa."
+				redirect_to(groups_path)
+			else
+				flash[:error] = "Datos del grupo no válidos."
+				redirect_to(new_group_path)
+			end
 		else
-			flash[:error] = "Datos del grupo no válidos."
-			redirect_to(new_group_path)
+			flash[:error] = "Acceso restringido."
+			redirect_to root_path
 		end
 	end
 
 	def show
-		@group = Group.find(params[:id])
+		if check_prof
+			@group = Group.find(params[:id])
+		else
+			flash[:error] = "Acceso restringido."
+			redirect_to root_path
+		end
 	end
 
 	def edit
-		@group = Group.find(params[:id])
+		if check_prof
+			@group = Group.find(params[:id])
+		else
+			flash[:error] = "Acceso restringido."
+			redirect_to root_path
+		end
 	end
 
 	def update
-		@group = Group.find(params[:id])
-	 
-		if @group.update_attributes(params[:group])
-			flash[:notice] = 'El grupo fue actualizado de manera correcta.'
-	    else
-	    	flash[:error] = "No se pudieron actualizar los datos del grupo."
-	    end
+		if check_prof
+			@group = Group.find(params[:id])
+		 
+			if @group.update_attributes(params[:group])
+				flash[:notice] = 'El grupo fue actualizado de manera correcta.'
+		    else
+		    	flash[:error] = "No se pudieron actualizar los datos del grupo."
+		    end
 
-	    redirect_to(@group)
+		    redirect_to(@group)
+		else
+			flash[:error] = "Acceso restringido."
+			redirect_to root_path
+		end
 	end
 
 	def destroy
-		@group = Group.find(params[:id])
-		@group.destroy
+		if check_prof
+			@group = Group.find(params[:id])
+			@group.destroy
 
-		redirect_to :action => 'index'
+			redirect_to :action => 'index'
+		else
+			flash[:error] = "Acceso restringido."
+			redirect_to root_path
+		end
 	end
 
 	def get_groups
-		if check_admin || @current_user.id.to_s == params[:id]
+		if check_admin
 			@groups = Group.where(user_id: session[:user_id]).select("name, id")
 		    respond_to do |format|
 		      format.json { render json: @groups.to_json }

@@ -26,7 +26,6 @@ class User < ActiveRecord::Base
   after_save :clear_password
 
   def encrypt_password
-    # debugger
     if self.spassword.present?
       if new_record?
         self.salt = BCrypt::Engine.generate_salt
@@ -35,7 +34,6 @@ class User < ActiveRecord::Base
     else
       false
     end
-    # debugger
   end
 
   def clear_password
@@ -43,7 +41,6 @@ class User < ActiveRecord::Base
   end
 
   def normalizeAttributes
-    # debugger  
     self.username = self.username.downcase
 
     f = ""

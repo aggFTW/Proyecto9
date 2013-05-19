@@ -35,9 +35,6 @@ GenRap::Application.routes.draw do
   match "master_question/transmiting_JSON" => "master_questions#transmiting_JSON"
   match "master_question/get_languages" => "master_questions#get_languages"
 
-  #json routes in ExamDefinition controller
-  match "exam_definition/exam_def" => "exam_definition#exam_def"
-
   #json routes in Exams controller
   match "exam/get_exams" => "exams#get_exams"
 

@@ -13,33 +13,38 @@ class MasterQuestionsController < ApplicationController
       @master_question.solver = initialize_file('solver')
       @master_question.inquiry = initialize_file('inquiry')
     else
-      flash[:error] = "Los datos proporcionados no son válidos."
+      flash[:error] = "Acceso restringido."
       redirect_to(root_path)
     end
   end
   
   def create
-    @master_question = MasterQuestion.new(params[:master_question])
-    
-    # Generate random name for solver and randomizer
-    uuid = SecureRandom.uuid
-    $randomizer = "#{uuid}_randomizer"
-    $solver = "#{uuid}_solver"
-    
-    # Create solver and randomizer files in /helpers/s and /helpers/r 
-    randomizer_file = File.open(File.dirname(__FILE__) + "/../helpers/r/#{$randomizer}.rb","w") {|f| f.write("#{@master_question.randomizer}") }
-    solver_file = File.open(File.dirname(__FILE__) + "/../helpers/s/#{$solver}.rb","w") {|f| f.write("#{@master_question.solver}")}
+    if check_prof || check_admin
+      @master_question = MasterQuestion.new(params[:master_question])
+      
+      # Generate random name for solver and randomizer
+      uuid = SecureRandom.uuid
+      $randomizer = "#{uuid}_randomizer"
+      $solver = "#{uuid}_solver"
+      
+      # Create solver and randomizer files in /helpers/s and /helpers/r 
+      randomizer_file = File.open(File.dirname(__FILE__) + "/../helpers/r/#{$randomizer}.rb","w") {|f| f.write("#{@master_question.randomizer}") }
+      solver_file = File.open(File.dirname(__FILE__) + "/../helpers/s/#{$solver}.rb","w") {|f| f.write("#{@master_question.solver}")}
 
-    # Save masterquestion solver and randomizer file path
-    @master_question.randomizer = "#{$randomizer}"
-    @master_question.solver = "#{$solver}"
+      # Save masterquestion solver and randomizer file path
+      @master_question.randomizer = "#{$randomizer}"
+      @master_question.solver = "#{$solver}"
 
-    if @master_question.save
-      flash[:notice] = "MasterQuestion creada exitosamente."
+      if @master_question.save
+        flash[:notice] = "MasterQuestion creada exitosamente."
+      else
+        flash[:error] = "Los datos proporcionados no son válidos."
+      end
+      redirect_to(master_questions_path)
     else
-      flash[:error] = "Los datos proporcionados no son válidos."
+      flash[:error] = "Acceso restringido."
+      redirect_to root_path
     end
-    redirect_to(master_questions_path)
   end
 
   # Read actions
@@ -47,7 +52,7 @@ class MasterQuestionsController < ApplicationController
     if check_prof || check_admin
       @masterQuestions = MasterQuestion.all
     else
-      flash[:error] = "Usted necesita ser un administrador para accesar esta página."
+      flash[:error] = "Acceso restringido."
       redirect_to(root_path)
     end
   end
@@ -64,7 +69,7 @@ class MasterQuestionsController < ApplicationController
       @master_question.randomizer = read_file(File.dirname(__FILE__) + "/../helpers/r/#{$randomizer}.rb")
       @master_question.solver = read_file(File.dirname(__FILE__) + "/../helpers/s/#{$solver}.rb")
     else
-      flash[:error] = "Usted necesita ser un administrador para accesar esta página."
+      flash[:error] = "Acceso restringido."
       redirect_to(root_path)
     end
   end
@@ -81,7 +86,7 @@ class MasterQuestionsController < ApplicationController
       @master_question.randomizer = read_file(File.dirname(__FILE__) + "/../helpers/r/#{$randomizer}.rb")
       @master_question.solver = read_file(File.dirname(__FILE__) + "/../helpers/s/#{$solver}.rb")
     else
-      flash[:error] = "Usted necesita ser un administrador para accesar esta página."
+      flash[:error] = "Acceso restringido."
       redirect_to(root_path)
     end
   end
@@ -110,7 +115,7 @@ class MasterQuestionsController < ApplicationController
 
       redirect_to(@master_question)
     else
-     flash[:error] = "Usted necesita ser un administrador para accesar esta página."
+      flash[:error] = "Acceso restringido."
      redirect_to(root_path)
     end
   end
@@ -166,7 +171,7 @@ class MasterQuestionsController < ApplicationController
 
       redirect_to :action => 'index'
     else
-      flash[:error] = "Debe ser administrador para borrar master questions."
+      flash[:error] = "Acceso restringido."
       redirect_to(master_questions_path)
     end
   end
