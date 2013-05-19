@@ -1,3 +1,4 @@
+
 GenRap::Application.routes.draw do
   # get "sessions/login,"
 
@@ -32,6 +33,7 @@ GenRap::Application.routes.draw do
   match "master_question/subconcepts_for_question" => "master_questions#subconcepts_for_question"
   match "master_question/filtered_master_questions" => "master_questions#filtered_master_questions"
   match "master_question/transmiting_JSON" => "master_questions#transmiting_JSON"
+  match "master_question/get_languages" => "master_questions#get_languages"
 
   #json routes in ExamDefinition controller
   match "exam_definition/exam_def" => "exam_definition#exam_def"
@@ -50,3 +52,4 @@ GenRap::Application.routes.draw do
   # map.exam_show, '/exams/:id', :controller => :exams, :action => :show
 
 end
+
