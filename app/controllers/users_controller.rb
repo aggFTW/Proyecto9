@@ -2,7 +2,7 @@
 class UsersController < ApplicationController
 
 	#before_filter :save_login_state, :only => [:new, :create]
-	before_filter :authenticate_user, :only => [:index, :show, :edit, :update, :destroy]
+	before_filter :authenticate_user, :only => [:index, :show, :edit, :update, :destroy, :change_admin, :change_professor, :change_student]
 
 	def index
 		if check_admin
@@ -164,6 +164,51 @@ class UsersController < ApplicationController
 		else
 			flash[:error] = "Acceso restringido."
 			redirect_to(root_path)
+		end
+	end
+
+	def change_admin
+		if check_admin
+			user = User.find(params[:id])
+			user.utype = 2
+			if user.save
+				redirect_to "/users"
+				return
+			else
+				flash[:error] = "No se pudo hacer administrador al usuario."
+			end
+		else
+			flash[:error] = "Necesita ser administrador para modificar el tipo de un usuario."
+		end
+	end
+
+	def change_professor
+		if check_admin
+			user = User.find(params[:id])
+			user.utype = 1
+			if user.save
+				redirect_to "/users"
+				return
+			else
+				flash[:error] = "No se pudo hacer profesor al usuario."
+			end
+		else
+			flash[:error] = "Necesita ser administrador para modificar el tipo de un usuario."
+		end
+	end
+
+	def change_student
+		if check_admin
+			user = User.find(params[:id])
+			user.utype = 0
+			if user.save
+				redirect_to "/users"
+				return
+			else
+				flash[:error] = "No se pudo hacer estudiante al usuario."
+			end
+		else
+			flash[:error] = "Necesita ser administrador para modificar el tipo de un usuario."
 		end
 	end
 

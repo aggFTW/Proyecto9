@@ -47,6 +47,7 @@
 					</a>
 					<ul class="dropdown-menu">
 						<li><%= link_to "Definir Pregunta Maestra", :controller => :master_questions, :action => :new %></li>
+						<li><%= link_to " Ver Preguntas Maestras", :controller => :master_questions, :action => :index %></li>
 						<li><%= link_to "Historial de Examenes", :controller => "stats", :action => "profstats" %></li>
 						<li><%= link_to "Definir examen", :controller => "exam_definition", :action => "new" %></li>
 						<li><%= link_to "Grupos", :controller => :groups, :action => :index %></li>

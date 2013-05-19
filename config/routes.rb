@@ -46,6 +46,9 @@ GenRap::Application.routes.draw do
   match "user/get_current_user" => "users#get_current_user"
   match "user/set_users_cantake" => "users#set_users_cantake"
   match "user/set_user_cantake_own" => "users#set_user_cantake_own"
+  match "user/change_admin/:id" => "users#change_admin"
+  match "user/change_professor/:id" => "users#change_professor"
+  match "user/change_student/:id" => "users#change_student"
 
   # map.exam_show, '/exams/:id', :controller => :exams, :action => :show
 
