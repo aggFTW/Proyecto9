@@ -54,7 +54,7 @@ class ExamsController < ApplicationController
 			exam = Exam.createInstance(params[:id],@current_user.id)
 			if exam != nil
 				# Se muestra el examen
-				redirect_to :action => "show", :id => exam.id
+				redirect_to :action => "edit", :id => exam.id
 			elsif @attempts >= masterExam.attempts
 				flash[:notice] = "Numero de intentos excedido."
 				redirect_to(exams_path)

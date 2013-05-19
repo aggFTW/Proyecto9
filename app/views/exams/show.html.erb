@@ -4,9 +4,9 @@
 	<%= render 'form_show' %>
 
 	<% if check_admin %>
-		<%= button_to "Regresar", request.referer %>
+		<%= link_to "Regresar", request.referer, {class: "btn"} %>
 	<% else %>
-		<%= button_to "Regresar", request.referer %>
+		<%= link_to "Regresar", request.referer, {class: "btn"} %>
 	<% end %>
 
 	<% if @exam.errors.any? %>

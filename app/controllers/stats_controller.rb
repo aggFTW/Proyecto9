@@ -59,7 +59,9 @@ class StatsController < ApplicationController
 				for a in actualExams
 					average += a.score
 				end
-				average /= actualExams.length
+				if actualExams.length > 0
+					average /= actualExams.length
+				end
 
 				@exams_agg[e] = [average, actualExams.length, e.users.length]
 			end

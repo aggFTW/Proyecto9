@@ -1,3 +1,4 @@
+#encoding: utf-8
 class Exam < ActiveRecord::Base
   belongs_to :master_exam
   belongs_to :user

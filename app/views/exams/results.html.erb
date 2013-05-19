@@ -17,9 +17,9 @@
     </table>
 
     <% if check_admin %>
-      <%= button_to "Continuar", exams_path %>
+      <%= link_to "Continuar", exams_path, class: "btn" %>
     <% else %>
-      <%= button_to "Continuar", pending_path %>
+      <%= link_to "Continuar", pending_path, class: "btn" %>
     <% end %>
 
   <% else %>
