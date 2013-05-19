@@ -21,6 +21,7 @@ GenRap::Application.routes.draw do
   # match "mq", :to => "master_question#new"
   match "def", to: "exam_definition#new"
   match "exams", to: "exams#index"
+  match "results/exam/:id", to: "exams#results", as: "exam_results"
   match "create/exam/:id", to: "exams#create", as: "create_exam"
   match "pending", to: "exams#pending"
   match "edit/:id", to: "exam_definition#edit"

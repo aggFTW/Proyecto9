@@ -1,0 +1,36 @@
+<div class="table">
+  <% if @exam != nil %>
+    
+    <table id="results" class="summary table table-striped table-bordered table-condensed">
+      <tbody>
+        <tr>
+          <th>Intento</th>
+          <th>Calificación</th>
+          <th>Fecha</th>
+        </tr>
+        <tr>
+          <td><%= @exam.attemptnumber %></td>
+          <td><%= @exam.score %></td>
+          <td><%= @exam.updated_at %></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <% if check_admin %>
+      <%= button_to "Continuar", exams_path %>
+    <% else %>
+      <%= button_to "Continuar", pending_path %>
+    <% end %>
+
+  <% else %>
+    
+    <table class="table table-striped table-bordered table-condensed">
+      <tbody>
+        <tr>
+          <td style='text-align: center; height: 60px; vertical-align: middle;'><span style='font-size: 30px; font-color: black; font-weight: bold;'>Hubo un error al extraer los resultados de su examen.</span></td>
+        </tr>
+      </tbody>
+    </table>
+  
+  <% end %>
+</div>

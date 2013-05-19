@@ -53,7 +53,7 @@ class StatsController < ApplicationController
 		if check_prof
 
 			@exams_agg = {}
-			for e in @current_user.master_exams
+			for e in MasterExam.where("user_id = ?", @current_user.id)
 				actualExams = e.exams
 				average = 0
 				for a in actualExams
@@ -67,7 +67,7 @@ class StatsController < ApplicationController
 			# Information returned is about questions from all professors, in aggregate
 			# not only from exams by professor
 			@questions_agg = {}
-			for e in @current_user.master_exams
+			for e in MasterExam.where("user_id = ?", @current_user.id)
 				for q in e.master_questions
 					actualQuestions = q.questions
 					

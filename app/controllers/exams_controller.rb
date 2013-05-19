@@ -20,18 +20,27 @@ class ExamsController < ApplicationController
 
 	def pending
 		@masterExams = Array.new
+		@attempts = Array.new
+
+		# Se obtienen los examenes cuya fecha de inicio sea menor a la actual y fecha de termino sea mayor a la actual
 		availableExams = MasterExam.where("startDate < ? AND finishDate > ?", Date.today, Date.today)
+		
+		# Para cada uno de estos examenes, se agrega el master exam y los intentos actuales a los arreglos correspondientes
 		availableExams.each do |masterExam|
+			# Se obtienen los usuarios relacionados con este examen
 			validUsers = who_cantake_masterExam(masterExam.id)
+			# Se valida que el usuario actual sea un usuario valido y que haya intentos restantes
 			if validUsers.include?(@current_user.id) and Exam.where("master_exam_id = ? and user_id = ?", masterExam.id, @current_user.id).size < masterExam.attempts
 				@masterExams.push(masterExam)
+				# Se agrega a la lista de intentos, la cantidad de intentos del examen encontrado
+				@attempts.push(Exam.where("master_exam_id = ? and user_id = ?", masterExam.id, @current_user.id).size)
 			end
 		end
 	end
 
 	def create
 		masterExam = MasterExam.find(params[:id])
-		attempts = Exam.where("master_exam_id = ? and user_id = ?", params[:id], @current_user.id).size
+		@attempts = Exam.where("master_exam_id = ? and user_id = ?", params[:id], @current_user.id).size
 		validUsers = who_cantake_masterExam(masterExam.id)
 
 		if check_admin
@@ -40,28 +49,30 @@ class ExamsController < ApplicationController
 			# el numero de exam se puede ir directamente a show
 			
 			# Codigo provisional para pruebas
+
+			# Se crea una instancia del examen para el usuario actual
 			exam = Exam.createInstance(params[:id],@current_user.id)
 			if exam != nil
-				redirect_to(exam)
-			elsif attempts >= masterExam.attempts
+				# Se muestra el examen
+				redirect_to :action => "show", :id => exam.id
+			elsif @attempts >= masterExam.attempts
 				flash[:notice] = "Numero de intentos excedido."
 				redirect_to(exams_path)
 			else
-				flash[:error] = "Error al crear el exámen. Intentos actuales: "+attempts.to_s+"."
+				flash[:error] = "Error al crear el exámen. Intentos actuales: "+@attempts.to_s+"."
 				redirect_to(exams_path)
 			end
 		elsif validUsers.include?(@current_user.id)
+			# Se crea una instancia del examen para el usuario actual
 			exam = Exam.createInstance(params[:id],@current_user.id)
 			if exam != nil
-				# Declarar el examen como comenzado
-				exam.state = 1
-				exam.save
-				redirect_to(exam)
-			elsif attempts >= masterExam.attempts
+				# Redirigir a editar el examen para contestarlo
+				redirect_to :action => "edit", :id => exam.id
+			elsif @attempts >= masterExam.attempts
 				flash[:notice] = "Numero de intentos excedido."
 				redirect_to(pending_path)
 			else
-				flash[:error] = "Error al crear el exámen. Intentos actuales: "+attempts.to_s+"."
+				flash[:error] = "Error al crear el exámen. Intentos actuales: "+@attempts.to_s+"."
 				redirect_to(pending_path)
 			end
 			#Modificar el estado del master exam de dicho usuario
@@ -74,11 +85,29 @@ class ExamsController < ApplicationController
 		end
 	end
 
+
+	def edit
+		# Se verifica que el administrador sea el que está editando o que el examen sea del usuario actual y que el estado del examen sea 0 (creado)
+		if check_admin || (@current_user.id.to_i == Exam.find(params[:id]).user_id.to_i && Exam.find(params[:id]).state.to_i == 0)
+			# Declarar el examen como comenzado
+			@exam = Exam.find(params[:id])
+			# Se guarda el examen para cambiarse a comenzado
+			if !@exam.save
+				flash[:error] = "Error al obtener el examen."
+				redirect_to(pending_path)
+			end
+		else
+			flash[:error] = "Acceso restringido. estado es "+Exam.find(params[:id]).state.to_i.to_s
+			redirect_to(pending_path)
+		end
+	end
+
+
 	def show
 		if check_admin || @current_user.id == Exam.find(params[:id]).user_id
 			@exam = Exam.find(params[:id])
 		else
-			flash[:error] = "Usted sólo puede ver datos propios."
+			flash[:error] = "Acceso restringido."
 			redirect_to(pending_path)
 		end
 	end
@@ -87,37 +116,53 @@ class ExamsController < ApplicationController
 		if check_admin || @current_user.id == Exam.find(params[:id]).user_id
 			@exam = Exam.find(params[:id])
 			score = 0
-			# Verificar estado de terminado
-			@exam.state = 2
-			if @exam.update_attributes(params[:exam])
 
-				masterExamId = @exam.master_exam_id
+			masterExamId = @exam.master_exam_id
 
-				@exam.questions.each do |question|
+			# Para cada pregunta, se verifica la respuesta
+			@exam.questions.each do |question|
 
-					masterQuestionId = question.master_question_id
-					questionId = params[":questions"][question.id.to_s]
-					givenAns = questionId["givenAns"]
-					question.update_attributes(givenAns: givenAns)
+				masterQuestionId = question.master_question_id
+				questionId = params[":questions"][question.id.to_s]
+				givenAns = questionId["givenAns"]
+				question.update_attributes(givenAns: givenAns)
 
-					if givenAns == question.correctAns
-						questionNum = question.questionNum
-						examDef = ExamDefinition.where("master_exam_id = ? and master_question_id = ? and questionNum = ?", masterExamId, masterQuestionId, questionNum).first
-						weight = examDef.weight
-						score = score + weight*100
-					end
+				# Si la respuesta dada es correcta, se agrega la cantidad al score
+				if givenAns == question.correctAns
+					questionNum = question.questionNum
+					examDef = ExamDefinition.where("master_exam_id = ? and master_question_id = ? and questionNum = ?", masterExamId, masterQuestionId, questionNum).first
+					weight = examDef.weight
+					score = score + weight*100
 				end
-				@exam.update_attributes(score: score)
+			end
+
+			# Se actualiza el score del examen
+		    if @exam.update_attributes(score: score)
 				flash[:notice] = 'El exámen fue registrado de manera correcta.'
 		    else
 		    	flash[:error] = "Error al guardar el exámen."
-		    	#Regresar el intento?
-		    end
-		    if check_admin
-		    	redirect_to(exams_path)
-		    else
 		    	redirect_to(pending_path)
 		    end
+		    	redirect_to :action => "results", :id => @exam.id
+		else
+			flash[:error] = "Usted sólo puede actualizar datos propios."
+			redirect_to(pending_path)
+		end
+	end
+
+	def results
+		exam = Exam.find(params[:id])
+		validUsers = Array.new
+		validUsers.push(exam.user_id)
+
+		masterExam = MasterExam.find(exam.master_exam_id)
+		examCreator = masterExam.user_id
+
+		validUsers.push(examCreator)
+
+
+		if check_admin || validUsers.include?(@current_user.id)
+			@exam = exam
 		else
 			flash[:error] = "Usted sólo puede actualizar datos propios."
 			redirect_to(pending_path)

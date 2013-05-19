@@ -1,13 +1,7 @@
 <div class="hero-unit">
 	<h3 style="text-align: center;">Exámen</h3>
 
-	<%= render 'form_show' %>
-
-	<% if check_admin %>
-		<%= button_to "Regresar", request.referer %>
-	<% else %>
-		<%= button_to "Regresar", request.referer %>
-	<% end %>
+	<%= render 'form' %>
 
 	<% if @exam.errors.any? %>
 		<ul>

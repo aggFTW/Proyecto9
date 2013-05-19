@@ -1,14 +1,23 @@
 <div class="table">
-  <% if @masterExams != nil %>
-    
-    <%= table_for @masterExams, html: {id: 'exams', class: 'summary table table-striped table-bordered table-condensed'} do -%>
-      <% column title: 'Nombre' do |masterExam| %>
-        <% link_to(masterExam.name, create_exam_path(masterExam.id), confirm: "¿Seguro que deseas tomar este exámen?") %>
-      <% end %>
-      <% column :attempts, title: 'Intentos máximos' %>
-      <% column :startDate, title: 'Inicio' %>
-      <% column :finishDate, title: 'Fin' %>
-    <% end %>
+  <% if @masterExams != nil && @attempts != nil %>
+    <% count = 0 %>
+
+    <table class="summary table table-striped table-bordered table-condensed">
+      <tbody>
+        <tr>
+          <th>Nombre</th><th>Intentos actuales</th><th>Intentos máximos</th><th>Inicio</th><th>Fin</th>
+        </tr>
+        <% @masterExams.each do |masterExam| %>
+          <tr>
+            <td><%= link_to(masterExam.name, create_exam_path(masterExam.id), confirm: "¿Seguro que deseas tomar este exámen?") %></td>
+            <td><%= @attempts[count] %><% count = count + 1 %></td>
+            <td><%= masterExam.attempts %></td>
+            <td><%= masterExam.startDate %></td>
+            <td><%= masterExam.finishDate %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
 
   <% else %>
     

@@ -11,6 +11,22 @@ class Exam < ActiveRecord::Base
   attr_accessible :date, :questions_attributes, :score
   accepts_nested_attributes_for :questions
 
+  before_save :check_attempts
+
+  private
+	  def check_attempts
+	  	state = self.state.to_i
+		attempts = Exam.where("master_exam_id = ? and user_id = ?", self.master_exam_id, self.user_id).size
+		allowedAttempts = MasterExam.find(self.master_exam_id).attempts
+		if attempts > allowedAttempts || state >= 2
+			false
+		elsif state >= -1
+		  	state = state + 1
+		  	self.state = state.to_s
+	  	else
+	  		false
+	  	end
+	  end
 
 
   def self.createInstance(master_exam_id, user_id)
@@ -23,7 +39,7 @@ class Exam < ActiveRecord::Base
 			# Create exam
 			exam.master_exam = MasterExam.find(master_exam_id)
 			exam.user = User.find user_id
-			exam.state = "0"
+			exam.state = "-1"
 			exam.date = Time.now
 			exam.score = 0
 			
