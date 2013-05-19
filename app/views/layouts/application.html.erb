@@ -1,53 +1,62 @@
-         <% if protect_against_forgery? %>
-          <script type='text/javascript'>
-              //<![CDATA[
-                window._auth_token_name = "#{request_forgery_protection_token}";
-                window._auth_token = "#{form_authenticity_token}";
-            //]]>
-            </script>
-        <% end %>
-
+<% if protect_against_forgery? %>
+<script type='text/javascript'>
+  //<![CDATA[
+  window._auth_token_name = "#{request_forgery_protection_token}";
+  window._auth_token = "#{form_authenticity_token}";
+//]]>
+</script>
+<% end %>
 <!doctype html>
 <html>
-  <head>
+<head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= content_for?(:title) ? yield(:title) : "GenRap" %></title>
     <meta name="description" content="">
     <meta name="author" content="">
-    <%= stylesheet_link_tag "application", :media => "all" %>
-    <%= javascript_include_tag "http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js", "rails.js", "http://code.highcharts.com/highcharts.js" %> 
+
+    <%= stylesheet_link_tag "http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.1/themes/redmond/jquery-ui.css", "application", :media => "all" %>
+
+    <%= javascript_include_tag "http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"%>
+    <%= javascript_include_tag "rails.js" %>
+    <%= javascript_include_tag "http://code.highcharts.com/highcharts.js" %>
+    <%= javascript_include_tag "http://code.jquery.com/jquery-migrate-1.1.1.js"%>
+    <%= javascript_include_tag "application"%>
+    <%= javascript_include_tag "http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.1/jquery-ui.min.js"%>
+
     <%= csrf_meta_tags %>
     <%= yield(:head) %>
 
-    <% if flash[:notice] %>
-      <script language='javascript'>
-        $(document).ready(function() {
-        });
-      </script>
-    <% end %>
-    
-  </head>
-  <body>
-    <header class="navbar navbar-fixed-top">
-        <div class="container">
-          <%= render 'layouts/header' %>
-        </div>
-    </header>
+  <% if flash[:notice] %>
+  <script language='javascript'>
+  $(document).ready(function() {
+  });
+  </script>
+  <% end %>
 
-    <div id="main" role="main">
-      <div class="container">
-        <!-- <div class="content"> -->
-           <div class="row">
-            <div class="span12">
-              <%= render 'layouts/messages' %>
-              <%= yield %>
-            </div>
-          </div>
-          <footer>
-          </footer>
-        <!-- </div> -->
-      </div> <!--! end of .container -->
-    </div> <!--! end of #main -->
-  </body>
+</head>
+<body>
+  <header class="navbar navbar-fixed-top">
+    <div class="container">
+      <%= render 'layouts/header' %>
+    </div>
+  </header>
+  <div id="main" role="main">
+    <div class="container">
+      <!-- <div class="content"> -->
+      <div class="banner">
+        <img src='/assets/banner_1.png'/>
+      </div>
+      <div class="row">
+        <div class="span12">
+          <%= render 'layouts/messages' %>
+          <%= yield %>
+        </div>
+      </div>
+      <footer>
+      </footer>
+      <!-- </div> -->
+    </div> <!--! end of .container -->
+  </div> <!--! end of #main -->
+</body>
 </html>

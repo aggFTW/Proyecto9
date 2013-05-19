@@ -1,21 +1,61 @@
-
 <%= simple_form_for @examDefinition, url: new_exam_definition_path do |f| %>
 
-	<%= f.input :master_question, 
+	<h3>Datos Generales</h3>
+
+	<%= label_tag "tag000", "Nombre del Examen:" %>
+	<%= text_field "name", "exam", "size" => 5, placeholder:"Nombre" %>
+
+	<%= label_tag "tag0000", "Número de Intentos:" %>
+	<!-- <%= text_field "attempts", "number", "size" => 5, placeholder:"Número" %> -->
+	<select id="attempts_number" style="width: 80px">
+	  <option value="1" selected>1</option>
+	  <option value="2">2</option>
+	  <option value="3">3</option>
+	  <option value="4">4</option>
+	  <option value="5">5</option>
+	  <option value="6">6</option>
+	  <option value="7">7</option>
+	  <option value="8">8</option>
+	  <option value="9">9</option>
+	  <option value="10">10</option>
+	</select>
+
+
+
+
+
+
+	<h3>Preguntas</h3>
+
+	<table>
+		<tr>
+			<td>
+				<%= f.input :master_question, 
 				collection: @master_questions,#.where(distinct("upper(language)")), 
 				label_method: :language, 
 				value_method: :language,
 				prompt: "Selecciona un Lenguaje", 
 				label: "Lenguaje:" %>
-	<%= label_tag "tag0", "Concepto:" %>
-	<select id="concept"></select>
-	<%= label_tag "tag00", "Subconcepto:" %>
-	<select id="subconcept"></select>
-	<table id="filteredMQ"></table>
-	<%= text_field "name", "exam", "size" => 5, placeholder:"Nombre del Examen" %>
-	<table id="examInquiriesHeaders" class="examInq">
+
+				<%= label_tag "tag0", "Concepto:" %>
+				<select id="concept">
+					<option>Selecciona un Concepto</option>
+				</select>
+
+				<%= label_tag "tag00", "Subconcepto:" %>
+				<select id="subconcept">
+					<option>Selecciona un Subconcepto</option>
+				</select>
+			</td>
+			<td>
+				<table id="filteredMQ" class="table"></table>
+			</td>
+		</tr>
+	</table>
+	<br />
+	<table id="examInquiriesHeaders" class="table">
 		<tbody>
-			<tr>
+			<tr class="info">
 				<td>Número Pregunta</td>
 				<td>Número Reactivo</td>
 				<td>Reactivo</td>
@@ -24,46 +64,76 @@
 			</tr>
 		</tbody>
 	</table>
-	<table id="examInquiries" class="examInq"></table>
+	<table id="examInquiries" class="table table-striped"></table>
 
 
-	<%= text_field "attempts", "number", "size" => 5, placeholder:"Número de Intentos" %>
 
 
-	<%= label_tag "tag1", "Fecha Inicio:" %>
-	<%= date_select "start", "Date", :order => [:day,:month,:year],
-										default: Time.zone.now,
-										#:prompt => { :day => Time.zone.now.day, :month => Time.zone.now.month, :year => Time.zone.now.year},
-										:start_year => Time.zone.now.year, use_month_numbers: true
-		%>
-	<%= label_tag "tag2", "Hora Inicio:" %>
-	<%= time_select "start", "Time", :order => [:hour, :minute],
-										default: Time.now
-										#:prompt => { hour: Time.now.hour, minute: Time.now.min }
-		%>
 
-	<%= label_tag "tag3", "Fecha de Entrega:" %>
-	<%= date_select "end", "Date", :order => [:day,:month,:year],
-										default: Time.zone.now.tomorrow,
-										#:prompt => { :day => Time.zone.now.tomorrow.day, :month => Time.zone.now.tomorrow.month, :year => Time.zone.now.tomorrow.year},
-										:start_year => Time.zone.now.year, use_month_numbers: true
-		%>
-	<%= label_tag "tag4", "Hora de Entrega:" %>
-	<%= time_select "end", "Time", :order => [:hour, :minute],
-										default: { hour: 23, minute: 59 }
-		%>
+
+
+	<h3>Fechas</h3>
+
+	<table class="table table-bordered">
+		<tr>
+			<td>
+				Inicio
+			</td>
+			<td>
+				<%= label_tag "tag1", "Fecha Inicio:" %>
+				<%= text_field nil, nil, {:class => 'date_picker', :id => "datestart"} %>
+			</td>
+			<td>
+				<%= label_tag "tag2", "Hora Inicio:" %>
+				<%= time_select "start", "Time",
+												{order: [:hour, :minute], default: Time.now},
+												{style: 'width: 80px'}
+					%>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				Fin
+			</td>
+			<td>
+				<%= label_tag "tag3", "Fecha de Entrega:" %>
+				<%= text_field nil, nil, {:class => 'date_picker', :id => "dateend"} %>
+			</td>
+			<td>
+				<%= label_tag "tag4", "Hora de Entrega:" %>
+				<%= time_select "end", "Time",
+												{order: [:hour, :minute], default: { hour: 23, minute: 59 }},
+												{style: 'width: 80px'}
+					%>
+			</td>
+		</tr>
+	</table>
+
+
+
+
+
+
+	<h3>Grupos</h3>
+	<div id= "groups"> </div>
+
+	<br />
+	<br />
+	<br />
 
 	<div class="control-group">
 		<div class="controls">	
-			<%= f.submit "Crear Examen", {type:"button", id:"submit"} %>
-			<button type="button" id="calculateValues">Calcular Valores</button>
-			<button type="button" id="setDefaults">Valores por Defecto</button>
-			<button type="button" id="ereaseEverything">Borrar Todo</button>
+			<%= f.submit "Crear Examen", {type:"button", id:"submit", :class => "btn btn-primary", :style => ""} %>
+			<%= link_to("Calcular Valores", "#", {:class => "btn", :style => "", :id => "calculateValues"}) %>
+			<!-- <%= link_to("Borrar Todo", "#", {:class => "btn", :style => "", :id => "eraseEverything"}) %> -->
+			<!-- <button type="button" id="calculateValues">Calcular Valores</button> -->
+			<!-- <button type="button" id="eraseEverything">Borrar Todo</button> -->
 		</div>
 	</div>
 	<div class="control-group">
-		<div class="controls">	
-			<button type="button" id="addUsers">Continuar [Selección de Usuarios]</button>
+		<div class="controls">
+			<%= link_to("Continuar [Selección de Usuarios]", "#", {:class => "btn", :style => "", :id => "addUsers"}) %>
+			<!-- <button type="button" id="addUsers">Continuar [Selección de Usuarios]</button> -->
 		</div>
 	</div>
 	

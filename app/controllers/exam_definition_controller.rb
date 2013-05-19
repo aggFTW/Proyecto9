@@ -79,11 +79,11 @@ class ExamDefinitionController < ApplicationController
       $i+=1
 
     end
-    flash.now[:notice] = "Examen agregado exitosamente"
+
+    flash[:notice] = "Examen agregado exitosamente"
 
     respond_to do |format|
       format.json { render json: hash.to_json }
     end
-    redirect_to(def_path)
 	end
 end

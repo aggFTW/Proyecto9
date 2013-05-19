@@ -11,6 +11,7 @@ class MasterQuestionsController < ApplicationController
       @master_question = MasterQuestion.new
       @master_question.randomizer = initialize_file('randomizer')
       @master_question.solver = initialize_file('solver')
+      @master_question.inquiry = initialize_file('inquiry')
     else
       flash[:error] = "Los datos proporcionados no son válidos."
       redirect_to(root_path)
@@ -141,6 +142,8 @@ class MasterQuestionsController < ApplicationController
               "  #answers[1] = 2\n  #answers[2] = 3\n" +
               "  #Inserte su codigo para indicar la respuesta correcta\n" +
               "  #correct = 1\n  [answers, correct]\nend"
+    when 'inquiry'
+      text << "¿Cuánto es ^1 + ^2?"
     end
     text
   end
