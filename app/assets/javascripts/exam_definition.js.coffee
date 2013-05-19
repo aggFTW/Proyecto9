@@ -157,10 +157,9 @@ $(document).ready ->
           cdt = new Date()
           $("#examInquiries tr").each ->
             dataToSend.push
-              numQuestion: parseInt(dataIndex + 1)
               numInquiry: parseInt($(this).find("td:nth-child(1)").text())
               value: parseFloat($(this).find("td:nth-child(3) input:first").val()) / 100
-              master_question_id: parseInt($("#examInquiries").find("td:nth-child(1)").text())
+              master_question_id: parseInt($(this).find("td:nth-child(1)").text())
 
             dataIndex++
 
@@ -187,7 +186,7 @@ $(document).ready ->
 
           $.getJSON "/user/set_users_cantake",
             checked_groups: checkedGroups
-            exam_id: $("#examName").val()
+            exam_name: $("#name_exam").val()
           , (data) ->
 
           $("#language").prop "selectedIndex", 0

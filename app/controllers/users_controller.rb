@@ -127,17 +127,16 @@ class UsersController < ApplicationController
 
 	def set_users_cantake
 		dummy = {}
-		exam_id = params[:exam_id]
+		exam_name = params[:exam_name]
 		checked_groups = params[:checked_groups]
-      	# checked_users = params[:checked_users]
       	usersFromGroups = User.joins(:groups).select("DISTINCT users.id").where("groups_users.group_id in (?)", checked_groups)
-      	# usersNotFromGroups = User.select("DISTINCT id").where("id in (?)", checked_users)
+		thisMasterExam = MasterExam.where(name: exam_name).where(user_id: session[:user_id]).last
       	usersFromGroups.each do |user|
-      		if !Cantake.exists?(master_exam_id: exam_id, user_id: user[:id])
+      		if !Cantake.exists?(master_exam_id: exam_name, user_id: user[:id])
 	  			c = Cantake.new
-	  			c.master_exam_id = exam_id
+	  			c.master_exam_id = thisMasterExam.id
 	  			c.user_id = user[:id]
-	  			c.save
+	  			c.save!
   			end
       	end
      #  	usersNotFromGroups.each do |user|

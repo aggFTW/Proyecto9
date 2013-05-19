@@ -68,17 +68,28 @@ class ExamDefinitionController < ApplicationController
     )
     
     $i = 1
-    hash.each do |h|
-      w = h[1]['value'].to_f
+    hash.each do |key, value|
+      w = hash[key]['value'].to_f
       ExamDefinition.create( 
-        master_question: MasterQuestion.find_by_id( h[1]['master_question_id'][$i-1] ),
+        master_question: MasterQuestion.find_by_id( hash[key]['master_question_id'].to_i ),
         master_exam: MasterExam.find_by_id(master_exam.id),
-         questionNum: $i, 
+        questionNum: $i, 
         weight: w 
       )
       $i+=1
-
     end
+
+
+    # hash.each_with_index {|item, index|
+    #   w = h[1]['value'].to_f
+    #   ExamDefinition.create( 
+    #     master_question: MasterQuestion.find_by_id( h[1]['master_question_id'][$index] ),
+    #     master_exam: MasterExam.find_by_id(master_exam.id),
+    #      questionNum: $index+1, 
+    #     weight: w
+    #   )
+    # }
+
     flash[:notice] = "Examen agregado exitosamente"
 
     respond_to do |format|
