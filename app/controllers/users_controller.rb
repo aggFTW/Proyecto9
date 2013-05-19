@@ -128,12 +128,13 @@ class UsersController < ApplicationController
 			thisMasterExam = MasterExam.where(name: exam_name).where(user_id: session[:user_id]).last
 	      	usersFromGroups.each do |user|
 	      		if !Cantake.exists?(master_exam_id: thisMasterExam.id, user_id: user[:id])
-		  			c = Cantake.new
-		  			c.master_exam_id = thisMasterExam.id
-		  			c.user_id = user[:id]
-		  			c.save!
+		  			cantake = Cantake.new
+		  			cantake.master_exam_id = thisMasterExam.id
+		  			cantake.user_id = user[:id]
+		  			cantake.save!
 	  			end
 	      	end
+		
 			respond_to do |format|
 				format.json { render json: usersFromGroups.to_json }
 			end
