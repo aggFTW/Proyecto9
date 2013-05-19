@@ -18,28 +18,40 @@ class User < ActiveRecord::Base
   #validates :salt,	:presence => true
   VALID_PASSWORD_REGEX = /^(?=.*[a-zA-Z])(?=.*[0-9]).{6,}$/
   validates :spassword,	:presence => true
-  validates_confirmation_of :spassword, message: "should match password", presence: true
+  validates_confirmation_of :spassword, message: "debería coincidir con el password", presence: true
 
 
-  before_save :encrypt_password
+  before_save :encrypt_password, :normalizeAttributes
   after_save :clear_password
 
   def encrypt_password
-    if spassword.present?
+    debugger
+    if self.spassword.present?
       if new_record?
         self.salt = BCrypt::Engine.generate_salt
       end
-      self.spassword= BCrypt::Engine.hash_secret(spassword, salt)
+      self.spassword= BCrypt::Engine.hash_secret(self.spassword, self.salt)
+    else
+      false
     end
+    debugger
   end
 
   def clear_password
     self.spassword = nil
   end
 
+  def normalizeAttributes
+    debugger
+    self.username = self.username.downcase
+    self.fname = self.fname.capitalize
+    self.lname = self.lname.capitalize
+  end
+
 
 
   def self.authenticate(gusername="", gspassword="")
+    gusername = gusername.downcase
     user = User.find_by_username(gusername)
 
     if user && user.match_password(gspassword)
