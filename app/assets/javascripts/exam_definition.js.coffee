@@ -83,9 +83,7 @@ $(document).ready ->
             inquiry = $("#examInquiries")
             inquiry.append $("<tr />")
             inquiry = $("#examInquiries tr:last")
-            # inquiry.append $("<td />").append(i++)
             inquiry.append $("<td />").append(data[item].id).hide()
-            # groups_ids.push id: data[item].id
             inquiry.append $("<td />").append(data[item].inquiry)
             input1 = $("<input type=\"text\" id=\"value\" size=\"5\" placeholder=\"Valor del Reactivo\" />").change(->
               calculated = false
@@ -108,15 +106,6 @@ $(document).ready ->
 
 $(document).ready ->
   $("#submit").click ->
-    addition = undefined
-    calculated = undefined
-    cdt = undefined
-    dataIndex = undefined
-    dataToSend = undefined
-    examNameLength = undefined
-    i = undefined
-    numInquiries = undefined
-    rows = undefined
     numInquiries = $("#examInquiries").prop("rows").length
     examNameLength = $("#name_exam").val().length
     checkedGroups = $("input[name=groups]:checked").map(->
@@ -135,7 +124,6 @@ $(document).ready ->
           unless calculated
             calculated = true
             rows.each (index, value) ->
-              temp = undefined
               temp = $(this).find("td:nth-child(3) input:first").val()
               if $.isNumeric(temp) is true
                 if parseInt(temp) > 0
@@ -148,7 +136,6 @@ $(document).ready ->
                 $(this).find("td:nth-child(3) input:first").val 1
 
             rows.each (index, value) ->
-              temp = undefined
               temp = $(this).find("td:nth-child(3) input:first").val()
               $(this).find("td:nth-child(3) input:first").val (parseInt(temp) / parseInt(addition)) * 100  if $.isNumeric(temp) is true
 
@@ -221,15 +208,6 @@ $(document).ready ->
 
 $(document).ready ->
   $("#submit_exercise").click ->
-    addition = undefined
-    calculated = undefined
-    cdt = undefined
-    dataIndex = undefined
-    dataToSend = undefined
-    examNameLength = undefined
-    i = undefined
-    numInquiries = undefined
-    rows = undefined
     numInquiries = $("#examInquiries").prop("rows").length
     examNameLength = $("#name_exam").val().length
 
@@ -244,7 +222,6 @@ $(document).ready ->
           unless calculated
             calculated = true
             rows.each (index, value) ->
-              temp = undefined
               temp = $(this).find("td:nth-child(3) input:first").val()
               if $.isNumeric(temp) is true
                 if parseInt(temp) > 0
@@ -257,7 +234,6 @@ $(document).ready ->
                 $(this).find("td:nth-child(3) input:first").val 1
 
             rows.each (index, value) ->
-              temp = undefined
               temp = $(this).find("td:nth-child(3) input:first").val()
               $(this).find("td:nth-child(3) input:first").val (parseInt(temp) / parseInt(addition)) * 100  if $.isNumeric(temp) is true
 
