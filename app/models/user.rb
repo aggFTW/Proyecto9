@@ -45,8 +45,19 @@ class User < ActiveRecord::Base
   def normalizeAttributes
     debugger
     self.username = self.username.downcase
-    self.fname = self.fname.capitalize
-    self.lname = self.lname.capitalize
+
+    f = ""
+    for t in self.fname.split(' ')
+      f += t.capitalize + ' '
+    end
+    self.fname = f.lstrip
+
+    l = ""
+    for t in self.lname.split(' ')
+      l += t.capitalize + ' '
+    end
+
+    self.lname = l.lstrip
   end
 
 
