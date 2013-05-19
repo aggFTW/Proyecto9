@@ -127,7 +127,7 @@ class UsersController < ApplicationController
 	      	usersFromGroups = User.joins(:groups).select("DISTINCT users.id").where("groups_users.group_id in (?)", checked_groups)
 			thisMasterExam = MasterExam.where(name: exam_name).where(user_id: session[:user_id]).last
 	      	usersFromGroups.each do |user|
-	      		if !Cantake.exists?(master_exam_id: exam_name, user_id: user[:id])
+	      		if !Cantake.exists?(master_exam_id: thisMasterExam.id, user_id: user[:id])
 		  			c = Cantake.new
 		  			c.master_exam_id = thisMasterExam.id
 		  			c.user_id = user[:id]
@@ -145,13 +145,11 @@ class UsersController < ApplicationController
 
 	# Used for setting up cantake for exercise purposes
 	def set_user_cantake_own
+		debugger
 		if authenticate_user
 			exam_name = params[:exam_name]
 			thisMasterExam = MasterExam.where(name: exam_name).where(user_id: session[:user_id]).last
-	      	
-			user = @current_user
-
-	  		if !Cantake.exists?(master_exam_id: exam_name, user_id: user[:id])
+	  		if !Cantake.exists?(master_exam_id: thisMasterExam.id, user_id: session[:user_id])
 	  			c = Cantake.new
 	  			c.master_exam_id = thisMasterExam.id
 	  			c.user_id = user[:id]
