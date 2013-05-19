@@ -8,7 +8,7 @@ class UsersController < ApplicationController
 		if check_admin
 			@users = User.all
 		else
-			flash[:error] = "Usted necesita ser un administrador para accesar esta página."
+			flash[:error] = "Acceso restringido."
 			redirect_to(root_path)
 		end
 	end
@@ -44,7 +44,7 @@ class UsersController < ApplicationController
 		if check_admin || @current_user.id.to_s == params[:id]
 			@user = User.find(params[:id])
 		else
-			flash[:error] = "Usted sólo puede ver datos propios."
+			flash[:error] = "Acceso restringido."
 			redirect_to(root_path)
 		end
 	end
@@ -53,7 +53,7 @@ class UsersController < ApplicationController
 		if check_admin || @current_user.id.to_s == params[:id]
 			@user = User.find(params[:id])
 		else
-			flash[:error] = "Usted sólo puede editar datos propios."
+			flash[:error] = "Acceso restringido."
 			redirect_to(root_path)
 		end
 	end
@@ -70,7 +70,7 @@ class UsersController < ApplicationController
 
 		    redirect_to(@user)
 		else
-			flash[:error] = "Usted sólo puede actualizar datos propios."
+			flash[:error] = "Acceso restringido."
 			redirect_to(root_path)
 		end
 	end
@@ -82,40 +82,35 @@ class UsersController < ApplicationController
 
 			redirect_to :action => 'index'
 		else
-			flash[:error] = "Debe ser administrador para borrar usuarios."
+			flash[:error] = "Acceso restringido."
 			redirect_to(root_path)
 		end
 	end
 
 	def get_users
-		if check_admin || @current_user.id.to_s == params[:id]
+		if check_prof
 			tempStr = ""
 			@users = {}
 			hash = params[:groups_ids_]
 			hash.each_with_index{ |h, index|
-				# tempStr += "#{h[1][:id][index]}"
 				tempStr += "#{h[1][:id]}"
 		    	if index < ( hash.length-1 )
 					tempStr += ","
 				end
 			}
-			# hash.each do |key, value|
-
-			# end
 			if tempStr != ""
-				# Query: Get users from groups that are not displayed
 				u = User.joins(:groups).select("DISTINCT users.id").where("groups_users.group_id in (#{tempStr})")
 				@users = User.select("DISTINCT id, username, fname, lname").where("id not in (?)", u)
 
-				# @users = User.joins(:groups).where("groups.user_id == users.id").select("DISTINCT users.id, users.username").where("groups_users.group_id not in (#{tempStr})").where("groups_users.user_id == #{session[:user_id]}")
 			else
-				# if no group is displayed, then if he is admin, show all users.
-				# change this maybe to something that does not show all users
 				@users = User.where("id != #{session[:user_id]}").select("DISTINCT users.id, users.username, users.fname, users.lname")
 			end
 		    respond_to do |format|
 		      format.json { render json: @users.to_json }
 		    end
+		else
+			flash[:error] = "Acceso restringido."
+			redirect_to(root_path)
 		end
 	end	
 
@@ -126,34 +121,26 @@ class UsersController < ApplicationController
 	end
 
 	def set_users_cantake
-		
-		exam_name = params[:exam_name]
-		checked_groups = params[:checked_groups]
-      	usersFromGroups = User.joins(:groups).select("DISTINCT users.id").where("groups_users.group_id in (?)", checked_groups)
-		thisMasterExam = MasterExam.where(name: exam_name).where(user_id: session[:user_id]).last
-      	usersFromGroups.each do |user|
-      		if !Cantake.exists?(master_exam_id: exam_name, user_id: user[:id])
-	  			c = Cantake.new
-	  			c.master_exam_id = thisMasterExam.id
-	  			c.user_id = user[:id]
-	  			c.save!
-  			end
-      	end
-     #  	usersNotFromGroups.each do |user|
-     #  		if !Cantake.exists?(master_exam_id: exam_id, user_id: user[:id])
-	  		# 	c = Cantake.new
-	  		# 	c.master_exam_id = exam_id
-	  		# 	c.user_id = user[:id]
-	  		# 	c.save
-  			# end
-     #  	end
-		respond_to do |format|
-			format.json { render json: usersFromGroups.to_json }
+		if check_prof
+			exam_name = params[:exam_name]
+			checked_groups = params[:checked_groups]
+	      	usersFromGroups = User.joins(:groups).select("DISTINCT users.id").where("groups_users.group_id in (?)", checked_groups)
+			thisMasterExam = MasterExam.where(name: exam_name).where(user_id: session[:user_id]).last
+	      	usersFromGroups.each do |user|
+	      		if !Cantake.exists?(master_exam_id: exam_name, user_id: user[:id])
+		  			c = Cantake.new
+		  			c.master_exam_id = thisMasterExam.id
+		  			c.user_id = user[:id]
+		  			c.save!
+	  			end
+	      	end
+			respond_to do |format|
+				format.json { render json: usersFromGroups.to_json }
+			end
+		else
+			flash[:error] = "Acceso restringido."
+			redirect_to(root_path)
 		end
-
-		# flash[:notice] = "Examen creado de manera exitosa."
-
-		# redirect_to exams_path
 	end
 
 	# Used for setting up cantake for exercise purposes
@@ -175,7 +162,8 @@ class UsersController < ApplicationController
 				format.json { render json: usersFromGroups.to_json }
 			end
 		else
-			flash[:error] = "Necesita haber hecho login para guardar un ejercicio."
+			flash[:error] = "Acceso restringido."
+			redirect_to(root_path)
 		end
 	end
 
