@@ -194,7 +194,7 @@ $(document).ready ->
           $("#concept option").remove()
           $("#concept").append $("<option />").val(-1).text("Selecciona un Concepto").prop "selectedIndex", 0
           $("#subconcept option").remove()
-          $("#subconcept").append $("<option />").val(-1).text("Selecciona un Concepto").prop "selectedIndex", 0
+          $("#subconcept").append $("<option />").val(-1).text("Selecciona un Suboncepto").prop "selectedIndex", 0
           $("#attempts_number").prop "selectedIndex", 0
           $("#examInquiries tr").remove()
           $("#examInquiriesHeaders").hide()
@@ -204,6 +204,10 @@ $(document).ready ->
           )
 
           i = 1
+
+          alert "Examen creado exitosamente."
+
+          window.location = "/exams"
         else
           window.console and console.log("Debe seleccionar por lo menos un grupo")
           alert "No hay grupos seleccionados"
@@ -213,6 +217,107 @@ $(document).ready ->
     else
       window.console and console.log("No hay reactivos seleccionados")
       alert "No hay reactivos seleccionados"
+
+
+$(document).ready ->
+  $("#submit_exercise").click ->
+    addition = undefined
+    calculated = undefined
+    cdt = undefined
+    dataIndex = undefined
+    dataToSend = undefined
+    examNameLength = undefined
+    i = undefined
+    numInquiries = undefined
+    rows = undefined
+    numInquiries = $("#examInquiries").prop("rows").length
+    examNameLength = $("#name_exam").val().length
+
+    if numInquiries > 0
+      if examNameLength > 5
+          if $.isNumeric($("#attempts_number").val()) is true
+            $("#attempts_number").val "1"  if parseInt($("#attempts_number").val()) < 1
+          else
+            $("#attempts_number").val "1"
+          addition = 0
+          rows = $("#examInquiries tr")
+          unless calculated
+            calculated = true
+            rows.each (index, value) ->
+              temp = undefined
+              temp = $(this).find("td:nth-child(3) input:first").val()
+              if $.isNumeric(temp) is true
+                if parseInt(temp) > 0
+                  addition += parseInt(temp)
+                else
+                  addition += 1
+                  $(this).find("td:nth-child(3) input:first").val 1
+              else
+                addition += 1
+                $(this).find("td:nth-child(3) input:first").val 1
+
+            rows.each (index, value) ->
+              temp = undefined
+              temp = $(this).find("td:nth-child(3) input:first").val()
+              $(this).find("td:nth-child(3) input:first").val (parseInt(temp) / parseInt(addition)) * 100  if $.isNumeric(temp) is true
+
+          dataToSend = []
+          dataIndex = 0
+          cdt = new Date()
+          $("#examInquiries tr").each ->
+            dataToSend.push
+              numInquiry: parseInt($(this).find("td:nth-child(1)").text())
+              value: parseFloat($(this).find("td:nth-child(3) input:first").val()) / 100
+              master_question_id: parseInt($(this).find("td:nth-child(1)").text())
+
+            dataIndex++
+
+          $.getJSON "/exam_definition/exam_def",
+            hash: dataToSend
+            exam_name: $("#name_exam").val()
+            number_of_attempts: $("#attempts_number").val()
+            creationYear: cdt.getFullYear()
+            creationMonth: cdt.getMonth() + 1
+            creationDay: cdt.getDate()
+            creationHour: cdt.getHours()
+            creationMinute: cdt.getMinutes()
+            startYear: cdt.getFullYear()
+            startMonth: cdt.getMonth() + 1
+            startDay: cdt.getDate() - 1
+            startHour: cdt.getHours()
+            startMinute: cdt.getMinutes()
+            endYear: cdt.getFullYear() + 10
+            endMonth: cdt.getMonth() + 1
+            endDay: cdt.getDate()
+            endHour: cdt.getHours()
+            endMinute: cdt.getMinutes()
+          , (data) ->
+
+          $.getJSON "/user/set_user_cantake_own",
+            exam_name: $("#name_exam").val()
+          , (data) ->
+
+          $("#language").prop "selectedIndex", 0
+          $("#filteredMQ tr").remove()
+          $("#concept option").remove()
+          $("#concept").append $("<option />").val(-1).text("Selecciona un Concepto").prop "selectedIndex", 0
+          $("#subconcept option").remove()
+          $("#subconcept").append $("<option />").val(-1).text("Selecciona un Subconcepto").prop "selectedIndex", 0
+          $("#examInquiries tr").remove()
+          $("#examInquiriesHeaders").hide()
+          $("#name_exam").val ""
+
+          i = 1
+
+          #alert "Ejercicio creado exitosamente."
+
+          window.location = "/pending"
+      else
+        window.console and console.log("Nombre de ejercicio debe ser mayor a 5")
+        alert "Nombre de ejercicio debe ser mayor a 5"
+    else
+      window.console and console.log("No hay reactivos seleccionados para ejercicio")
+      alert "No hay reactivos seleccionados para ejercicio"
 
 
 

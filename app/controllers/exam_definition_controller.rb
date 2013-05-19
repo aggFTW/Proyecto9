@@ -1,9 +1,16 @@
 #encoding: utf-8
 class ExamDefinitionController < ApplicationController
+
 	def new
 		@examDefinition = ExamDefinition.new
 		@master_questions = MasterQuestion.all_languages
 		@examUsers = nil
+
+    if check_prof
+      render "new"
+    else
+      render "new_student"
+    end
 	end
 
 	def create
@@ -79,10 +86,16 @@ class ExamDefinitionController < ApplicationController
       $i+=1
     end
 
-    flash[:notice] = "Examen agregado exitosamente"
+    if check_prof
+      flash[:notice] = "Examen agregado exitosamente"
+    else
+      flash[:notice] = "Ejercicio creado exitosamente"
+    end
 
     respond_to do |format|
       format.json { render json: hash.to_json }
     end
+
+    # redirect_to exams_path
 	end
 end
