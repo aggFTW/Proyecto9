@@ -204,6 +204,10 @@ $(document).ready ->
           )
 
           i = 1
+
+          alert "Examen creado exitosamente."
+
+          window.location = "/exams"
         else
           window.console and console.log("Debe seleccionar por lo menos un grupo")
           alert "No hay grupos seleccionados"

@@ -150,5 +150,9 @@ class UsersController < ApplicationController
 		respond_to do |format|
 			format.json { render json: usersFromGroups.to_json }
 		end
+
+		# flash[:notice] = "Examen creado de manera exitosa."
+
+		# redirect_to exams_path
 	end
 end

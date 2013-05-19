@@ -84,5 +84,7 @@ class ExamDefinitionController < ApplicationController
     respond_to do |format|
       format.json { render json: hash.to_json }
     end
+
+    # redirect_to exams_path
 	end
 end
