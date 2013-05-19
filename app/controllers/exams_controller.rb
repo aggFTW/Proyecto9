@@ -27,7 +27,7 @@ class ExamsController < ApplicationController
 
 		# Se obtienen los examenes cuya fecha de inicio sea menor a la actual y fecha de termino sea mayor a la actual
 		# Además, estos deben ser creados por personas diferentes al usuario actual
-		availableExams = MasterExam.where("startDate <= ? AND finishDate >= ? AND user_id <> ?", Date.today, Date.today, @current_user.id)
+		availableExams = MasterExam.where("startDate <= ? AND finishDate >= ? AND user_id <> ?", Time.now, Time.now, @current_user.id)
 		
 		# Para cada uno de estos examenes, se agrega el master exam y los intentos actuales a los arreglos correspondientes
 		availableExams.each do |masterExam|
@@ -72,7 +72,7 @@ class ExamsController < ApplicationController
 			available = true
 		else
 			#La fecha de creación si importa, es un examen de alguien más
-			if masterExam.startDate <= Date.today && masterExam.finishDate >= Date.today
+			if masterExam.startDate <= Time.now && masterExam.finishDate >= Time.now
 				available = true
 			end
 		end
@@ -137,7 +137,7 @@ class ExamsController < ApplicationController
 			masterExam = @exam.master_exam
 
 			# Checar que la fecha del examen sea valida
-			if masterExam.startDate <= Date.today && masterExam.finishDate >= Date.today
+			if masterExam.startDate <= Time.now && masterExam.finishDate >= Time.now
 				score = 0
 				masterExamId = masterExam.id
 
