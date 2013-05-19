@@ -4,7 +4,7 @@
 
 
   <h2>Historial de Exámenes</h2>
-  <% if @exams_agg.length > 0 %>
+  <% if @exam_agg != nil and @exams_agg.length > 0 %>
   
     
 
@@ -54,7 +54,7 @@
 
   <h2>Historial de Preguntas usadas en sus exámenes</h2>
   <h4>La información presentada aquí es un agregado de todas las preguntas utilizadas en sus exámenes, sin importar si fue presentada en algún examen de otro profesor.</h4>
-  <% if @questions_agg.length > 0 %>
+  <% if @questions_agg != nil and @questions_agg.length > 0 %>
 
     <table class="table table-bordered table-striped">
       <thead>

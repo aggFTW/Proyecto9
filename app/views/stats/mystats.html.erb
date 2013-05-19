@@ -4,7 +4,7 @@
 
 
   <h2>Historial de Exámenes</h2>
-  <% if @exams_taken.length > 0 %>
+  <% if @exams_taken != nil and @exams_taken.length > 0 %>
     
     <%= table_for @exams_taken, html: {id: 'exams', class: 'summary table table-striped table-bordered table-condensed'} do -%>
       <% column title: 'Nombre' do |exam| %>

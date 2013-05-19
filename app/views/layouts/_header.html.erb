@@ -30,8 +30,8 @@
 						<span class="caret"></span>
 					</a>
 					<ul class="dropdown-menu">
-						<li><%= link_to "Examenes y Ejercicios", pending_path %></li>
-						<li><%= link_to "Historial de Examenes", :controller => "stats", :action => "mystats" %></li>
+						<li><%= link_to "Exámenes y Ejercicios", pending_path %></li>
+						<li><%= link_to "Historial del Alumno", :controller => "stats", :action => "mystats" %></li>
 						<li><%= link_to "Crear Ejercicios", :controller => "exam_definition", :action => "new" %></li>
 						<li><%= link_to "Perfil de Usuario", @current_user %></li>
 					</ul>
@@ -46,10 +46,10 @@
 						<span class="caret"></span>
 					</a>
 					<ul class="dropdown-menu">
-						<li><%= link_to "Definir Pregunta Maestra", :controller => :master_questions, :action => :new %></li>
-						<li><%= link_to " Ver Preguntas Maestras", :controller => :master_questions, :action => :index %></li>
-						<li><%= link_to "Historial de Examenes", :controller => "stats", :action => "profstats" %></li>
-						<li><%= link_to "Definir examen", :controller => "exam_definition", :action => "new" %></li>
+						<li><%= link_to "Definir Examen", :controller => "exam_definition", :action => "new" %></li>
+						<li><%= link_to "Definir Pregunta", :controller => :master_questions, :action => :new %></li>
+						<li><%= link_to " Ver Preguntas", :controller => :master_questions, :action => :index %></li>
+						<li><%= link_to "Historial de Exámenes", :controller => "stats", :action => "profstats" %></li>
 						<li><%= link_to "Grupos", :controller => :groups, :action => :index %></li>
 					</ul>
 				</div>
