@@ -4,7 +4,6 @@ class StatsController < ApplicationController
 	def mystats
 		if authenticate_user
 			@exams_taken = @current_user.exams
-
 			@q_taken = @exams_taken.map { |e| e.questions }
 			@q_taken = @q_taken.flatten
 
