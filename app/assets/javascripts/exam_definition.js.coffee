@@ -319,8 +319,6 @@ $(document).ready ->
       window.console and console.log("No hay reactivos seleccionados para ejercicio")
       alert "No hay reactivos seleccionados para ejercicio"
 
-
-
 $(document).ready ->
   $("#calculateValues").click ->
     numInquiries = $("#examInquiries").prop("rows").length
@@ -355,75 +353,24 @@ $(document).ready ->
       window.console and console.log("No hay reactivos seleccionados")
       alert "No hay reactivos seleccionados"
 
-# $(document).ready ->
-#   $("#eraseEverything").click ->
-#     $("#filteredMQ tr").remove()
-#     $("#examInquiries tr").remove()
-#     $("#concept option").remove()
-#     $("#subconcept option").remove()
-#     $("#language").prop "selectedIndex", -1
-#     $("#attempts_number").val ""
-#     $("#name_exam").val ""
-#     $("#start_Date_3i").prop "selectedIndex", -1
-#     $("#start_Date_2i").prop "selectedIndex", -1
-#     $("#start_Date_1i").prop "selectedIndex", -1
-#     $("#start_Time_5i").prop "selectedIndex", -1
-#     $("#start_Time_4i").prop "selectedIndex", -1
-#     $("#end_Date_3i").prop "selectedIndex", -1
-#     $("#end_Date_2i").prop "selectedIndex", -1
-#     $("#end_Date_1i").prop "selectedIndex", -1
-#     $("#end_Time_5i").prop "selectedIndex", -1
-#     $("#end_Time_4i").prop "selectedIndex", -1
-#     $("#examInquiriesHeaders").hide()
-
-
-# edit view
-# addUser = false
-# $(document).ready -> 
-#   $("#addUsers").click ->
-#     window.location = "/edit/"+user_id
-#     addUser = true
-
 $(document).ready ->
   $(window).load ->
-#     $("#examName").ready ->
-    $.getJSON "/user/get_current_user", (data) ->
-      user_id = data
-#         $.getJSON "/exam/get_exams", (data) ->
-#           examDropDown = $("#examName")
-#           $.each data, (item) ->
-#             examDropDown.append $("<option />").val(data[item].id).text(data[item].name + " - " + data[item].dateCreation)
-#           $("#examName").prop "selectedIndex", -1
+    if $("#get_groups_SPECIALHIDDENTAG").length > 0
+      $.getJSON "/user/get_current_user", (data) ->
+        user_id = data
 
-    $.getJSON "/group/get_groups", (data) ->
-      groupsCheckBox = $("#groups")
-      groups_ids = []
-      $.each data, (item) ->
-        groups_ids.push id: data[item].id
-        groupsCheckBox.append ($("<label />")
-        .append $("<input />",
-          type: "checkbox"
-          name: "groups"
-          value: data[item].id
-          # text: data[item].name
-        ))
-        $("#groups label:last").append( data[item].name )
-#           groups_ids = null  if groups_ids.length < 1
-#           $.getJSON "/user/get_users",
-#             groups_ids_: groups_ids
-#           , (data) ->
-#             usersCheckBox = $("#users")
-#             $.each data, (item) ->
-#               usersCheckBox.append ($("<label />")
-#               .append $("<input />",
-#                 type: "checkbox"
-#                 name: "users"
-#                 value: data[item].id
-#                 # text: data[item].name
-#               ))
-#               $("#users label:last").append( data[item].username + " " + data[item].fname + " " + data[item].lname )
-            
-
+      $.getJSON "/group/get_groups", (data) ->
+        groupsCheckBox = $("#groups")
+        groups_ids = []
+        $.each data, (item) ->
+          groups_ids.push id: data[item].id
+          groupsCheckBox.append ($("<label />")
+          .append $("<input />",
+            type: "checkbox"
+            name: "groups"
+            value: data[item].id
+          ))
+          $("#groups label:last").append( data[item].name )
 
 # Add a "When selected exam changes get all users an groups that can take that exam"
 # Also, improve queries to allow that if users are selected when we select an exam don't display them again
