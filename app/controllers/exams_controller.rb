@@ -13,7 +13,7 @@ class ExamsController < ApplicationController
 		if check_admin
 			@masterExams = MasterExam.all
 		else
-			flash[:error] = "Usted no tiene permisos para accesar esta página."
+			flash[:error] = "Acceso restringido."
 			redirect_to(root_path)
 		 end
 	end
