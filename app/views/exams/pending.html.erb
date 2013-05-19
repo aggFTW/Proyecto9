@@ -1,5 +1,7 @@
 <div class="table">
-  <% if @masterExams != nil && @attempts != nil %>
+
+  <h3>Exámenes Disponibles</h3>
+  <% if @masterExams.length > 0 && @attempts_exams.length > 0 %>
     <% count = 0 %>
 
     <table class="summary table table-striped table-bordered table-condensed">
@@ -10,7 +12,7 @@
         <% @masterExams.each do |masterExam| %>
           <tr>
             <td><%= link_to(masterExam.name, create_exam_path(masterExam.id), confirm: "¿Seguro que deseas tomar este exámen?") %></td>
-            <td><%= @attempts[count] %><% count = count + 1 %></td>
+            <td><%= @attempts_exams[count] %><% count = count + 1 %></td>
             <td><%= masterExam.attempts %></td>
             <td><%= masterExam.startDate %></td>
             <td><%= masterExam.finishDate %></td>
@@ -24,7 +26,41 @@
     <table class="table table-striped table-bordered table-condensed">
       <tbody>
         <tr>
-          <td style='text-align: center; height: 60px; vertical-align: middle;'><span style='font-size: 30px; font-color: black; font-weight: bold;'>No hay exámenes disponibles</span></td>
+          <td>No hay exámenes disponibles</td>
+        </tr>
+      </tbody>
+    </table>
+  
+  <% end %>
+
+
+  <h3>Ejercicios Disponibles</h3>
+  <% if @masterExercises.length > 0 %>
+    <% count = 0 %>
+
+    <table class="summary table table-striped table-bordered table-condensed">
+      <tbody>
+        <tr>
+          <th>Nombre</th>
+          <th>Calificación Promedio</th>
+          <th>Veces Tomado</th>
+        </tr>
+        <% @masterExercises.each do |masterExam| %>
+          <tr>
+            <td><%= link_to(masterExam.name, create_exam_path(masterExam.id)) %></td>
+            <td><%= @exer_info[count][0] %></td>
+            <td><%= @exer_info[count][1] %><% count = count + 1 %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+  <% else %>
+    
+    <table class="table table-striped table-bordered table-condensed">
+      <tbody>
+        <tr>
+          <td>No hay ejercicios disponibles</td>
         </tr>
       </tbody>
     </table>

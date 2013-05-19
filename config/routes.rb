@@ -11,7 +11,7 @@ GenRap::Application.routes.draw do
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
- root :to => 'users#signup'
+  root :to => 'users#signup'
 
 
   resources :users, :groups, :master_questions, :exam_definitions, :exams
@@ -48,6 +48,7 @@ GenRap::Application.routes.draw do
   match "user/get_users" => "users#get_users"
   match "user/get_current_user" => "users#get_current_user"
   match "user/set_users_cantake" => "users#set_users_cantake"
+  match "user/set_user_cantake_own" => "users#set_user_cantake_own"
 
   # map.exam_show, '/exams/:id', :controller => :exams, :action => :show
 

@@ -1,0 +1,73 @@
+<%= simple_form_for @examDefinition, url: new_exam_definition_path do |f| %>
+
+	<h3>Datos Generales</h3>
+
+	<%= label_tag "tag000", "Nombre del Ejercicio:" %>
+	<%= text_field "name", "exam", "size" => 5, placeholder:"Nombre" %>
+
+	<input type="hidden" value="100" id="attempts_number"></input>
+
+
+
+
+
+
+	<h3>Preguntas</h3>
+
+	<table>
+		<tr>
+			<td>
+
+				<select id="language">
+					<option>Selecciona un Lenguaje</option>
+				</select>
+				<br/>
+				<select id="concept">
+					<option>Selecciona un Concepto</option>
+				</select>
+				<br/>
+				<select id="subconcept">
+					<option>Selecciona un Subconcepto</option>
+				</select>
+
+			</td>
+			<td>
+				<table id="filteredMQ" class="table"></table>
+			</td>
+		</tr>
+	</table>
+	<br />
+	<table id="examInquiriesHeaders" class="table">
+		<tbody>
+			<tr class="info">
+				<td>Reactivo</td>
+				<td>Valor</td>
+				<td></td>
+			</tr>
+		</tbody>
+	</table>
+	<table id="examInquiries" class="table table-striped"></table>
+
+
+
+
+	<div id="timedates" style="display:none;">
+		<%= time_select "start", "Time",
+										{order: [:hour, :minute], default: Time.now},
+										{style: 'width: 80px; display:none;'}
+			%>
+		<%= time_select "end", "Time",
+										{order: [:hour, :minute], default: { hour: 23, minute: 59 }},
+										{style: 'width: 80px; display:none;'}
+			%>
+	</div>
+
+
+	<div class="control-group">
+		<div class="controls">	
+			<%= f.submit "Crear Ejercicio", {type:"button", id:"submit_exercise", :class => "btn btn-primary", :style => ""} %>
+		</div>
+	</div>
+	
+
+<% end %>

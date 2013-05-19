@@ -20,10 +20,14 @@ class ExamsController < ApplicationController
 
 	def pending
 		@masterExams = Array.new
-		@attempts = Array.new
+		@attempts_exams = Array.new
+
+		@masterExercises = Array.new
+		@exer_info = Array.new
 
 		# Se obtienen los examenes cuya fecha de inicio sea menor a la actual y fecha de termino sea mayor a la actual
-		availableExams = MasterExam.where("startDate < ? AND finishDate > ?", Date.today, Date.today)
+		# Además, estos deben ser creados por personas diferentes al usuario actual
+		availableExams = MasterExam.where("startDate < ? AND finishDate > ? AND user_id <> ?", Date.today, Date.today, @current_user.id)
 		
 		# Para cada uno de estos examenes, se agrega el master exam y los intentos actuales a los arreglos correspondientes
 		availableExams.each do |masterExam|
@@ -33,7 +37,28 @@ class ExamsController < ApplicationController
 			if validUsers.include?(@current_user.id) and Exam.where("master_exam_id = ? and user_id = ?", masterExam.id, @current_user.id).size < masterExam.attempts
 				@masterExams.push(masterExam)
 				# Se agrega a la lista de intentos, la cantidad de intentos del examen encontrado
-				@attempts.push(Exam.where("master_exam_id = ? and user_id = ?", masterExam.id, @current_user.id).size)
+				@attempts_exams.push(Exam.where("master_exam_id = ? and user_id = ?", masterExam.id, @current_user.id).size)
+			end
+		end
+
+		# Se obtienen los examenes (ejercicios) creados por uno mismo, como ejercicios
+		availableExercices = MasterExam.where("user_id = ?", @current_user.id)
+		
+		# Para cada uno de estos examenes, se agrega el master exam y el promedio de los intentos actuales a los arreglos correspondientes
+		availableExercices.each do |masterExam|
+			# Se obtienen los usuarios relacionados con este examen
+			validUsers = who_cantake_masterExam(masterExam.id)
+			# Se valida que el usuario actual sea un usuario valido
+			if validUsers.include?(@current_user.id)
+				actual_exams = Exam.where("master_exam_id = ? and user_id = ?", masterExam.id, @current_user.id)
+				@masterExercises.push(masterExam)
+				if actual_exams.length > 0
+					grade = actual_exams.map { |e| e.score }.inject{|sum,x| sum + x }
+					grade = grade / actual_exams.length.to_f
+				else
+					grade = "-"
+				end
+				@exer_info.push([grade, actual_exams.length])
 			end
 		end
 	end
