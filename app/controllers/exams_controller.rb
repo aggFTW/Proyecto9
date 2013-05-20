@@ -12,6 +12,8 @@ class ExamsController < ApplicationController
 	def index
 		if check_admin
 			@masterExams = MasterExam.all
+		elsif check_prof
+			@masterExams = MasterExam.where("user_id = ?", @current_user.id)
 		else
 			flash[:error] = "Acceso restringido."
 			redirect_to(root_path)
@@ -196,7 +198,7 @@ class ExamsController < ApplicationController
 	end
 
 	#gets a list of users that can take the masterExam
-	private
+	# private
 		def who_cantake_masterExam(masterExamId)
 			validUsers = Array.new
 

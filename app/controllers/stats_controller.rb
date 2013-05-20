@@ -12,7 +12,7 @@ class StatsController < ApplicationController
 		q_info = @q_taken.map { |q| [MasterQuestion.find(q.master_question_id).language.capitalize, MasterQuestion.find(q.master_question_id).concept.capitalize, MasterQuestion.find(q.master_question_id).subconcept.capitalize, right_answer?(q)] }
 
 		@q_taken_by_language = {}
-		for quad in q_info
+		for quad in q_info do
 			if @q_taken_by_language.has_key? quad[0]
 				if @q_taken_by_language[quad[0]].has_key? quad[1]
 					if @q_taken_by_language[quad[0]][quad[1]].has_key? quad[2]
@@ -30,7 +30,7 @@ class StatsController < ApplicationController
 	end
 
 	# Returns 1 if question was answered correctly, 0 otherwise
-	private
+	# private
 		def right_answer? (q)
 			if q.correctAns == q. givenAns
 				return 1
@@ -40,13 +40,14 @@ class StatsController < ApplicationController
 		end
 
 	def profstats
+
 		if check_prof
 
 			@exams_agg = {}
-			for e in MasterExam.where("user_id = ?", @current_user.id)
+			for e in MasterExam.where("user_id = ?", @current_user.id) do
 				actualExams = e.exams
 				average = 0
-				for a in actualExams
+				for a in actualExams do
 					average += a.score
 				end
 				if actualExams.length > 0
@@ -59,8 +60,8 @@ class StatsController < ApplicationController
 			# Information returned is about questions from all professors, in aggregate
 			# not only from exams by professor
 			@questions_agg = {}
-			for e in MasterExam.where("user_id = ?", @current_user.id)
-				for q in e.master_questions
+			for e in MasterExam.where("user_id = ?", @current_user.id) do
+				for q in e.master_questions do
 					actualQuestions = q.questions
 					
 					if actualQuestions.length > 0

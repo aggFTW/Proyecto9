@@ -18,12 +18,6 @@ ActiveRecord::Schema.define(:version => 20130519194630) do
     t.integer "user_id"
   end
 
-  create_table "concepts", :force => true do |t|
-    t.string   "concept"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-  end
-
   create_table "exam_definitions", :force => true do |t|
     t.integer  "master_exam_id"
     t.integer  "master_question_id"
@@ -64,12 +58,6 @@ ActiveRecord::Schema.define(:version => 20130519194630) do
     t.integer "user_id"
   end
 
-  create_table "languages", :force => true do |t|
-    t.string   "name"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-  end
-
   create_table "master_exams", :force => true do |t|
     t.integer  "attempts"
     t.datetime "startDate"
@@ -108,12 +96,6 @@ ActiveRecord::Schema.define(:version => 20130519194630) do
 
   add_index "questions", ["exam_id"], :name => "index_questions_on_exam_id"
   add_index "questions", ["master_question_id"], :name => "index_questions_on_master_question_id"
-
-  create_table "subconcepts", :force => true do |t|
-    t.string   "subconcept"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-  end
 
   create_table "users", :force => true do |t|
     t.string   "username",        :null => false

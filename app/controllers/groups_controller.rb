@@ -87,7 +87,7 @@ class GroupsController < ApplicationController
 	end
 
 	def get_groups
-		if check_admin
+		if check_prof
 			@groups = Group.where(user_id: session[:user_id]).select("name, id")
 		    respond_to do |format|
 		      format.json { render json: @groups.to_json }

@@ -14,7 +14,7 @@ class Exam < ActiveRecord::Base
 
   before_save :check_attempts
 
-  private
+  # private
 	  def check_attempts
 	  	state = self.state.to_i
 		attempts = Exam.where("master_exam_id = ? and user_id = ?", self.master_exam_id, self.user_id).size
