@@ -68,13 +68,15 @@ class ExamDefinitionController < ApplicationController
     endHour = params[:endHour].to_i
     endMinute = params[:endMinute].to_i
 
+    timeZone = "Monterrey"
+
     user = User.find_by_id session[:user_id]
     master_exam = MasterExam.create(
       attempts: number_of_attempts,
       name: exam_name,
-      dateCreation: Time.strptime("#{creationYear}-#{creationMonth}-#{creationDay} #{creationHour}:#{creationMinute}", '%Y-%m-%d %H:%M').in_time_zone(Time.zone),
-      startDate: Time.strptime("#{startYear}-#{startMonth}-#{startDay} #{startHour}:#{startMinute}", '%Y-%m-%d %H:%M').in_time_zone(Time.zone),
-      finishDate: Time.strptime("#{endYear}-#{endMonth}-#{endDay} #{endHour}:#{endMinute}", '%Y-%m-%d %H:%M').in_time_zone(Time.zone),
+      dateCreation: Time.strptime("#{creationYear}-#{creationMonth}-#{creationDay} #{creationHour}:#{creationMinute}", '%Y-%m-%d %H:%M').in_time_zone(timeZone),
+      startDate: Time.strptime("#{startYear}-#{startMonth}-#{startDay} #{startHour}:#{startMinute}", '%Y-%m-%d %H:%M').in_time_zone(timeZone),
+      finishDate: Time.strptime("#{endYear}-#{endMonth}-#{endDay} #{endHour}:#{endMinute}", '%Y-%m-%d %H:%M').in_time_zone(timeZone),
       user: user
     )
         
@@ -87,7 +89,6 @@ class ExamDefinitionController < ApplicationController
       )
     end
 
-    debugger
     if check_prof
       flash[:notice] = "Examen agregado exitosamente"
     else
