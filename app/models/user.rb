@@ -1,6 +1,8 @@
 #encoding: utf-8
+
 class User < ActiveRecord::Base
-  attr_accessible :fname, :lname, :spassword, :username, :spassword_confirmation, :group_ids
+  has_secure_password
+  attr_accessible :fname, :lname, :password, :username, :password_confirmation, :group_ids
 
   has_and_belongs_to_many :groups #, :inverse_of => :users
   has_many :cantakes
@@ -18,26 +20,14 @@ class User < ActiveRecord::Base
           										:greater_than_or_equal_to => 0 }
   #validates :salt,	:presence => true
   VALID_PASSWORD_REGEX = /^(?=.*[a-zA-Z])(?=.*[0-9]).{6,}$/
-  validates :spassword,	:presence => true
-  validates_confirmation_of :spassword, message: "debería coincidir con el password", presence: true
+  validates_presence_of :password,	:on => :create
+  #validates_confirmation_of :password, message: "debería coincidir con el password", presence: true
 
-
-  before_save :encrypt_password, :normalizeAttributes
-  after_save :clear_password
-
-  def encrypt_password
-    if self.spassword.present?
-      if new_record?
-        self.salt = BCrypt::Engine.generate_salt
-      end
-      self.spassword= BCrypt::Engine.hash_secret(self.spassword, self.salt)
-    else
-      false
-    end
-  end
+  before_save :normalizeAttributes
+ # after_save :clear_password
 
   def clear_password
-    self.spassword = nil
+    self.password = nil
   end
 
   def normalizeAttributes
@@ -56,22 +46,4 @@ class User < ActiveRecord::Base
 
     self.lname = l.lstrip
   end
-
-
-
-  def self.authenticate(gusername="", gspassword="")
-    gusername = gusername.downcase
-    user = User.find_by_username(gusername)
-
-    if user && user.match_password(gspassword)
-      return user
-    else
-      return false
-    end
-  end   
-
-  def match_password(gspassword="")
-    self.spassword == BCrypt::Engine.hash_secret(gspassword, self.salt)
-  end
-
 end

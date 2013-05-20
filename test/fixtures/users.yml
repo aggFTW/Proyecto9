@@ -4,7 +4,7 @@ one:
   fname: MyString
   lname: MyString
   utype: 1
-  spassword: MyString
+  password: MyString
   salt: MyString
   username: usuario
 
@@ -12,6 +12,6 @@ two:
   fname: MyString
   lname: MyString
   utype: 1
-  spassword: MyString
+  password: MyString
   salt: MyString
   username: usuario2
