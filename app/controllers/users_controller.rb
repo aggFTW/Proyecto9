@@ -36,7 +36,7 @@ class UsersController < ApplicationController
 			flash[:error] = "Sus datos no son válidos."
 		end
 
-		redirect_to(root_path)
+		redirect_to("/signup")
 	end
 
 
